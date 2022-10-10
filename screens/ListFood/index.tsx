@@ -1,14 +1,29 @@
 import { View, Text, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ItemFood from "./ItemFood";
 import TitleCompenents from "../../components/TitleCompenents";
 import { DanhSachSanPham } from "../../dataMockaroo/DanhSachLoaiThucPham";
 import { RootStackScreenProps } from "../../navigation/types";
 import Layout from "../../constants/Layout";
-import { goBackNav } from "../../utils/Helper/navigationHelper";
+import { goBackNav } from "../../utils/helper/navigationHelper";
+import DonGiaCrud from "../../utils/api/DonGiaCrud";
+import { TypeDonGia } from "../../utils/helper/DonGiaHelper";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
 export default function ListFood({
   navigation,
-}: RootStackScreenProps<"ListFood">) {
+  route,
+}: RootStackScreenProps<"ListDonGia">) {
+  const [listDonGia, setListDonGia] = useState<Array<TypeDonGia>>();
+  useEffect(() => {
+    if (route.params.listIdDonGia)
+      DonGiaCrud.getListPublishByListId(route.params.listIdDonGia).then(
+        (res) => {
+          if (res.code === ResultStatusCode.success) {
+            setListDonGia(res.result);
+          }
+        }
+      );
+  }, [route.params.listIdDonGia]);
   return (
     <View>
       <TitleCompenents
@@ -23,7 +38,7 @@ export default function ListFood({
         }}
       >
         <FlatList
-          data={DanhSachSanPham}
+          data={listDonGia}
           renderItem={({ item }) => (
             <ItemFood
               item={item}
@@ -32,6 +47,7 @@ export default function ListFood({
               }}
             />
           )}
+          keyExtractor={(item) => item.id}
         />
       </View>
     </View>

@@ -1,35 +1,77 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 
 import { ProgressBar } from "react-native-paper";
 import Layout from "../../constants/Layout";
-
+import { TypeDonGia } from "../../utils/helper/DonGiaHelper";
+import { UrlHelper } from "../../utils/helper/UrlHelper";
+import DoAnCrud from "../../utils/api/DoAnCrud";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
+import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
+import DonViDoCrud from "../../utils/api/DonViDoCrud";
 export default function ItemFood({
   item,
   onPress,
 }: {
-  item: {
-    id: string;
-    name: string;
-    price: number;
-    priceFace: number;
-    imageUrl: string;
-    soldNum: number;
-    soldSum: number;
-  };
+  item: TypeDonGia;
   onPress: () => void;
 }) {
-  // const item = {
-  //   id: "1ec6a6d1-4a55-44cb-a5fb-40c586eff931",
-  //   name: "Cyrtandra heinrichii H. St. John",
-  //   price: 512000,
-  //   priceFace: 638000,
-  //   imageUrl: "http://dummyimage.com/68x51.png/5fa2dd/ffffff",
-  //   soldNum: 274,
-  //   soldSum: 613,
-  // };
+  const [state, setState] = useState<{
+    name?: string;
+    price?: number;
+    link?: string;
+    nameDonViDo?: string;
+  }>();
+
+  useEffect(() => {
+    if (item.idDoAn) {
+      DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          // @ts-ignore
+          setState((old) => {
+            return {
+              ...old,
+              name: res.result.name,
+              price: item.unitPrice,
+              link: `/action/DoAn/${res.result.id}`,
+            };
+          });
+        }
+      });
+    }
+    if (item.idThucPhamTieuChuan) {
+      ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
+        (res) => {
+          if (res.code === ResultStatusCode.success) {
+            // @ts-ignore
+            setState((old) => {
+              return {
+                ...old,
+                name: res.result.name,
+                link: `/action/ThucPhamTieuChuan/${res.result.id}`,
+              };
+            });
+          }
+        }
+      );
+    }
+    if (item.idDonViDo) {
+      DonViDoCrud.getDetailPublish(item.idDonViDo).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          // @ts-ignore
+          setState((old) => {
+            return {
+              ...old,
+              nameDonViDo: res.result.name,
+            };
+          });
+        }
+      });
+    }
+  }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
+
   return (
     <TouchableOpacity
       style={{
@@ -48,7 +90,7 @@ export default function ItemFood({
       onPress={onPress}
     >
       <Image
-        source={{ uri: item.imageUrl }}
+        source={{ uri: UrlHelper.urlFile + item.avartarUri }}
         resizeMode="cover"
         style={{
           width: 100,
@@ -56,17 +98,17 @@ export default function ItemFood({
         }}
       />
       <View style={{ paddingHorizontal: 10 }}>
-        <Text style={{ color: "#575757", fontSize: 16 }}>{item.name}</Text>
+        <Text style={{ color: "#575757", fontSize: 16 }}>{state?.name}</Text>
         <Text style={{ textDecorationLine: "line-through", color: "#cfcfcf" }}>
-          đ {item.priceFace}
+          đ {0}
         </Text>
 
         <Text style={{ color: "#f52132", fontSize: 20, fontWeight: "bold" }}>
-          đ {item.price}
+          đ {item.unitPrice}
         </Text>
         <View style={{ paddingHorizontal: 5, width: 140, marginTop: 10 }}>
           <ProgressBar
-            progress={item.soldNum / item.soldSum}
+            progress={0 / 0}
             color={"#f41f2f"}
             style={{ height: 15, borderRadius: 10, position: "absolute" }}
           />
@@ -79,7 +121,7 @@ export default function ItemFood({
             }}
           >
             {" "}
-            {item.soldNum}/{item.soldSum} sản phẩm đã bán
+            {0}/{0} sản phẩm đã bán
           </Text>
         </View>
       </View>

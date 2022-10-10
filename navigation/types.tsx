@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { TypeLoaiGiaoDich } from "../utils/helper/LoaiGiaoDichHelper";
 
 declare global {
   namespace ReactNavigation {
@@ -19,8 +20,8 @@ declare global {
 export type RootStackParamList = {
   Main: NavigatorScreenParams<RootTabParamList> | undefined;
   Login: undefined;
-  FoodType: undefined;
-  ListFood: { id: string };
+  LoaiGiaoDich: { data: TypeLoaiGiaoDich };
+  ListDonGia: { listIdDonGia?: Array<string> };
   FoodDeTail: undefined;
 };
 

@@ -65,13 +65,13 @@ function RootNavigator() {
         />
 
         <Stack.Screen
-          name="FoodType"
+          name="LoaiGiaoDich"
           component={FoodType}
           options={{ headerShown: false }}
         />
 
         <Stack.Screen
-          name="ListFood"
+          name="ListDonGia"
           component={ListFood}
           options={{ headerShown: false }}
         />

@@ -13,22 +13,36 @@ import { tintColorLight } from "../../constants/Colors";
 import { DataTable } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
-import {
-  ChangeWaterFactory,
-  logOut,
-} from "../../redux/features/auth/authSlices";
+import { logOut } from "../../redux/features/auth/authSlices";
 import Layout from "../../constants/Layout";
 import { RootTabScreenProps } from "../../navigation/types";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import { WaterUserType } from "../../utils/api/apiTypes";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import ButtonText from "../../components/items/ButtonText";
 import ButtonImageShow from "../../components/items/ButtonImageShow";
 
+import LoaiGiaoDichCrud from "../../utils/api/LoaiGiaoDichCrud";
+import { TypeLoaiGiaoDich } from "../../utils/helper/LoaiGiaoDichHelper";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { UrlHelper } from "../../utils/helper/UrlHelper";
+
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabHome">) {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const { accountDetail } = useAppSelector((s) => s.auth);
+
+  const [listLoaiGiaoDich, setListLoaiGiaoDich] =
+    useState<TypeLoaiGiaoDich[]>();
+  useEffect(() => {
+    LoaiGiaoDichCrud.GetAllPublish().then((res) => {
+      setLoading(false);
+      if (res.code === ResultStatusCode.success) {
+        setListLoaiGiaoDich(res.result);
+      }
+    });
+  }, []);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -55,7 +69,7 @@ export default function TabOneScreen({
                 color: "#6a6968",
               }}
             >
-              Xin chào , Phạm Trọng Hiếu
+              Xin chào , {accountDetail?.fullName}
             </Text>
             <Text
               style={{
@@ -124,65 +138,25 @@ export default function TabOneScreen({
             Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
           </Text>
         </ImageBackground>
-        <View style={{ width: "100%", flexDirection: "row" }}>
-          <ButtonText
-            imageSource={require("../../assets/images/thinkfood/item/it1.png")}
-            text={"MUA THỰC PHẨM"}
-            colorText={"#424141"}
-            size={48}
-            sizeText={16}
-            width={120}
-            height={150}
-            onPress={() => {
-              navigation.navigate("FoodType");
-            }}
-          />
-          <ButtonText
-            imageSource={require("../../assets/images/thinkfood/item/it2.png")}
-            text={"Gọi món mang đến nhà"}
-            colorText={"#424141"}
-            size={48}
-            sizeText={16}
-            width={120}
-            height={150}
-          />
-          <ButtonText
-            imageSource={require("../../assets/images/thinkfood/item/it3.png")}
-            text={"Đặt bàn nhà hàng"}
-            colorText={"#424141"}
-            size={48}
-            sizeText={16}
-            width={120}
-            height={150}
-          />
-        </View>
-        <View style={{ width: "100%", flexDirection: "row" }}>
-          <ButtonText
-            imageSource={require("../../assets/images/thinkfood/item/it4.png")}
-            text={"Gọi món tại nhà hàng"}
-            colorText={"#424141"}
-            size={48}
-            sizeText={16}
-            width={120}
-            height={150}
-          />
-          <ButtonText
-            imageSource={require("../../assets/images/thinkfood/item/it5.png")}
-            text={"Thuê nấu cỗ tại nhà"}
-            colorText={"#424141"}
-            size={48}
-            sizeText={16}
-            width={120}
-            height={150}
-          />
-          <ButtonText
-            imageSource={require("../../assets/images/thinkfood/item/it6.png")}
-            text={"Gọi món cho người ốm"}
-            colorText={"#424141"}
-            size={48}
-            sizeText={16}
-            width={120}
-            height={150}
+        <View style={{ width: "100%" }}>
+          <FlatList
+            data={listLoaiGiaoDich}
+            numColumns={3}
+            renderItem={({ item, index }) => (
+              <ButtonText
+                imageSource={{ uri: UrlHelper.urlFile + item.avartarUri }}
+                text={item.name}
+                colorText={"#424141"}
+                size={48}
+                sizeText={16}
+                width={120}
+                height={150}
+                onPress={() => {
+                  navigation.navigate("LoaiGiaoDich", { data: item });
+                }}
+              />
+            )}
+            keyExtractor={(item) => item.id}
           />
         </View>
 

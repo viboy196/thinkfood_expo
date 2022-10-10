@@ -1,8 +1,11 @@
 export function validatePhoneNumber(number: string | undefined): boolean {
+  console.log('number' ,number);
+  
   if (number === undefined) {
     return true;
   }
-  return /([\+84|84|0|0084]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/.test(number);
+  const input = number?.replace(/-/g, "");
+  return /([\+84|84|0|0084]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/.test(input);
 }
 
 export function validateName(name: string | undefined): boolean {

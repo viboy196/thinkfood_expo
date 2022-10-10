@@ -1,20 +1,29 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../constants/Layout";
 
 import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { TypeNhomSanPham } from "../../utils/helper/NhomSanPhamHelper";
+import { UrlHelper } from "../../utils/helper/UrlHelper";
+import { useAppDispatch } from "../../redux/store/hooks";
 export default function ItemLoaiMonAn({
   item,
   onPress,
 }: {
-  item: {
-    id: string;
-    name: string;
-    numFood: number;
-    imageUrl: string;
-  };
+  item: TypeNhomSanPham;
   onPress: () => void;
 }) {
+  const [state, setState] = useState<{
+    name?: string;
+    link?: string;
+    nameDonViDo?: string;
+  }>();
+
+
+  const distpatch = useAppDispatch();
+  
+
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -33,7 +42,7 @@ export default function ItemLoaiMonAn({
         }}
       >
         <Image
-          source={{ uri: item.imageUrl }}
+          source={{ uri: UrlHelper.urlFile + item.avartarUri }}
           resizeMode="cover"
           style={{
             width: 50,
@@ -48,7 +57,7 @@ export default function ItemLoaiMonAn({
           }}
         >
           <Text style={{ fontSize: 18, color: "#2b2a2a" }}>{item.name}</Text>
-          <Text>{item.numFood} Sản phẩm</Text>
+          <Text>{0} Sản phẩm</Text>
         </View>
         <View
           style={{

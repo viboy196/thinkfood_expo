@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import ApiRequest from '../../../utils/api/Main/ApiRequest';
+import { TypeAccount } from "../../../utils/helper/AccountHelper";
+
 
 export type UsersState = {
   token?: string;
@@ -9,6 +11,7 @@ export type UsersState = {
   errorMessage?: string;
   userName?: string;
   password?: string;
+  accountDetail?:TypeAccount;
   checkedAuth?: boolean;
   waterFactoryId?: string;
 };
@@ -23,13 +26,6 @@ export const loginAsync = createAsyncThunk(
     console.log('vao day loginAsync');
     
     return await ApiRequest.LoginApi(input);
-  },
-);
-export const ChangeWaterFactory = createAsyncThunk(
-  'auth/ChangeWaterFactory',
-  // if you type your function argument here
-  async (input: {userName: string; waterFactoryId: string; token: string}) => {
-    return await ApiRequest.ChangeWaterFactory(input);
   },
 );
 
@@ -52,6 +48,15 @@ const authSlice = createSlice({
         ...state,
         userName: action.payload.userName,
       };
+      return state;
+    },
+    setStateAuth(state , action: PayloadAction<{input: UsersState}>){
+      console.log('setStateAuth' , action.payload.input);
+      
+      state = {
+        ...state , 
+        accountDetail:action.payload.input.accountDetail
+      }
       return state;
     },
     setStateAuthRemember(state, action: PayloadAction<{input: UsersState}>) {
@@ -89,27 +94,9 @@ const authSlice = createSlice({
         }
         return state;
       })
-      .addCase(ChangeWaterFactory.fulfilled, (state, action) => {
-        console.log('ChangeWaterFactory fulfilled', action.payload);
-        if (action.payload.code === '00') {
-          state = {
-            ...state,
-            loading: 'succeeded',
-            token: action.payload.result,
-          };
-        } else {
-          state = {
-            ...state,
-            loading: 'failed',
-            token: undefined,
-            errorMessage: action.payload.errorMessage,
-          };
-        }
-        return state;
-      });
   },
 });
-export const {logOut, addUserName, setStateAuthRemember} = authSlice.actions;
+export const {logOut, addUserName, setStateAuthRemember , setStateAuth} = authSlice.actions;
 
 const persistConfig = {
   key: 'root',

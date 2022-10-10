@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RootTabParamList } from "../../navigation/types";
 import useColorScheme from "../../hooks/useColorScheme";
@@ -16,15 +16,37 @@ import TabNetwork from "./TabNetwork";
 import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 import IonsIcon from "@expo/vector-icons/build/Ionicons";
 
-import { useAppDispatch } from "../../redux/store/hooks";
-import { logOut } from "../../redux/features/auth/authSlices";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import { logOut, setStateAuth } from "../../redux/features/auth/authSlices";
 import TabNotification from "./TabNotification";
+import ApiRequest from "../../utils/api/Main/ApiRequest";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { TypeAccount } from "../../utils/helper/AccountHelper";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 export default function MainScreen() {
   const colorScheme = useColorScheme();
   const dispatch = useAppDispatch();
+  const { token } = useAppSelector((s) => s.auth);
+  useEffect(() => {
+    if (token)
+      ApiRequest.GetDetailUser(token)
+        .then((res) => {
+          if (res.code === ResultStatusCode.success) {
+            const dt = res.result as TypeAccount;
+            console.log(dt);
+            dispatch(
+              setStateAuth({
+                input: { loading: "succeeded", accountDetail: res.result },
+              })
+            );
+          }
+        })
+        .catch(() => {
+          dispatch(logOut());
+        });
+  }, []);
   return (
     <BottomTab.Navigator
       initialRouteName="TabHome"
