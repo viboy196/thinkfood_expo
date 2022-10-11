@@ -46,6 +46,26 @@ export default class NhomSanPhamCrud {
   };
 
   
+  static getAllPublishIsLive = async (): Promise<ExcuteResult> => {
+    const tag = `getAllPublishIsLive ${NhomSanPhamTag}`;
+    const url = `/api/NhomSanPham/getAllPublishIsLive?v=1.0`;
+     console.log(`${tag} url :`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
+
+  
   static getDetail = async (id :string , token?:string): Promise<ExcuteResult> => {
     const tag = `GetAll ${NhomSanPhamTag}`;
     const url = `/api/NhomSanPham/detail?id=${id}&v=1.0`;
@@ -81,9 +101,9 @@ export default class NhomSanPhamCrud {
     return res.data as ExcuteResult;
 
   }
-  static addDonGia = async ( input : {id : string , idDonGia : string , token : string }): Promise<ExcuteResult> =>{
+  static addDonGia = async ( input : {id : string , isLive:boolean , idDonGia : string , token : string }): Promise<ExcuteResult> =>{
     const tag = `addDonGia ${NhomSanPhamTag}`;
-    const url = `/api/NhomSanPham/addDonGia?id=${input.id}&idDonGia=${input.idDonGia}&v=1.0`;
+    const url = `/api/NhomSanPham/addDonGia?id=${input.id}&idDonGia=${input.idDonGia}&isLive=${input.isLive}&v=1.0`;
     console.log(`url ${tag}`, url);
     const config: AxiosRequestConfig = {
       headers: {
@@ -98,6 +118,25 @@ export default class NhomSanPhamCrud {
     return res.data as ExcuteResult;
 
   }
+  
+  static updateDonGia = async ( input : {id : string , isLive:boolean , idDonGia : string , token : string }): Promise<ExcuteResult> =>{
+    const tag = `updateDonGia ${NhomSanPhamTag}`;
+    const url = `/api/NhomSanPham/updateDonGia?id=${input.id}&idDonGia=${input.idDonGia}&isLive=${input.isLive}&v=1.0`;
+    console.log(`url ${tag}`, url);
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization:  `bearer ${input.token}` ,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+
+  }
+
 
   static Add = async (
     token :string , 
@@ -118,6 +157,9 @@ export default class NhomSanPhamCrud {
         formData.append('idLoaiGiaoDich' , input.idLoaiGiaoDich);
     }
 
+    if(input.isLive){
+      formData.append('isLive' , `${input.isLive}`);
+    }
 
     if(input.info){
         formData.append('info' , input.info);
@@ -126,6 +168,13 @@ export default class NhomSanPhamCrud {
     if(input.avartarImageFile){
       formData.append('avartarImageFile' , input.avartarImageFile);
     }
+    
+    if(input.listMediaFile){
+      input.listMediaFile.forEach( item => {
+          formData.append('listMediaFile' , item);
+      })
+    }
+
 
     const config: AxiosRequestConfig = {
       headers: {
@@ -160,8 +209,19 @@ export default class NhomSanPhamCrud {
         formData.append('info' , input.info);
     }
     
+    if(input.isLive){
+        formData.append('isLive' , `${input.isLive}`);
+    }
+
+    
     if(input.avartarUri){
         formData.append('avartarUri' , input.avartarUri);
+    }
+
+    if(input.listMediaUri){
+      input.listMediaUri.forEach( item => {
+          formData.append('listMediaUri' , item);
+      })
     }
     
     if(input.avartarImageFile){
@@ -203,7 +263,4 @@ export default class NhomSanPhamCrud {
     
     return res.data as ExcuteResult;
   };
-
-  
-
 }

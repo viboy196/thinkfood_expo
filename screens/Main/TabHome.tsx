@@ -25,6 +25,7 @@ import LoaiGiaoDichCrud from "../../utils/api/LoaiGiaoDichCrud";
 import { TypeLoaiGiaoDich } from "../../utils/helper/LoaiGiaoDichHelper";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
+import CartNhomSanPhamIsLive from "../../components/CartNhomSanPhamIsLive";
 
 export default function TabOneScreen({
   navigation,
@@ -159,6 +160,7 @@ export default function TabOneScreen({
             keyExtractor={(item) => item.id}
           />
         </View>
+        <CartNhomSanPhamIsLive />
 
         <View style={{ width: "100%" }}>
           <View style={{ paddingLeft: 10 }}>

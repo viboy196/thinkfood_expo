@@ -1,9 +1,18 @@
 const tag ='Nhóm Sản Phẩm';
+
+
+
+
+export type ItemDonGiaLive =  {
+    isLive?:boolean;
+    id?:string;
+}
 export type TypeNhomSanPham = {
     id: string,
     name:string,
     idLoaiGiaoDich?: string,
-    listIdDonGia?:Array<string>,
+    listItemDonGia?:ItemDonGiaLive[],
+    isLive:boolean,
     info?: string,
     avartarUri?: string,
     listMediaUri?: Array<string>,
@@ -13,7 +22,8 @@ export type TypeNhomSanPhamCreate = {
     name?:string,
     info?: string,
     idLoaiGiaoDich?: string,
-    listIdDonGia?:Array<string>,
+    listItemDonGia?:ItemDonGiaLive[],
+    isLive?:boolean,
     avartarImageFile?: File,
     listMediaFile?:Array<File>,
 }

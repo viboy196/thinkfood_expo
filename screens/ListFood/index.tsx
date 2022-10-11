@@ -15,6 +15,8 @@ export default function ListFood({
 }: RootStackScreenProps<"ListDonGia">) {
   const [listDonGia, setListDonGia] = useState<Array<TypeDonGia>>();
   useEffect(() => {
+    console.log("vao day");
+
     if (route.params.listIdDonGia)
       DonGiaCrud.getListPublishByListId(route.params.listIdDonGia).then(
         (res) => {
@@ -27,6 +29,7 @@ export default function ListFood({
   return (
     <View>
       <TitleCompenents
+        prodNo={listDonGia?.length ? listDonGia.length : 0}
         onGoBack={() => {
           goBackNav(navigation);
         }}
@@ -37,18 +40,20 @@ export default function ListFood({
           height: Layout.window.height - 100,
         }}
       >
-        <FlatList
-          data={listDonGia}
-          renderItem={({ item }) => (
-            <ItemFood
-              item={item}
-              onPress={() => {
-                navigation.navigate("FoodDeTail");
-              }}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-        />
+        {listDonGia && (
+          <FlatList
+            data={listDonGia}
+            renderItem={({ item }) => (
+              <ItemFood
+                item={item}
+                onPress={() => {
+                  navigation.navigate("FoodDeTail");
+                }}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        )}
       </View>
     </View>
   );

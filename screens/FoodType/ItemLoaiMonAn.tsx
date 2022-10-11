@@ -13,17 +13,6 @@ export default function ItemLoaiMonAn({
   item: TypeNhomSanPham;
   onPress: () => void;
 }) {
-  const [state, setState] = useState<{
-    name?: string;
-    link?: string;
-    nameDonViDo?: string;
-  }>();
-
-
-  const distpatch = useAppDispatch();
-  
-
-
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -57,7 +46,7 @@ export default function ItemLoaiMonAn({
           }}
         >
           <Text style={{ fontSize: 18, color: "#2b2a2a" }}>{item.name}</Text>
-          <Text>{0} Sản phẩm</Text>
+          {/* <Text>Các Sản phẩm</Text> */}
         </View>
         <View
           style={{

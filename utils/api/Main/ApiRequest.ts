@@ -4,7 +4,7 @@ import {ExcuteResult} from '../apiTypes';
 // const host = 'https://27.71.228.66:7683';
 //const host = 'https://localhost:7241';
 
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+axios.defaults.baseURL = "https://thinkfood.vn:7683/"   ;
 
 export default class ApiRequest {
 

@@ -12,8 +12,12 @@ import ItemLoaiMonAn from "./ItemLoaiMonAn";
 import { RootStackScreenProps } from "../../navigation/types";
 import { goBackNav } from "../../utils/helper/navigationHelper";
 import NhomSanPhamCrud from "../../utils/api/NhomSanPhamCrud";
-import { TypeNhomSanPham } from "../../utils/helper/NhomSanPhamHelper";
+import {
+  ItemDonGiaLive,
+  TypeNhomSanPham,
+} from "../../utils/helper/NhomSanPhamHelper";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { genListIdDonGia } from "../../utils/helper/HelperFunc";
 
 export default function FoodType({
   navigation,
@@ -45,7 +49,9 @@ export default function FoodType({
             item={item}
             onPress={() => {
               navigation.navigate("ListDonGia", {
-                listIdDonGia: item.listIdDonGia,
+                listIdDonGia: item.listItemDonGia
+                  ? genListIdDonGia(item.listItemDonGia)
+                  : [],
               });
             }}
           />

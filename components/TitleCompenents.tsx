@@ -5,8 +5,10 @@ import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { tintColorLight } from "../constants/Colors";
 export default function TitleCompenents({
   onGoBack,
+  prodNo,
 }: {
   onGoBack: () => void;
+  prodNo: number;
 }) {
   return (
     <View
@@ -37,7 +39,7 @@ export default function TitleCompenents({
         <View style={{ paddingHorizontal: 10 }}>
           <Text style={{ fontSize: 18 }}>Thực phẩm nổi bật</Text>
 
-          <Text>5 Sản phẩm</Text>
+          <Text>{prodNo} Sản phẩm</Text>
         </View>
       </View>
     </View>

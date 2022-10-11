@@ -11,6 +11,8 @@ import DoAnCrud from "../../utils/api/DoAnCrud";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
+import { TypeDoAn } from "../../utils/helper/DoAnHelper";
+import { TypeThucPhamTieuChuan } from "../../utils/helper/ThucPhamTieuChuanHelper";
 export default function ItemFood({
   item,
   onPress,
@@ -20,6 +22,7 @@ export default function ItemFood({
 }) {
   const [state, setState] = useState<{
     name?: string;
+    avatar?: string;
     price?: number;
     link?: string;
     nameDonViDo?: string;
@@ -29,13 +32,14 @@ export default function ItemFood({
     if (item.idDoAn) {
       DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
         if (res.code === ResultStatusCode.success) {
+          const dt = res.result as TypeDoAn;
           // @ts-ignore
           setState((old) => {
             return {
               ...old,
-              name: res.result.name,
+              name: dt.name,
+              avatar: dt.avartarUri,
               price: item.unitPrice,
-              link: `/action/DoAn/${res.result.id}`,
             };
           });
         }
@@ -45,12 +49,15 @@ export default function ItemFood({
       ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
         (res) => {
           if (res.code === ResultStatusCode.success) {
+            const dt = res.result as TypeThucPhamTieuChuan;
+            // @ts-ignore
             // @ts-ignore
             setState((old) => {
               return {
                 ...old,
+
+                avatar: dt.avartarUri,
                 name: res.result.name,
-                link: `/action/ThucPhamTieuChuan/${res.result.id}`,
               };
             });
           }
@@ -90,7 +97,7 @@ export default function ItemFood({
       onPress={onPress}
     >
       <Image
-        source={{ uri: UrlHelper.urlFile + item.avartarUri }}
+        source={{ uri: UrlHelper.urlFile + state?.avatar }}
         resizeMode="cover"
         style={{
           width: 100,
@@ -100,15 +107,16 @@ export default function ItemFood({
       <View style={{ paddingHorizontal: 10 }}>
         <Text style={{ color: "#575757", fontSize: 16 }}>{state?.name}</Text>
         <Text style={{ textDecorationLine: "line-through", color: "#cfcfcf" }}>
-          đ {0}
+          đ{" "}
+          {(item.unitPrice ? item.unitPrice * 1.5 : 0).toLocaleString("en-US")}
         </Text>
 
         <Text style={{ color: "#f52132", fontSize: 20, fontWeight: "bold" }}>
-          đ {item.unitPrice}
+          đ {item.unitPrice?.toLocaleString("en-US")}
         </Text>
         <View style={{ paddingHorizontal: 5, width: 140, marginTop: 10 }}>
           <ProgressBar
-            progress={0 / 0}
+            progress={0 / 1}
             color={"#f41f2f"}
             style={{ height: 15, borderRadius: 10, position: "absolute" }}
           />
