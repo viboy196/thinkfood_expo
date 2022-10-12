@@ -29,6 +29,7 @@ import { useAppSelector } from "../redux/store/hooks";
 import FoodType from "../screens/FoodType";
 import ListFood from "../screens/ListFood";
 import FoodDetail from "../screens/FoodDetail";
+import FoodView from "../screens/FoodView";
 
 export default function Navigation({
   colorScheme,
@@ -75,13 +76,18 @@ function RootNavigator() {
           component={ListFood}
           options={{ headerShown: false }}
         />
-        
+
         <Stack.Screen
           name="FoodDeTail"
           component={FoodDetail}
           options={{ headerShown: false }}
         />
 
+        <Stack.Screen
+          name="FoodView"
+          component={FoodView}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     );
   return (

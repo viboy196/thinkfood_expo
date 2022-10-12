@@ -45,6 +45,7 @@ const linking: LinkingOptions<RootStackParamList> = {
          
         },
       },
+      FoodView:'FoodView'
     },
   },
 };

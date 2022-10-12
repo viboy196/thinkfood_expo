@@ -7,14 +7,9 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
 } from "react-native";
 import { tintColorLight } from "../../constants/Colors";
-import { DataTable } from "react-native-paper";
-import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
-import ApiRequest from "../../utils/api/Main/ApiRequest";
-import { logOut } from "../../redux/features/auth/authSlices";
-import Layout from "../../constants/Layout";
+import { useAppSelector } from "../../redux/store/hooks";
 import { RootTabScreenProps } from "../../navigation/types";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
@@ -26,10 +21,10 @@ import { TypeLoaiGiaoDich } from "../../utils/helper/LoaiGiaoDichHelper";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import CartNhomSanPhamIsLive from "../../components/CartNhomSanPhamIsLive";
+import CartLoaiMonAn from "../../components/CartLoaiMonAn";
 
-export default function TabOneScreen({
-  navigation,
-}: RootTabScreenProps<"TabHome">) {
+export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
+  const { navigation } = nav;
   const [loading, setLoading] = useState<boolean>(true);
   const { accountDetail } = useAppSelector((s) => s.auth);
 
@@ -160,7 +155,7 @@ export default function TabOneScreen({
             keyExtractor={(item) => item.id}
           />
         </View>
-        <CartNhomSanPhamIsLive />
+        <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
 
         <View style={{ width: "100%" }}>
           <View style={{ paddingLeft: 10 }}>
@@ -177,7 +172,8 @@ export default function TabOneScreen({
               <View style={{ alignItems: "flex-end", paddingRight: 10 }}>
                 <Text>Xem thêm</Text>
               </View>
-
+              <CartLoaiMonAn nav={nav} />
+              {/* 
               <View style={{ flexDirection: "row" }}>
                 <View style={{ flex: 1 }}>
                   <ButtonImageShow
@@ -243,7 +239,7 @@ export default function TabOneScreen({
                     height={140}
                   />
                 </View>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>

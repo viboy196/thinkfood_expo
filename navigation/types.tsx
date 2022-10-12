@@ -9,7 +9,9 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { TypeDonGia } from "../utils/helper/DonGiaHelper";
 import { TypeLoaiGiaoDich } from "../utils/helper/LoaiGiaoDichHelper";
+import { TypeMonAn } from "../utils/helper/MonAnHelper";
 
 declare global {
   namespace ReactNavigation {
@@ -22,7 +24,8 @@ export type RootStackParamList = {
   Login: undefined;
   LoaiGiaoDich: { data: TypeLoaiGiaoDich };
   ListDonGia: { listIdDonGia?: Array<string> };
-  FoodDeTail: undefined;
+  FoodDeTail: TypeDonGia;
+  FoodView:TypeMonAn;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

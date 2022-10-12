@@ -1,29 +1,89 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../constants/Layout";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { tintColorLight } from "../../constants/Colors";
 import { RootStackScreenProps } from "../../navigation/types";
+import DoAnCrud from "../../utils/api/DoAnCrud";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
+import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
+import DonViDoCrud from "../../utils/api/DonViDoCrud";
+import { UrlHelper } from "../../utils/helper/UrlHelper";
+import { currencyFormat } from "../../utils/helper/HelperFunc";
 
 export default function FoodDetail({
   navigation,
+  route,
 }: RootStackScreenProps<"FoodDeTail">) {
-  const data = {
-    id: "91731086-6f02-438d-83ef-20cc2513a5c5",
-    name: "Cyathea cooperi (Hook. ex F. Muell.) Domin",
-    price: 16,
-    priceFace: 24,
-    imageUrl: "http://dummyimage.com/53x77.png/dddddd/000000",
-    discount: 20,
-    soldNum: 296,
-    soldSum: 858,
-    info: "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",
-  };
+  const item = route.params;
   const [numCount, setNumCount] = useState<number>(1);
+
+  const [state, setState] = useState<{
+    name?: string;
+    link?: string;
+    avatarUri?: string;
+    nameDonViDo?: string;
+    info?: string;
+  }>();
+  useEffect(() => {
+    if (item.idDoAn) {
+      DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          // @ts-ignore
+          setState((old) => {
+            return {
+              ...old,
+              avatarUri: res.result.avartarUri,
+              name: res.result.name,
+              info: res.result.info,
+              link: `/action/DoAn/${res.result.id}`,
+            };
+          });
+        }
+      });
+    }
+    if (item.idThucPhamTieuChuan) {
+      ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
+        (res) => {
+          if (res.code === ResultStatusCode.success) {
+            // @ts-ignore
+            setState((old) => {
+              return {
+                ...old,
+                avatarUri: res.result.avartarUri,
+                name: res.result.name,
+                link: `/action/ThucPhamTieuChuan/${res.result.id}`,
+              };
+            });
+          }
+        }
+      );
+    }
+    if (item.idDonViDo) {
+      DonViDoCrud.getDetailPublish(item.idDonViDo).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          // @ts-ignore
+          setState((old) => {
+            return {
+              ...old,
+              nameDonViDo: res.result.name,
+            };
+          });
+        }
+      });
+    }
+  }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
+
   return (
     <View style={{ flex: 1 }}>
       <Image
-        source={{ uri: data.imageUrl }}
+        source={
+          state?.avatarUri
+            ? {
+                uri: UrlHelper.urlFile + state?.avatarUri,
+              }
+            : require("../../assets/images/logo/thinkfoodbg.png")
+        }
         resizeMode="cover"
         style={{
           width: Layout.window.width,
@@ -54,31 +114,37 @@ export default function FoodDetail({
           paddingHorizontal: 10,
         }}
       >
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>{data.name}</Text>
+        <View style={{ flex: 1, paddingRight: 10 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            {state?.name ? state?.name : ""}
+          </Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="pricetag" size={12} color={tintColorLight} />
-            <Text style={{ paddingLeft: 5 }}>Giảm {data.discount}%</Text>
+            <Text style={{ paddingLeft: 5 }}>Giảm {30}%</Text>
           </View>
         </View>
         <View style={{ marginRight: 10 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-            đ {data.soldNum}
+            {item.unitPrice ? currencyFormat(item.unitPrice) : ""}
+            {" vnđ/"}
+            {state?.nameDonViDo}
           </Text>
           <Text
             style={{
               textDecorationLine: "line-through",
               color: "#bebebe",
-              textAlign: "center",
+              textAlign: "right",
             }}
           >
-            đ {data.soldSum}
+            {item.unitPrice ? currencyFormat(item.unitPrice * 1.425) : "0"}
+            {" vnđ/"}
+            {state?.nameDonViDo}
           </Text>
         </View>
       </View>
       <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
         <Text style={{ fontSize: 18, fontWeight: "bold" }}>Giới thiệu</Text>
-        <Text>{data.info}</Text>
+        <Text>{state?.info}</Text>
       </View>
 
       <View

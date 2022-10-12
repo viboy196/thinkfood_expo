@@ -12,26 +12,28 @@ import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
+import Layout from "../../constants/Layout";
+import { RootTabScreenProps } from "../../navigation/types";
 
 export default function DonGiaItem({
   item,
-  onPress,
   color,
   size,
   sizeText,
   width,
   height,
   colorText,
+  nav,
 }: {
   item: TypeDonGia;
-  onPress?: () => void;
   color?: string;
+  nav: RootTabScreenProps<"TabHome">;
 
   colorText?: string;
 
   size?: string | number;
   sizeText?: number;
-  width?: string | number | undefined;
+  width?: number;
   height?: string | number | undefined;
 }) {
   const [state, setState] = useState<{
@@ -89,7 +91,12 @@ export default function DonGiaItem({
   }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity
+      onPress={() => {
+        nav.navigation.navigate("FoodDeTail", item);
+      }}
+      style={{ width: (Layout.window.width - 20) / 3 }}
+    >
       <View
         style={{
           width: width ? width : 75,
@@ -109,8 +116,8 @@ export default function DonGiaItem({
             source={{ uri: UrlHelper.urlFile + state?.avatarUri }}
             resizeMode="cover"
             style={{
-              width: size ? size : 48,
-              height: size ? size : 48,
+              width: width ? width : 100,
+              height: width ? width * 0.75 : 75,
               tintColor: color ? color : undefined,
             }}
           />

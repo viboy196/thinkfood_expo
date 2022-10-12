@@ -9,11 +9,14 @@ import DonGiaCrud from "../utils/api/DonGiaCrud";
 import { ResultStatusCode } from "../utils/api/apiTypes";
 import ButtonImageShow from "./items/ButtonImageShow";
 import DonGiaItem from "./items/DonGiaItem";
+import { RootTabScreenProps } from "../navigation/types";
 
 export default function NhomSanPhamIsLiveItem({
   item,
+  nav,
 }: {
   item: TypeNhomSanPham;
+  nav: RootTabScreenProps<"TabHome">;
 }) {
   const _listIdDonGia = item.listItemDonGia
     ? genListIdDonGia(item.listItemDonGia)
@@ -44,7 +47,7 @@ export default function NhomSanPhamIsLiveItem({
             color: tintColorLight,
             fontSize: 18,
             fontWeight: "bold",
-            paddingBottom:5,
+            paddingBottom: 5,
           }}
         >
           {item.name}
@@ -59,11 +62,12 @@ export default function NhomSanPhamIsLiveItem({
         numColumns={3}
         renderItem={({ item }) => (
           <DonGiaItem
+            nav={nav}
             item={item}
             colorText={"#424141"}
             sizeText={16}
             size={80}
-            width={120}
+            width={100}
             height={150}
           />
         )}

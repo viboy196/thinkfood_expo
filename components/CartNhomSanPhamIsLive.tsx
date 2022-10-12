@@ -4,8 +4,11 @@ import { TypeNhomSanPham } from "../utils/helper/NhomSanPhamHelper";
 import NhomSanPhamCrud from "../utils/api/NhomSanPhamCrud";
 import { ResultStatusCode } from "../utils/api/apiTypes";
 import NhomSanPhamIsLiveItem from "./NhomSanPhamIsLiveItem";
+import { RootTabScreenProps } from "../navigation/types";
 
-export default function CartNhomSanPhamIsLive() {
+export default function CartNhomSanPhamIsLive(props: {
+  nav: RootTabScreenProps<"TabHome">;
+}) {
   const [listData, setListData] = useState<Array<TypeNhomSanPham>>();
   useEffect(() => {
     NhomSanPhamCrud.getAllPublishIsLive()
@@ -26,6 +29,7 @@ export default function CartNhomSanPhamIsLive() {
           data={listData}
           renderItem={({ item }) => (
             <NhomSanPhamIsLiveItem
+              nav={props.nav}
               item={item}
               key={`ItemFoodType_${item.id}`}
             />

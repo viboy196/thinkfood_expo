@@ -47,7 +47,7 @@ export default function ListFood({
               <ItemFood
                 item={item}
                 onPress={() => {
-                  navigation.navigate("FoodDeTail");
+                  navigation.navigate("FoodDeTail", item);
                 }}
               />
             )}
