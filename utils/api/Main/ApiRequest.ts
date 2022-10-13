@@ -72,6 +72,24 @@ export default class ApiRequest {
     
     return res.data as ExcuteResult;
   };
+  static getPhoneActive = async (token :string): Promise<ExcuteResult> => {
+    const tag = 'getPhoneActive';
+    const url = '/api/OnCall/getPhoneActive?v=1.0';
+    console.log( `${tag} url`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+  
 
   
   static GetMonAnByIdLoaiMonAn = async (id :string): Promise<ExcuteResult> => {

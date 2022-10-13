@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { tintColorLight } from "../../constants/Colors";
 import { useAppSelector } from "../../redux/store/hooks";
@@ -27,6 +28,8 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
   const { navigation } = nav;
   const [loading, setLoading] = useState<boolean>(true);
   const { accountDetail } = useAppSelector((s) => s.auth);
+
+  const { listCartOder } = useAppSelector((s) => s.cart);
 
   const [listLoaiGiaoDich, setListLoaiGiaoDich] =
     useState<TypeLoaiGiaoDich[]>();
@@ -75,13 +78,49 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               gold member
             </Text>
           </View>
-          <View style={{ flex: 1, alignItems: "flex-end", paddingRight: 10 }}>
+          <TouchableOpacity
+            style={{ flex: 1, alignItems: "flex-end", marginRight: 20 }}
+            onPress={() => {
+              navigation.navigate("Cart");
+            }}
+          >
             <Image
-              source={require("../../assets/images/thinkfood/scanner.png")}
+              source={require("../../assets/images/logo/shopping-cart-icon.png")}
               resizeMode="cover"
-              style={styles.avatarImage}
+              style={{
+                width: 35,
+                height: 28,
+              }}
             />
-          </View>
+            {listCartOder && listCartOder.length > 0 && (
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 20,
+                  borderWidth: 2,
+                  borderColor: "rgba(0,0,0,0.1)",
+                  backgroundColor: "red",
+                  position: "absolute",
+                  top: -5,
+                  right: -5,
+                  justifyContent: "center",
+                  alignContent: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontWeight: "bold",
+                    fontSize: 10,
+                    textAlign: "center",
+                  }}
+                >
+                  {listCartOder.length}
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
         </View>
 
         <View
@@ -286,8 +325,9 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   avatarImage: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
+    resizeMode: "cover",
     overflow: "hidden",
   },
 });

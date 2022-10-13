@@ -25,7 +25,8 @@ export type RootStackParamList = {
   LoaiGiaoDich: { data: TypeLoaiGiaoDich };
   ListDonGia: { listIdDonGia?: Array<string> };
   FoodDeTail: TypeDonGia;
-  FoodView:TypeMonAn;
+  FoodView: TypeMonAn;
+  Cart: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

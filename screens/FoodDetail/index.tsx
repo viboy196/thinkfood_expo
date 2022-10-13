@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import Layout from "../../constants/Layout";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
@@ -9,7 +9,10 @@ import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
-import { currencyFormat } from "../../utils/helper/HelperFunc";
+import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
+import ImageSlider from "../../components/items/ImageSwiper";
+import { useAppSelector } from "../../redux/store/hooks";
+import ApiRequest from "../../utils/api/Main/ApiRequest";
 
 export default function FoodDetail({
   navigation,
@@ -18,11 +21,15 @@ export default function FoodDetail({
   const item = route.params;
   const [numCount, setNumCount] = useState<number>(1);
 
+  const { token } = useAppSelector((s) => s.auth);
+  const [listOnCall, setListOnCall] = useState<string[]>();
+
   const [state, setState] = useState<{
     name?: string;
     link?: string;
     avatarUri?: string;
     nameDonViDo?: string;
+    listMediaUri?: string[];
     info?: string;
   }>();
   useEffect(() => {
@@ -34,6 +41,7 @@ export default function FoodDetail({
             return {
               ...old,
               avatarUri: res.result.avartarUri,
+              listMediaUri: res.result.listMediaUri,
               name: res.result.name,
               info: res.result.info,
               link: `/action/DoAn/${res.result.id}`,
@@ -51,6 +59,7 @@ export default function FoodDetail({
               return {
                 ...old,
                 avatarUri: res.result.avartarUri,
+                listMediaUri: res.result.listMediaUri,
                 name: res.result.name,
                 link: `/action/ThucPhamTieuChuan/${res.result.id}`,
               };
@@ -74,9 +83,18 @@ export default function FoodDetail({
     }
   }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
 
+  useEffect(() => {
+    if (token) {
+      ApiRequest.getPhoneActive(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          setListOnCall(res.result);
+        }
+      });
+    }
+  }, []);
   return (
     <View style={{ flex: 1 }}>
-      <Image
+      {/* <Image
         source={
           state?.avatarUri
             ? {
@@ -89,7 +107,10 @@ export default function FoodDetail({
           width: Layout.window.width,
           height: 180,
         }}
-      />
+      /> */}
+      {state?.listMediaUri && state.avatarUri && (
+        <ImageSlider ImageArrayUri={[...state?.listMediaUri]} />
+      )}
       <TouchableOpacity
         style={{
           width: 64,
@@ -206,7 +227,14 @@ export default function FoodDetail({
             marginBottom: 10,
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (listOnCall) callNumber(listOnCall[0]);
+              else {
+                Alert.alert("các số máy trực đang tạm nghỉ");
+              }
+            }}
+          >
             <View
               style={{
                 backgroundColor: "#00b454",

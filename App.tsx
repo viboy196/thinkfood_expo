@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import LoaiThucPham from "./screens/FoodType";
 import ListFood from "./screens/ListFood";
 import FoodDetail from "./screens/FoodDetail";
+import ImageSlider from "./components/items/ImageSwiper";
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -25,6 +26,7 @@ export default function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <SafeAreaProvider>
+            {/* <ImageSlider /> */}
             <Navigation colorScheme={colorScheme} />
             {/* <FoodDetail /> */}
             <StatusBar
@@ -34,14 +36,6 @@ export default function App() {
               showHideTransition={"slide"}
               hidden={false}
             />
-            {/* <RestaurantScreen />
-            <StatusBar
-              animated={true}
-              backgroundColor={tintColorLight}
-              barStyle={"dark-content"}
-              showHideTransition={"slide"}
-              hidden={false}
-            /> */}
           </SafeAreaProvider>
         </PersistGate>
       </Provider>

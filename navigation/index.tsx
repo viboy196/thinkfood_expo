@@ -30,6 +30,7 @@ import FoodType from "../screens/FoodType";
 import ListFood from "../screens/ListFood";
 import FoodDetail from "../screens/FoodDetail";
 import FoodView from "../screens/FoodView";
+import CartView from "../screens/Cart";
 
 export default function Navigation({
   colorScheme,
@@ -86,6 +87,12 @@ function RootNavigator() {
         <Stack.Screen
           name="FoodView"
           component={FoodView}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Cart"
+          component={CartView}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

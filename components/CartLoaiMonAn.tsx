@@ -31,7 +31,7 @@ export default function CartLoaiMonAn(props: {
     <>
       <FlatList
         data={listData}
-        renderItem={({ item }) => <ItemFoodType nav={nav} item={item} />}
+        renderItem={({ item }) => <ItemFoodType nav={props.nav} item={item} />}
         keyExtractor={(item) => item.id}
       />
     </>

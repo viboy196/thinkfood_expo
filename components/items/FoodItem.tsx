@@ -50,7 +50,7 @@ export default function FoodItem({
             source={
               item.avartarUri
                 ? { uri: UrlHelper.urlFile + item.avartarUri }
-                : require("../../assets/images/thinkfood/item/it1.png")
+                : require("../../assets/images/thinkfood/restaurant/1.jpg")
             }
             resizeMode="cover"
             style={{

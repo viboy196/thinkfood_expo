@@ -22,6 +22,8 @@ import TabNotification from "./TabNotification";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import { TypeAccount } from "../../utils/helper/AccountHelper";
+import CartOderCrud from "../../utils/api/CartOderCrud";
+import { setCartOderState } from "../../redux/features/CartOderSlices";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -30,7 +32,7 @@ export default function MainScreen() {
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((s) => s.auth);
   useEffect(() => {
-    if (token)
+    if (token) {
       ApiRequest.GetDetailUser(token)
         .then((res) => {
           if (res.code === ResultStatusCode.success) {
@@ -46,6 +48,11 @@ export default function MainScreen() {
         .catch(() => {
           dispatch(logOut());
         });
+      CartOderCrud.GetAll(token).then((res) => {
+        if (res.code === ResultStatusCode.success)
+          dispatch(setCartOderState({ listCartOder: res.result }));
+      });
+    }
   }, []);
   return (
     <BottomTab.Navigator

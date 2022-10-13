@@ -4,8 +4,8 @@ import {
   Image,
   ImageSourcePropType,
   TouchableOpacity,
-} from 'react-native';
-import React from 'react';
+} from "react-native";
+import React from "react";
 
 export default function ButtonText({
   imageSource,
@@ -36,20 +36,22 @@ export default function ButtonText({
         style={{
           width: width ? width : 75,
           height: height ? height : 100,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <View
           style={{
-            height: '60%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+            height: "60%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Image
             source={
               imageSource
                 ? imageSource
-                : require('../../assets/images/thinkfood/item/it1.png')
+                : require("../../assets/images/thinkfood/restaurant/1.jpg")
             }
             resizeMode="cover"
             style={{
@@ -59,14 +61,15 @@ export default function ButtonText({
             }}
           />
         </View>
-        <View style={{height: '40%'}}>
+        <View style={{ height: "40%" }}>
           <Text
             style={{
-              textAlign: 'center',
+              textAlign: "center",
               color: colorText ? colorText : undefined,
               fontSize: sizeText ? sizeText : undefined,
-            }}>
-            {text ? text : 'Chưa nhập'}
+            }}
+          >
+            {text ? text : "Chưa nhập"}
           </Text>
         </View>
       </View>
