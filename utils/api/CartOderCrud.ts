@@ -85,6 +85,62 @@ export default class CartOderCrud {
     
     return res.data as ExcuteResult;
   };
+  
+  static addItem = async (
+    idKhachHang :string,
+    token :string ,
+    item:{
+      chon:boolean,
+      idDonGia:string,
+      unitPrice:number,
+      soLuong:number
+    } ): Promise<ExcuteResult> => {
+    const tag = `detailByIdKhachHang ${CartOderTag}`;
+    const url = `/api/CartOder/addItem?id=${idKhachHang}&v=1.0`;
+    console.log(`url ${tag}`, url);
+    console.log(item);
+    
+
+    
+
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+        "Content-Type" : "application/json"
+      },
+    };
+    const res = await axios.post(url  ,item,  config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+  
+  static removeItem = async (
+    idKhachHang :string,
+    idDonGia:string,
+    token :string ,
+    ): Promise<ExcuteResult> => {
+    const tag = `detailByIdKhachHang ${CartOderTag}`;
+    const url = `/api/CartOder/removeItem?id=${idKhachHang}&idDonGia=${idDonGia}&v=1.0`;
+    console.log(`url ${tag}`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+        "Content-Type" : "application/json"
+      },
+    };
+    const res = await axios.get(url ,  config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
+
 
   static Update = async (token :string , input : TypeCartOderDetail): Promise<ExcuteResult> => {
     const tag = `Update ${CartOderTag}`;

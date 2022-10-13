@@ -30,7 +30,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 export default function MainScreen() {
   const colorScheme = useColorScheme();
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((s) => s.auth);
+  const { token, accountDetail } = useAppSelector((s) => s.auth);
   useEffect(() => {
     if (token) {
       ApiRequest.GetDetailUser(token)
@@ -48,10 +48,23 @@ export default function MainScreen() {
         .catch(() => {
           dispatch(logOut());
         });
-      CartOderCrud.GetAll(token).then((res) => {
-        if (res.code === ResultStatusCode.success)
-          dispatch(setCartOderState({ listCartOder: res.result }));
-      });
+    }
+  }, []);
+  useEffect(() => {
+    if (token && accountDetail.id) {
+      if (accountDetail.id)
+        CartOderCrud.detailByIdKhachHang(accountDetail.id, token).then(
+          (res) => {
+            if (res.code === ResultStatusCode.success)
+              dispatch(
+                setCartOderState({
+                  id: res.result.id,
+                  listCartItem: res.result.listCart,
+                  idKhachHang: res.result.idKhachHang,
+                })
+              );
+          }
+        );
     }
   }, []);
   return (

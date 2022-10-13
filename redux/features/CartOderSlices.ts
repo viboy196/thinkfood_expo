@@ -1,65 +1,77 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {  createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {  TypeCartOderItem } from '../../utils/helper/CartOderHelper';
+import {persistReducer} from 'redux-persist';
 
-import { TypeCartOder } from '../../utils/helper/CartOderHelper';
 
 const initialState = {
   loading: 'idle',
-  listCartOder : undefined
+  listCartItem : undefined,
+  idKhachHang:undefined,
+  id:undefined
 
-} as  {loading?: 'idle' | 'pending' | 'succeeded' | 'failed'; listCartOder? : Array<TypeCartOder>};
+} as  {loading?: 'idle' | 'pending' | 'succeeded' | 'failed'; id?:string, idKhachHang?:string;  listCartItem? : Array<TypeCartOderItem>};
 
 
-const CartOderSlice = createSlice({
-  name: 'CartOder',
+const CartOderKhachHangSlices = createSlice({
+  name: 'CartOderKhachHangSlices',
   initialState,
   reducers: {
-    addCartOderItem(state, action: PayloadAction<{item: TypeCartOder}>) {
-      if(state.listCartOder){
+    addCartOderItem(state, action: PayloadAction<{item: TypeCartOderItem}>) {
+      if(state.listCartItem){
+        const index = state.listCartItem.findIndex(x => x.idDonGia === action.payload.item.idDonGia);
+        if(index >= 0){
+          alert('sản phẩm đã nằm trong giỏ hàng')
+          return;
+        }
 
         state = {
             ...state,
-            listCartOder: [...state.listCartOder , action.payload.item],
+            listCartItem: [...state.listCartItem , action.payload.item],
         };
     }else{
         state = {
             ...state,
-            listCartOder: [action.payload.item],
+            listCartItem: [action.payload.item],
         };
     }
       return state;
     },
-    setCartOderState(state, action: PayloadAction<{listCartOder: Array<TypeCartOder>}>) {
-        state = {
+    setCartOderState(state, action: PayloadAction<{listCartItem: Array<TypeCartOderItem> , id?:string , idKhachHang?:string}>) {
+       
+          state = {
             ...state,
-            listCartOder: action.payload.listCartOder
+            listCartItem: action.payload.listCartItem,
+            id:action.payload.id,
+            idKhachHang:action.payload.idKhachHang
           };
-
+        
       return state;
       }
      
     ,
-    updateCartOderItem(state, action: PayloadAction<{input: TypeCartOder}>) {
-      if( state.listCartOder === undefined) return {...state , loading:'failed'};
+    updateCartOderItem(state, action: PayloadAction<{input: TypeCartOderItem}>) {
+      if( state.listCartItem === undefined) return {...state , loading:'failed'};
 
-        const index = state.listCartOder.findIndex(z => z.id === action.payload.input.id);
+        const index = state.listCartItem.findIndex(z => z.idDonGia === action.payload.input.idDonGia);
         if(index > -1 )
-        state.listCartOder[index] = action.payload.input;
+        state.listCartItem[index] = action.payload.input;
      
         return state;
     },
-    removeCartOderItem(state, action: PayloadAction<{id :string}>) {
-      if( state.listCartOder === undefined) return {...state , loading:'failed'};
+    removeCartOderItem(state, action: PayloadAction<{idDonGia :string}>) {
+      if( state.listCartItem === undefined) return {...state , loading:'failed'};
       state = {
           ...state,
-          listCartOder: state.listCartOder.filter(
-            todo => todo.id !== action.payload.id,
+          listCartItem: state.listCartItem.filter(
+            todo => todo.idDonGia !== action.payload.idDonGia,
           ),
         };
       return state;
     },
   },
 });
-export const {addCartOderItem , setCartOderState , updateCartOderItem , removeCartOderItem} = CartOderSlice.actions;
+export const {addCartOderItem , setCartOderState , updateCartOderItem , removeCartOderItem} = CartOderKhachHangSlices.actions;
 
 
-export default CartOderSlice.reducer;
+
+export default  CartOderKhachHangSlices.reducer;

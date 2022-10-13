@@ -29,7 +29,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
   const [loading, setLoading] = useState<boolean>(true);
   const { accountDetail } = useAppSelector((s) => s.auth);
 
-  const { listCartOder } = useAppSelector((s) => s.cart);
+  const { listCartItem } = useAppSelector((s) => s.cart);
 
   const [listLoaiGiaoDich, setListLoaiGiaoDich] =
     useState<TypeLoaiGiaoDich[]>();
@@ -92,7 +92,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                 height: 28,
               }}
             />
-            {listCartOder && listCartOder.length > 0 && (
+            {listCartItem && listCartItem.length > 0 && (
               <View
                 style={{
                   width: 20,
@@ -116,7 +116,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                     textAlign: "center",
                   }}
                 >
-                  {listCartOder.length}
+                  {listCartItem.length}
                 </Text>
               </View>
             )}

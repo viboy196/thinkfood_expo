@@ -13,6 +13,9 @@ import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
 import ImageSlider from "../../components/items/ImageSwiper";
 import { useAppSelector } from "../../redux/store/hooks";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
+import CartOderCrud from "../../utils/api/CartOderCrud";
+import { useDispatch } from "react-redux";
+import { setCartOderState } from "../../redux/features/CartOderSlices";
 
 export default function FoodDetail({
   navigation,
@@ -21,8 +24,9 @@ export default function FoodDetail({
   const item = route.params;
   const [numCount, setNumCount] = useState<number>(1);
 
-  const { token } = useAppSelector((s) => s.auth);
+  const { token, accountDetail } = useAppSelector((s) => s.auth);
   const [listOnCall, setListOnCall] = useState<string[]>();
+  const distpatch = useDispatch();
 
   const [state, setState] = useState<{
     name?: string;
@@ -83,15 +87,42 @@ export default function FoodDetail({
     }
   }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
 
-  useEffect(() => {
+  const Call = () => {
     if (token) {
       ApiRequest.getPhoneActive(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
-          setListOnCall(res.result);
+          const arrPhone = res.result as string[];
+          if (arrPhone.length > 0) {
+            callNumber(arrPhone[0]);
+          } else {
+            Alert.alert("Tổng đài viên đang bận liên hệ sau");
+          }
+        } else {
+          Alert.alert("Tổng đài viên đang bận liên hệ sau");
         }
       });
     }
-  }, []);
+  };
+  const addCart = () => {
+    if (accountDetail.id && token)
+      CartOderCrud.addItem(accountDetail.id, token, {
+        chon: false,
+        idDonGia: item.id,
+        soLuong: numCount,
+        unitPrice: item.unitPrice,
+      }).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          Alert.alert("thêm vào giỏ hàng thành công");
+          distpatch(
+            setCartOderState({
+              id: res.result.id,
+              listCartItem: res.result.listCart,
+              idKhachHang: res.result.idKhachHang,
+            })
+          );
+        }
+      });
+  };
   return (
     <View style={{ flex: 1 }}>
       {/* <Image
@@ -227,14 +258,7 @@ export default function FoodDetail({
             marginBottom: 10,
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              if (listOnCall) callNumber(listOnCall[0]);
-              else {
-                Alert.alert("các số máy trực đang tạm nghỉ");
-              }
-            }}
-          >
+          <TouchableOpacity onPress={Call}>
             <View
               style={{
                 backgroundColor: "#00b454",
@@ -260,7 +284,7 @@ export default function FoodDetail({
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={addCart}>
             <View
               style={{
                 backgroundColor: "#00b454",
