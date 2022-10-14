@@ -109,7 +109,7 @@ export default function Item(props: { item: TypeCartOderItem }) {
   const removeItemCart = () => {
     if (token && accountDetail?.id)
       CartOderCrud.removeItem(
-        accountDetail.id,
+        accountDetail?.id,
         props.item.idDonGia,
         token
       ).then((res) => {
@@ -121,7 +121,7 @@ export default function Item(props: { item: TypeCartOderItem }) {
             setCartOderState({
               id: res.result.id,
               listCartItem: res.result.listCart,
-              idKhachHang: accountDetail.id,
+              idKhachHang: accountDetail?.id,
             })
           );
         }

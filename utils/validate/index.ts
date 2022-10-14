@@ -19,7 +19,7 @@ export function validatePassword(name: string | undefined): boolean {
   if (name === undefined) {
     return true;
   }
-  return /^(?=.*[a-zA-Z])([a-zA-Z0-9]{6,})\b/.test(name);
+ return name.length >=6;
 }
 
 export function validatePasswordReDo(

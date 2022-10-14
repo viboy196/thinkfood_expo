@@ -51,9 +51,9 @@ export default function MainScreen() {
     }
   }, []);
   useEffect(() => {
-    if (token && accountDetail.id) {
-      if (accountDetail.id)
-        CartOderCrud.detailByIdKhachHang(accountDetail.id, token).then(
+    if (token && accountDetail?.id) {
+      if (accountDetail?.id)
+        CartOderCrud.detailByIdKhachHang(accountDetail?.id, token).then(
           (res) => {
             if (res.code === ResultStatusCode.success)
               dispatch(

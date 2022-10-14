@@ -4,13 +4,14 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Keyboard,
   ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
 } from "react-native";
 import { tintColorLight } from "../../constants/Colors";
-import { useAppSelector } from "../../redux/store/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { RootTabScreenProps } from "../../navigation/types";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
@@ -23,10 +24,17 @@ import { ResultStatusCode } from "../../utils/api/apiTypes";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import CartNhomSanPhamIsLive from "../../components/CartNhomSanPhamIsLive";
 import CartLoaiMonAn from "../../components/CartLoaiMonAn";
+import SearchHome from "../../components/Search/SearchHome";
+import { setStateTextSearch } from "../../redux/features/TextSearchSlides";
 
 export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
   const { navigation } = nav;
   const [loading, setLoading] = useState<boolean>(true);
+  const { searchHome } = useAppSelector((s) => s.textSearch);
+  const distpatch = useAppDispatch();
+
+  const [focusTextSearch, setFocusTextSearch] = useState<boolean>(false);
+
   const { accountDetail } = useAppSelector((s) => s.auth);
 
   const { listCartItem } = useAppSelector((s) => s.cart);
@@ -42,6 +50,23 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
     });
   }, []);
 
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      console.log("hien key");
+
+      setFocusTextSearch(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      console.log("tat key");
+
+      setFocusTextSearch(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -122,7 +147,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
             )}
           </TouchableOpacity>
         </View>
-
+        {/* Search MonAn */}
         <View
           style={{
             width: "100%",
@@ -147,6 +172,10 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
           </View>
           <TextInput
             placeholder={"Bạn muốn ăn gì ?"}
+            value={searchHome}
+            onChangeText={(text) => {
+              distpatch(setStateTextSearch({ search: { searchHome: text } }));
+            }}
             selectionColor={"#a6a5a5"}
             style={{
               paddingLeft: 10,
@@ -158,61 +187,63 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
             }}
           />
         </View>
-        <ImageBackground
-          source={require("../../assets/images//thinkfood/tf1.jpg")}
-          resizeMode="cover"
-          style={{ width: "100%", height: 120, alignItems: "center" }}
-        >
-          <Image
-            source={require("../../assets/images/logo/thinkfoodlogo.png")}
-            resizeMode="cover"
-            style={styles.logoImage}
-          />
-          <Text style={styles.logoText}>
-            {" "}
-            Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
-          </Text>
-        </ImageBackground>
-        <View style={{ width: "100%" }}>
-          <FlatList
-            data={listLoaiGiaoDich}
-            numColumns={3}
-            renderItem={({ item, index }) => (
-              <ButtonText
-                imageSource={{ uri: UrlHelper.urlFile + item.avartarUri }}
-                text={item.name}
-                colorText={"#424141"}
-                size={48}
-                sizeText={16}
-                width={120}
-                height={150}
-                onPress={() => {
-                  navigation.navigate("LoaiGiaoDich", { data: item });
-                }}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
-        <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
-
-        <View style={{ width: "100%" }}>
-          <View style={{ paddingLeft: 10 }}>
-            <Text
-              style={{
-                color: tintColorLight,
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
+        {!focusTextSearch ? (
+          <>
+            <ImageBackground
+              source={require("../../assets/images//thinkfood/tf1.jpg")}
+              resizeMode="cover"
+              style={{ width: "100%", height: 120, alignItems: "center" }}
             >
-              Món ăn{" "}
-            </Text>
+              <Image
+                source={require("../../assets/images/logo/thinkfoodlogo.png")}
+                resizeMode="cover"
+                style={styles.logoImage}
+              />
+              <Text style={styles.logoText}>
+                {" "}
+                Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
+              </Text>
+            </ImageBackground>
             <View style={{ width: "100%" }}>
-              <View style={{ alignItems: "flex-end", paddingRight: 10 }}>
-                <Text>Xem thêm</Text>
-              </View>
-              <CartLoaiMonAn nav={nav} />
-              {/* 
+              <FlatList
+                data={listLoaiGiaoDich}
+                numColumns={3}
+                renderItem={({ item, index }) => (
+                  <ButtonText
+                    imageSource={{ uri: UrlHelper.urlFile + item.avartarUri }}
+                    text={item.name}
+                    colorText={"#424141"}
+                    size={48}
+                    sizeText={16}
+                    width={120}
+                    height={150}
+                    onPress={() => {
+                      navigation.navigate("LoaiGiaoDich", { data: item });
+                    }}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
+            <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
+
+            <View style={{ width: "100%" }}>
+              <View style={{ paddingLeft: 10 }}>
+                <Text
+                  style={{
+                    color: tintColorLight,
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Món ăn{" "}
+                </Text>
+                <View style={{ width: "100%" }}>
+                  <View style={{ alignItems: "flex-end", paddingRight: 10 }}>
+                    <Text>Xem thêm</Text>
+                  </View>
+                  <CartLoaiMonAn nav={nav} />
+                  {/* 
               <View style={{ flexDirection: "row" }}>
                 <View style={{ flex: 1 }}>
                   <ButtonImageShow
@@ -279,9 +310,13 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                   />
                 </View>
               </View> */}
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
+          </>
+        ) : (
+          <SearchHome />
+        )}
       </View>
     </ScrollView>
   );

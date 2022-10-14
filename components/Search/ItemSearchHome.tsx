@@ -14,72 +14,14 @@ import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { TypeDoAn } from "../../utils/helper/DoAnHelper";
 import { TypeThucPhamTieuChuan } from "../../utils/helper/ThucPhamTieuChuanHelper";
 import { currencyFormat } from "../../utils/helper/HelperFunc";
-export default function ItemFood({
+import { TypeSanPhamView } from "../../redux/features/SanPhamViewSlices";
+export default function ItemSearchHome({
   item,
   onPress,
 }: {
-  item: TypeDonGia;
-  onPress: () => void;
+  item: TypeSanPhamView;
+  onPress?: () => void;
 }) {
-  const [state, setState] = useState<{
-    name?: string;
-    avatar?: string;
-    price?: number;
-    link?: string;
-    nameDonViDo?: string;
-  }>();
-
-  useEffect(() => {
-    if (item.idDoAn) {
-      DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
-        if (res.code === ResultStatusCode.success) {
-          const dt = res.result as TypeDoAn;
-          // @ts-ignore
-          setState((old) => {
-            return {
-              ...old,
-              name: dt.name,
-              avatar: dt.avartarUri,
-              price: item.unitPrice,
-            };
-          });
-        }
-      });
-    }
-    if (item.idThucPhamTieuChuan) {
-      ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
-        (res) => {
-          if (res.code === ResultStatusCode.success) {
-            const dt = res.result as TypeThucPhamTieuChuan;
-            // @ts-ignore
-            // @ts-ignore
-            setState((old) => {
-              return {
-                ...old,
-
-                avatar: dt.avartarUri,
-                name: res.result.name,
-              };
-            });
-          }
-        }
-      );
-    }
-    if (item.idDonViDo) {
-      DonViDoCrud.getDetailPublish(item.idDonViDo).then((res) => {
-        if (res.code === ResultStatusCode.success) {
-          // @ts-ignore
-          setState((old) => {
-            return {
-              ...old,
-              nameDonViDo: res.result.name,
-            };
-          });
-        }
-      });
-    }
-  }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
-
   return (
     <TouchableOpacity
       style={{
@@ -98,7 +40,7 @@ export default function ItemFood({
       onPress={onPress}
     >
       <Image
-        source={{ uri: UrlHelper.urlFile + state?.avatar }}
+        source={{ uri: UrlHelper.urlFile + item?.avartarUri }}
         resizeMode="cover"
         style={{
           width: 100,
@@ -106,7 +48,7 @@ export default function ItemFood({
         }}
       />
       <View style={{ paddingHorizontal: 10 }}>
-        <Text style={{ color: "#575757", fontSize: 16 }}>{state?.name}</Text>
+        <Text style={{ color: "#575757", fontSize: 16 }}>{item?.name}</Text>
         {/* <Text style={{ textDecorationLine: "line-through", color: "#cfcfcf" }}>
           đ{" "}
           {(item.unitPrice ? item.unitPrice * 1.5 : 0).toLocaleString("en-US")}

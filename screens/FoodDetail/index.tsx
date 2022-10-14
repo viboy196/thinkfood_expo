@@ -104,8 +104,8 @@ export default function FoodDetail({
     }
   };
   const addCart = () => {
-    if (accountDetail.id && token)
-      CartOderCrud.addItem(accountDetail.id, token, {
+    if (accountDetail?.id && token)
+      CartOderCrud.addItem(accountDetail?.id, token, {
         chon: false,
         idDonGia: item.id,
         soLuong: numCount,
@@ -170,10 +170,11 @@ export default function FoodDetail({
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
             {state?.name ? state?.name : ""}
           </Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="pricetag" size={12} color={tintColorLight} />
             <Text style={{ paddingLeft: 5 }}>Giảm {30}%</Text>
           </View>
+           */}
         </View>
         <View style={{ marginRight: 10 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
@@ -181,7 +182,7 @@ export default function FoodDetail({
             {" vnđ/"}
             {state?.nameDonViDo}
           </Text>
-          <Text
+          {/* <Text
             style={{
               textDecorationLine: "line-through",
               color: "#bebebe",
@@ -191,7 +192,7 @@ export default function FoodDetail({
             {item.unitPrice ? currencyFormat(item.unitPrice * 1.425) : "0"}
             {" vnđ/"}
             {state?.nameDonViDo}
-          </Text>
+          </Text> */}
         </View>
       </View>
       <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
