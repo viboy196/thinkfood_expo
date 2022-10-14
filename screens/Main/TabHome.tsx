@@ -50,23 +50,17 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
     });
   }, []);
 
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      console.log("hien key");
+  // useEffect(() => {
+  //   const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+  //     console.log("hien key");
 
-      setFocusTextSearch(true);
-    });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      console.log("tat key");
+  //     setFocusTextSearch(true);
+  //   });
 
-      setFocusTextSearch(false);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
+  //   return () => {
+  //     showSubscription.remove();
+  //   };
+  // }, []);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -170,6 +164,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
           >
             <Ionicons name="search" size={32} color={"#707070"} />
           </View>
+
           <TextInput
             placeholder={"Bạn muốn ăn gì ?"}
             value={searchHome}
@@ -185,138 +180,79 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               borderTopRightRadius: 10,
               borderBottomRightRadius: 10,
             }}
+            onFocus={() => {
+              navigation.navigate("SearchDonGia");
+            }}
+            // onSubmitEditing={() => {
+            //   setFocusTextSearch(false);
+            //   navigation.navigate("SearchDonGia");
+            // }}
           />
         </View>
-        {!focusTextSearch ? (
-          <>
-            <ImageBackground
-              source={require("../../assets/images//thinkfood/tf1.jpg")}
+        {/* {!focusTextSearch ? ( */}
+        <>
+          <ImageBackground
+            source={require("../../assets/images//thinkfood/tf1.jpg")}
+            resizeMode="cover"
+            style={{ width: "100%", height: 120, alignItems: "center" }}
+          >
+            <Image
+              source={require("../../assets/images/logo/thinkfoodlogo.png")}
               resizeMode="cover"
-              style={{ width: "100%", height: 120, alignItems: "center" }}
-            >
-              <Image
-                source={require("../../assets/images/logo/thinkfoodlogo.png")}
-                resizeMode="cover"
-                style={styles.logoImage}
-              />
-              <Text style={styles.logoText}>
-                {" "}
-                Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
-              </Text>
-            </ImageBackground>
-            <View style={{ width: "100%" }}>
-              <FlatList
-                data={listLoaiGiaoDich}
-                numColumns={3}
-                renderItem={({ item, index }) => (
-                  <ButtonText
-                    imageSource={{ uri: UrlHelper.urlFile + item.avartarUri }}
-                    text={item.name}
-                    colorText={"#424141"}
-                    size={48}
-                    sizeText={16}
-                    width={120}
-                    height={150}
-                    onPress={() => {
-                      navigation.navigate("LoaiGiaoDich", { data: item });
-                    }}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-            <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
-
-            <View style={{ width: "100%" }}>
-              <View style={{ paddingLeft: 10 }}>
-                <Text
-                  style={{
-                    color: tintColorLight,
-                    fontSize: 18,
-                    fontWeight: "bold",
+              style={styles.logoImage}
+            />
+            <Text style={styles.logoText}>
+              {" "}
+              Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
+            </Text>
+          </ImageBackground>
+          <View style={{ width: "100%" }}>
+            <FlatList
+              data={listLoaiGiaoDich}
+              numColumns={3}
+              renderItem={({ item, index }) => (
+                <ButtonText
+                  imageSource={{ uri: UrlHelper.urlFile + item.avartarUri }}
+                  text={item.name}
+                  colorText={"#424141"}
+                  size={48}
+                  sizeText={16}
+                  width={120}
+                  height={150}
+                  onPress={() => {
+                    navigation.navigate("LoaiGiaoDich", { data: item });
                   }}
-                >
-                  Món ăn{" "}
-                </Text>
-                <View style={{ width: "100%" }}>
-                  <View style={{ alignItems: "flex-end", paddingRight: 10 }}>
-                    <Text>Xem thêm</Text>
-                  </View>
-                  <CartLoaiMonAn nav={nav} />
-                  {/* 
-              <View style={{ flexDirection: "row" }}>
-                <View style={{ flex: 1 }}>
-                  <ButtonImageShow
-                    imageSource={require("../../assets/images/thinkfood/item/im1.jpg")}
-                    text={"Bánh mì đen"}
-                    colorText={"#424141"}
-                    sizeText={16}
-                    width={100}
-                    height={120}
-                  />
-                </View>
+                />
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
 
-                <View style={{ flex: 1 }}>
-                  <ButtonImageShow
-                    imageSource={require("../../assets/images/thinkfood/item/im2.jpg")}
-                    text={"Trứng cá hôi"}
-                    colorText={"#424141"}
-                    sizeText={16}
-                    width={100}
-                    height={120}
-                  />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <ButtonImageShow
-                    imageSource={require("../../assets/images/thinkfood/item/im3.jpg")}
-                    text={"THỊT NƯỚNG KIỂU NGA"}
-                    colorText={"#424141"}
-                    sizeText={16}
-                    width={100}
-                    height={140}
-                  />
-                </View>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <View style={{ flex: 1 }}>
-                  <ButtonImageShow
-                    imageSource={require("../../assets/images/thinkfood/item/im4.jpg")}
-                    text={"Gà Quay"}
-                    colorText={"#424141"}
-                    sizeText={16}
-                    width={100}
-                    height={120}
-                  />
-                </View>
+          <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
 
-                <View style={{ flex: 1 }}>
-                  <ButtonImageShow
-                    imageSource={require("../../assets/images/thinkfood/item/im5.jpg")}
-                    text={"Bánh mì"}
-                    colorText={"#424141"}
-                    sizeText={16}
-                    width={100}
-                    height={120}
-                  />
+          <View style={{ width: "100%" }}>
+            <View style={{ paddingLeft: 10 }}>
+              <Text
+                style={{
+                  color: tintColorLight,
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                Món ăn{" "}
+              </Text>
+              <View style={{ width: "100%" }}>
+                <View style={{ alignItems: "flex-end", paddingRight: 10 }}>
+                  <Text>Xem thêm</Text>
                 </View>
-                <View style={{ flex: 1 }}>
-                  <ButtonImageShow
-                    imageSource={require("../../assets/images/thinkfood/item/im6.jpg")}
-                    text={"Bò sốt vang"}
-                    colorText={"#424141"}
-                    sizeText={16}
-                    width={100}
-                    height={140}
-                  />
-                </View>
-              </View> */}
-                </View>
+                <CartLoaiMonAn nav={nav} />
               </View>
             </View>
-          </>
-        ) : (
-          <SearchHome />
-        )}
+          </View>
+        </>
+        {/* // ) : (
+        //   <SearchHome nav={nav} />
+        // )} */}
       </View>
     </ScrollView>
   );

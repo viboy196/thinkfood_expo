@@ -14,12 +14,12 @@ import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { TypeDoAn } from "../../utils/helper/DoAnHelper";
 import { TypeThucPhamTieuChuan } from "../../utils/helper/ThucPhamTieuChuanHelper";
 import { currencyFormat } from "../../utils/helper/HelperFunc";
-import { TypeSanPhamView } from "../../redux/features/SanPhamViewSlices";
+import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
 export default function ItemSearchHome({
   item,
   onPress,
 }: {
-  item: TypeSanPhamView;
+  item: TypeDonGiaView;
   onPress?: () => void;
 }) {
   return (
@@ -49,10 +49,6 @@ export default function ItemSearchHome({
       />
       <View style={{ paddingHorizontal: 10 }}>
         <Text style={{ color: "#575757", fontSize: 16 }}>{item?.name}</Text>
-        {/* <Text style={{ textDecorationLine: "line-through", color: "#cfcfcf" }}>
-          đ{" "}
-          {(item.unitPrice ? item.unitPrice * 1.5 : 0).toLocaleString("en-US")}
-        </Text> */}
 
         <Text style={{ color: "#f52132", fontSize: 20, fontWeight: "bold" }}>
           đ {item.unitPrice ? currencyFormat(item.unitPrice) : 0}

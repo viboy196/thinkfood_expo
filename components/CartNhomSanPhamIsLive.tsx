@@ -24,18 +24,14 @@ export default function CartNhomSanPhamIsLive(props: {
 
   return (
     <>
-      {listData && (
-        <FlatList
-          data={listData}
-          renderItem={({ item }) => (
-            <NhomSanPhamIsLiveItem
-              nav={props.nav}
-              item={item}
-              key={`ItemFoodType_${item.id}`}
-            />
-          )}
-        />
-      )}
+      {listData &&
+        listData.map((item) => (
+          <NhomSanPhamIsLiveItem
+            nav={props.nav}
+            item={item}
+            key={`ItemFoodType_${item.id}`}
+          />
+        ))}
     </>
   );
 }

@@ -15,71 +15,13 @@ import { TypeDoAn } from "../../utils/helper/DoAnHelper";
 import { TypeThucPhamTieuChuan } from "../../utils/helper/ThucPhamTieuChuanHelper";
 import { currencyFormat } from "../../utils/helper/HelperFunc";
 import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
-export default function ItemFood({
+export default function ItemSearchHome({
   item,
   onPress,
 }: {
   item: TypeDonGiaView;
-  onPress: () => void;
+  onPress?: () => void;
 }) {
-  // const [state, setState] = useState<{
-  //   name?: string;
-  //   avatar?: string;
-  //   price?: number;
-  //   nameDonViDo?: string;
-  // }>();
-
-  // useEffect(() => {
-  //   if (item.idDoAn) {
-  //     DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
-  //       if (res.code === ResultStatusCode.success) {
-  //         const dt = res.result as TypeDoAn;
-  //         // @ts-ignore
-  //         setState((old) => {
-  //           return {
-  //             ...old,
-  //             name: dt.name,
-  //             avatar: dt.avartarUri,
-  //             price: item.unitPrice,
-  //           };
-  //         });
-  //       }
-  //     });
-  //   }
-  //   if (item.idThucPhamTieuChuan) {
-  //     ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
-  //       (res) => {
-  //         if (res.code === ResultStatusCode.success) {
-  //           const dt = res.result as TypeThucPhamTieuChuan;
-  //           // @ts-ignore
-  //           // @ts-ignore
-  //           setState((old) => {
-  //             return {
-  //               ...old,
-
-  //               avatar: dt.avartarUri,
-  //               name: res.result.name,
-  //             };
-  //           });
-  //         }
-  //       }
-  //     );
-  //   }
-  //   if (item.idDonViDo) {
-  //     DonViDoCrud.getDetailPublish(item.idDonViDo).then((res) => {
-  //       if (res.code === ResultStatusCode.success) {
-  //         // @ts-ignore
-  //         setState((old) => {
-  //           return {
-  //             ...old,
-  //             nameDonViDo: res.result.name,
-  //           };
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
-
   return (
     <TouchableOpacity
       style={{

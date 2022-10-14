@@ -31,6 +31,7 @@ import ListFood from "../screens/ListFood";
 import FoodDetail from "../screens/FoodDetail";
 import FoodView from "../screens/FoodView";
 import CartView from "../screens/Cart";
+import SearchFoodView from "../screens/SearchFood";
 
 export default function Navigation({
   colorScheme,
@@ -93,6 +94,12 @@ function RootNavigator() {
         <Stack.Screen
           name="Cart"
           component={CartView}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="SearchDonGia"
+          component={SearchFoodView}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -24,6 +24,18 @@ import { ResultStatusCode } from "../../utils/api/apiTypes";
 import { TypeAccount } from "../../utils/helper/AccountHelper";
 import CartOderCrud from "../../utils/api/CartOderCrud";
 import { setCartOderState } from "../../redux/features/CartOderSlices";
+import DonGiaCrud from "../../utils/api/DonGiaCrud";
+import { setDonGiaState } from "../../redux/features/DonGiaOderSlices";
+import DoAnCrud from "../../utils/api/DoAnCrud";
+import { setDoAnState } from "../../redux/features/DoAnSlices";
+import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
+import { setThucPhamTieuChuanState } from "../../redux/features/ThucPhamTieuChuanSlices";
+import DonViDoCrud from "../../utils/api/DonViDoCrud";
+import { setDonViDoState } from "../../redux/features/DonViDoSlices";
+import {
+  setSanPhamViewState,
+  TypeDonGiaView,
+} from "../../redux/features/SanPhamViewSlices";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -31,6 +43,13 @@ export default function MainScreen() {
   const colorScheme = useColorScheme();
   const dispatch = useAppDispatch();
   const { token, accountDetail } = useAppSelector((s) => s.auth);
+  const { listDonGia } = useAppSelector((s) => s.donGia);
+
+  const { listDoAn } = useAppSelector((s) => s.doAn);
+
+  const { listThucPhamTieuChuan } = useAppSelector((s) => s.thucPhamTieuChuan);
+
+  const { listDonViDo } = useAppSelector((s) => s.donViDo);
   useEffect(() => {
     if (token) {
       ApiRequest.GetDetailUser(token)
@@ -67,6 +86,90 @@ export default function MainScreen() {
         );
     }
   }, []);
+
+  useEffect(() => {
+    if (listDonGia === undefined && token) {
+      DonGiaCrud.GetAll(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          dispatch(setDonGiaState({ listDonGia: res.result }));
+        }
+      });
+    }
+  }, [listDonGia, token]);
+
+  useEffect(() => {
+    if (listDoAn === undefined && token) {
+      DoAnCrud.GetAll(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          dispatch(setDoAnState({ listDoAn: res.result }));
+        }
+      });
+    }
+  }, [listDoAn, token]);
+
+  useEffect(() => {
+    if (listThucPhamTieuChuan === undefined && token) {
+      ThucPhamTieuChuanCrud.GetAll(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          dispatch(
+            setThucPhamTieuChuanState({ listThucPhamTieuChuan: res.result })
+          );
+        }
+      });
+    }
+  }, [listThucPhamTieuChuan, token]);
+
+  useEffect(() => {
+    if (listDonViDo === undefined && token) {
+      DonViDoCrud.GetAll(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          dispatch(setDonViDoState({ listDonViDo: res.result }));
+        }
+      });
+    }
+  }, [listDonViDo, token]);
+
+  useEffect(() => {
+    if (listDonGia && listDoAn && listThucPhamTieuChuan && listDonViDo) {
+      let listSanPhamViewItem: TypeDonGiaView[] = [];
+      listDonGia.forEach((dongiaItem) => {
+        let sanPhamViewItem: TypeDonGiaView = { ...dongiaItem };
+        if (sanPhamViewItem.idDoAn) {
+          let _doAn = listDoAn.find((x) => x.id === sanPhamViewItem.idDoAn);
+          if (_doAn) {
+            sanPhamViewItem.avartarUri = _doAn.avartarUri;
+            sanPhamViewItem.listMediaUri = _doAn.listMediaUri;
+            sanPhamViewItem.name = _doAn.name;
+            sanPhamViewItem.info = _doAn.info;
+          }
+        }
+        if (sanPhamViewItem.idThucPhamTieuChuan) {
+          let _thucPhamTieuChuan = listThucPhamTieuChuan.find(
+            (x) => x.id === sanPhamViewItem.idThucPhamTieuChuan
+          );
+          if (_thucPhamTieuChuan) {
+            sanPhamViewItem.avartarUri = _thucPhamTieuChuan.avartarUri;
+            sanPhamViewItem.listMediaUri = _thucPhamTieuChuan.listMediaUri;
+            sanPhamViewItem.name = _thucPhamTieuChuan.name;
+            sanPhamViewItem.info = _thucPhamTieuChuan.info;
+          }
+        }
+
+        if (sanPhamViewItem.idDonViDo) {
+          let _donViDo = listDonViDo.find(
+            (x) => x.id === sanPhamViewItem.idDonViDo
+          );
+          if (_donViDo) {
+            sanPhamViewItem.nameDonViDo = _donViDo.name;
+          }
+        }
+        listSanPhamViewItem.push(sanPhamViewItem);
+      });
+      if (listSanPhamViewItem.length > 0) {
+        dispatch(setSanPhamViewState({ listSanPhamView: listSanPhamViewItem }));
+      }
+    }
+  }, [listDonGia, listDoAn, listThucPhamTieuChuan, listDonViDo]);
   return (
     <BottomTab.Navigator
       initialRouteName="TabHome"

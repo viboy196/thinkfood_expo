@@ -9,23 +9,25 @@ import { goBackNav } from "../../utils/helper/navigationHelper";
 import DonGiaCrud from "../../utils/api/DonGiaCrud";
 import { TypeDonGia } from "../../utils/helper/DonGiaHelper";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
+import { useAppSelector } from "../../redux/store/hooks";
 export default function ListFood({
   navigation,
   route,
 }: RootStackScreenProps<"ListDonGia">) {
-  const [listDonGia, setListDonGia] = useState<Array<TypeDonGia>>();
+  const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
+  const [listDonGia, setListDonGia] = useState<Array<TypeDonGiaView>>();
   useEffect(() => {
     console.log("vao day");
-
-    if (route.params.listIdDonGia)
-      DonGiaCrud.getListPublishByListId(route.params.listIdDonGia).then(
-        (res) => {
-          if (res.code === ResultStatusCode.success) {
-            setListDonGia(res.result);
-          }
-        }
-      );
-  }, [route.params.listIdDonGia]);
+    let _listDonGia: TypeDonGiaView[] = [];
+    route.params.listIdDonGia.forEach((idDOnGia) => {
+      const item = listSanPhamView.find((x) => x.id === idDOnGia);
+      if (item) {
+        _listDonGia.push(item);
+      }
+    });
+    setListDonGia(_listDonGia);
+  }, [route.params.listIdDonGia, listSanPhamView]);
   return (
     <View>
       <TitleCompenents

@@ -10,6 +10,8 @@ import { ResultStatusCode } from "../utils/api/apiTypes";
 import ButtonImageShow from "./items/ButtonImageShow";
 import DonGiaItem from "./items/DonGiaItem";
 import { RootTabScreenProps } from "../navigation/types";
+import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
+import { useAppSelector } from "../redux/store/hooks";
 
 export default function NhomSanPhamIsLiveItem({
   item,
@@ -22,15 +24,21 @@ export default function NhomSanPhamIsLiveItem({
     ? genListIdDonGia(item.listItemDonGia)
     : undefined;
 
-  const [listDonGia, setListDonGia] = useState<Array<TypeDonGia>>();
+  const [listDonGia, setListDonGia] = useState<Array<TypeDonGiaView>>();
+  const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
+
   useEffect(() => {
-    if (_listIdDonGia)
-      DonGiaCrud.getListPublishByListId(_listIdDonGia).then((res) => {
-        if (res.code === ResultStatusCode.success) {
-          setListDonGia(res.result);
+    if (_listIdDonGia && listSanPhamView) {
+      let _listDonGia: TypeDonGiaView[] = [];
+      _listIdDonGia.forEach((idDOnGia) => {
+        const item = listSanPhamView.find((x) => x.id === idDOnGia);
+        if (item) {
+          _listDonGia.push(item);
         }
       });
-  }, []);
+      setListDonGia(_listDonGia);
+    }
+  }, [item.listItemDonGia, listSanPhamView]);
 
   return (
     <View
@@ -60,7 +68,7 @@ export default function NhomSanPhamIsLiveItem({
       <FlatList
         data={listDonGia}
         numColumns={3}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <DonGiaItem
             nav={nav}
             item={item}
@@ -71,7 +79,7 @@ export default function NhomSanPhamIsLiveItem({
             height={150}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => `${item.id}${index}`}
       />
     </View>
   );

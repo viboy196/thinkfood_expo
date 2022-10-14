@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
 import { TypeDonGia } from "../utils/helper/DonGiaHelper";
 import { TypeLoaiGiaoDich } from "../utils/helper/LoaiGiaoDichHelper";
 import { TypeMonAn } from "../utils/helper/MonAnHelper";
@@ -24,9 +25,11 @@ export type RootStackParamList = {
   Login: undefined;
   LoaiGiaoDich: { data: TypeLoaiGiaoDich };
   ListDonGia: { listIdDonGia?: Array<string> };
-  FoodDeTail: TypeDonGia;
+  FoodDeTail: TypeDonGiaView;
   FoodView: TypeMonAn;
   Cart: undefined;
+
+  SearchDonGia: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

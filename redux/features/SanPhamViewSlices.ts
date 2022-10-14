@@ -5,7 +5,7 @@ import ApiRequest from '../../utils/api/Main/ApiRequest';
 import { ResultStatusCode } from '../../utils/api/apiTypes';
 import { TypeDonGia } from '../../utils/helper/DonGiaHelper';
 
-export type TypeSanPhamView = TypeDonGia & { name?: string;
+export type TypeDonGiaView = TypeDonGia & { name?: string;
   avatarUri?: string;
   nameDonViDo?: string;
   listMediaUri?: string[];
@@ -15,14 +15,14 @@ const initialState = {
   loading: 'idle',
   listSanPhamView : undefined
 
-} as  {loading?: 'idle' | 'pending' | 'succeeded' | 'failed'; listSanPhamView? : Array<TypeSanPhamView>};
+} as  {loading?: 'idle' | 'pending' | 'succeeded' | 'failed'; listSanPhamView? : Array<TypeDonGiaView>};
 
 
 const SanPhamViewSlice = createSlice({
   name: 'SanPhamView',
   initialState,
   reducers: {
-    addSanPhamViewItem(state, action: PayloadAction<{item: TypeSanPhamView}>) {
+    addSanPhamViewItem(state, action: PayloadAction<{item: TypeDonGiaView}>) {
       if(state.listSanPhamView){
 
         state = {
@@ -37,7 +37,7 @@ const SanPhamViewSlice = createSlice({
     }
       return state;
     },
-    setSanPhamViewState(state, action: PayloadAction<{listSanPhamView: Array<TypeSanPhamView>}>) {
+    setSanPhamViewState(state, action: PayloadAction<{listSanPhamView: Array<TypeDonGiaView>}>) {
         state = {
             ...state,
             listSanPhamView: action.payload.listSanPhamView
@@ -47,7 +47,7 @@ const SanPhamViewSlice = createSlice({
       }
      
     ,
-    updateSanPhamViewItem(state, action: PayloadAction<{input: TypeSanPhamView}>) {
+    updateSanPhamViewItem(state, action: PayloadAction<{input: TypeDonGiaView}>) {
       if( state.listSanPhamView === undefined) return {...state , loading:'failed'};
 
         const index = state.listSanPhamView.findIndex(z => z.id === action.payload.input.id);
