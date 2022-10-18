@@ -21,6 +21,27 @@ export default class ApiRequest {
     console.log(res.data);
     return res.data as ExcuteResult;
   };
+  
+  static createNewPasswordTemporary = async (input: {
+    id: string;
+    newPassword: string;
+  }): Promise<ExcuteResult> => {
+    const url = '/api/Account/create-new-password-temporary?v=1.0';
+    console.log('createNewPasswordTemporary ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        accept: 'text/plain',
+
+        "Content-Type" : "application/json"
+      },
+    };
+    
+    const res = await axios.post(url, input , config);
+    console.log(res.data);
+    return res.data as ExcuteResult;
+  };
+
   static Register = async (input: {
     phone: string;
     password: string;
@@ -43,6 +64,24 @@ export default class ApiRequest {
     console.log(res.data);
     return res.data as ExcuteResult;
   };
+  
+  static getAccountByPhone = async (input: {
+    phone: string;
+  }): Promise<ExcuteResult> => {
+    const url = `/api/Account/getAccountByPhone?phone=${input.phone}&v=1.0`;
+    console.log('getAccountByPhone url ', url);
+    const config: AxiosRequestConfig = {
+      headers: {
+        accept: 'text/plain',
+
+        "Content-Type" : "application/json"
+      },
+    };
+
+    const res = await axios.get(url , config);
+    return res.data as ExcuteResult;
+  };
+
   static SendOtp = async (input: {
     phone: string;
   }): Promise<ExcuteResult> => {

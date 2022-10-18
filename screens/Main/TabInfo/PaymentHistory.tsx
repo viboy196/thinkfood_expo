@@ -24,7 +24,7 @@ export default function PaymentHistory() {
         state.map((item) => (
           <PaymentHistoryItem
             item={item}
-            key={"PaymentHistoryItem" + item.id}
+            key={"PaymentHistoryItem" + item?.id}
           />
         ))}
     </View>

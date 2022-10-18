@@ -13,7 +13,9 @@ export  const genListIdDonGia = (listItem: ItemDonGiaLive[]): string[] => {
   };
 
   export const  currencyFormat = (num:number) :string => {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    if( typeof num === 'number' )
+      return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    return '';
  }
 
 

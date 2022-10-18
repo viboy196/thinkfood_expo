@@ -1,16 +1,39 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TypeOder } from "../../../utils/helper/OderHelper";
 import { useAppSelector } from "../../../redux/store/hooks";
+import { UrlHelper } from "../../../utils/helper/UrlHelper";
+import { currencyFormat } from "../../../utils/helper/HelperFunc";
 
 export default function PaymentHistoryItem(props: { item: TypeOder }) {
-    const {} = useAppSelector(s => s.)
+  const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
+  const sanPhamView = listSanPhamView.find(
+    (x) => x.id === props.item?.idDonGia
+  );
+  const [priceSum, setPriceSum] = useState<number>(
+    props.item?.unitPrice * props.item?.soLuong
+  );
+  useEffect(() => {
+    if (props.item?.shipPrice) {
+      console.log(typeof props.item?.shipPrice);
+
+      setPriceSum((old) => {
+        return Number(old) + Number(props.item?.shipPrice);
+      });
+    }
+  }, [props.item]);
+
   return (
     <View
       style={{
         backgroundColor: "#fff",
         padding: 10,
         marginVertical: 5,
+        shadowColor: "#000",
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
+        elevation: 5,
       }}
     >
       <View style={{ flexDirection: "row", paddingVertical: 10 }}>
@@ -26,26 +49,45 @@ export default function PaymentHistoryItem(props: { item: TypeOder }) {
           borderBottomColor: "#aeaeae",
         }}
       >
-        <View style={{ flex: 1 }}>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
           <Image
-            source={require("../../../assets/images/logo/thinkfoodlogo.png")}
+            source={
+              sanPhamView.avartarUri
+                ? { uri: UrlHelper.urlFile + sanPhamView.avartarUri }
+                : require("../../../assets/images/logo/thinkfoodlogo.png")
+            }
             style={{ width: 40, height: 40 }}
           />
         </View>
 
-        <View style={{ flex: 4 }}>
-          <Text>Cá kho tộ</Text>
+        <View style={{ flex: 4, justifyContent: "center" }}>
+          <Text style={{ paddingTop: 10 }}>{sanPhamView.name}</Text>
           <View style={{ flexDirection: "row" }}>
-            <Text>Thơm Ngon tới giọt cuối cùng</Text>
+            <View>
+              <Text>{sanPhamView.info}</Text>
+            </View>
+
             <View style={{ flex: 1 }} />
-            <Text>x2</Text>
+            <View>
+              <Text>vnđ {currencyFormat(props.item?.unitPrice)}</Text>
+              <Text style={{ textAlign: "right" }}>x{props.item?.soLuong}</Text>
+            </View>
           </View>
         </View>
       </View>
+      {props.item?.shipPrice && (
+        <View style={{ flexDirection: "row", paddingTop: 10 }}>
+          <Text>Phí ship</Text>
+          <View style={{ flex: 1 }} />
+          <Text>vnđ {currencyFormat(Number(props.item?.shipPrice))}</Text>
+        </View>
+      )}
       <View style={{ flexDirection: "row", paddingTop: 10 }}>
-        <Text>2 sản phẩm</Text>
+        <Text>{props.item?.soLuong} sản phẩm</Text>
         <View style={{ flex: 1 }} />
-        <Text>Thành tiền : đ 44.500</Text>
+        <Text>Thành tiền : vnđ {currencyFormat(priceSum)}</Text>
       </View>
     </View>
   );

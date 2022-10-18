@@ -21,6 +21,13 @@ export function validatePassword(name: string | undefined): boolean {
   }
  return name.length >=6;
 }
+export function validateOTP(text: string | undefined): boolean {
+  if (text === undefined) {
+    return true;
+  }
+ return  /([0-9]{6})\b/.test(text);
+}
+
 
 export function validatePasswordReDo(
   pass: string | undefined,

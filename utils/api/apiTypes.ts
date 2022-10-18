@@ -19,5 +19,6 @@ export type InfoResult = {
 
 
 export enum ResultStatusCode {
-  success = '00'
+  success = '00',
+  create = '04',
 }

@@ -5,6 +5,7 @@ import { TypeGoiTieuDung } from "../../../utils/helper/GoiTieuDungHelper";
 import GoiTieuDungCrud from "../../../utils/api/GoiTieuDungCrud";
 import { ResultStatusCode } from "../../../utils/api/apiTypes";
 import { UrlHelper } from "../../../utils/helper/UrlHelper";
+import { currencyFormat } from "../../../utils/helper/HelperFunc";
 
 export default function ServicePackItem(props: {
   item: TypeKhachHangGoiTieuDung;
@@ -20,7 +21,18 @@ export default function ServicePackItem(props: {
     }
   }, [props.item.idGoiTieuDung]);
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        padding: 10,
+        backgroundColor: "#fff",
+        shadowColor: "#000",
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
+        elevation: 5,
+      }}
+    >
       <View style={{ flex: 4 }}>
         <Image
           source={
@@ -28,14 +40,14 @@ export default function ServicePackItem(props: {
               ? { uri: UrlHelper.urlFile + goiTieuDung.avartarUri }
               : require("../../../assets/images/logo/thinkfoodlogo.png")
           }
-          style={{ width: 40, height: 40 }}
+          style={{ width: 80, height: 60 }}
         />
       </View>
 
-      <View style={{ flex: 6 }}>
-        <Text>{goiTieuDung?.name}</Text>
+      <View style={{ flex: 6, justifyContent: "center" }}>
+        <Text>Gói : {goiTieuDung?.name}</Text>
 
-        <Text>{`số dư :${props.item.price}`}</Text>
+        <Text>{`số dư :${currencyFormat(Number(props.item.price))}`}</Text>
       </View>
     </View>
   );
