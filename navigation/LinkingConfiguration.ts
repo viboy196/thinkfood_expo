@@ -45,7 +45,10 @@ const linking: LinkingOptions<RootStackParamList> = {
          
         },
       },
-      FoodView:'FoodView'
+      FoodView:'FoodView',
+      PaymentHistory:'PaymentHistory',
+      PersoInfo:'PersoInfo',
+      ServicePack:'ServicePack'
     },
   },
 };

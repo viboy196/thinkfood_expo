@@ -34,6 +34,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logOut(state) {
+      console.log('logout');
       state = {
         ...state,
         token: undefined,
@@ -52,10 +53,10 @@ const authSlice = createSlice({
     },
     setStateAuth(state , action: PayloadAction<{input: UsersState}>){
       console.log('setStateAuth' , action.payload.input);
-      
       state = {
         ...state , 
-        accountDetail:action.payload.input.accountDetail
+        accountDetail:action.payload.input.accountDetail,
+        token: action.payload.input.token ? action.payload.input.token : undefined 
       }
       return state;
     },

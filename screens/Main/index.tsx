@@ -36,6 +36,7 @@ import {
   setSanPhamViewState,
   TypeDonGiaView,
 } from "../../redux/features/SanPhamViewSlices";
+import TabInfo from "./TabInfo";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -59,7 +60,11 @@ export default function MainScreen() {
             console.log(dt);
             dispatch(
               setStateAuth({
-                input: { loading: "succeeded", accountDetail: res.result },
+                input: {
+                  loading: "succeeded",
+                  accountDetail: res.result,
+                  token: token,
+                },
               })
             );
           }
@@ -68,24 +73,21 @@ export default function MainScreen() {
           dispatch(logOut());
         });
     }
-  }, []);
+  }, [token]);
   useEffect(() => {
     if (token && accountDetail?.id) {
-      if (accountDetail?.id)
-        CartOderCrud.detailByIdKhachHang(accountDetail?.id, token).then(
-          (res) => {
-            if (res.code === ResultStatusCode.success)
-              dispatch(
-                setCartOderState({
-                  id: res.result.id,
-                  listCartItem: res.result.listCart,
-                  idKhachHang: res.result.idKhachHang,
-                })
-              );
-          }
-        );
+      CartOderCrud.detailByIdKhachHang(accountDetail?.id, token).then((res) => {
+        if (res.code === ResultStatusCode.success)
+          dispatch(
+            setCartOderState({
+              id: res.result.id,
+              listCartItem: res.result.listCart,
+              idKhachHang: res.result.idKhachHang,
+            })
+          );
+      });
     }
-  }, []);
+  }, [token, accountDetail?.id]);
 
   useEffect(() => {
     if (listDonGia === undefined && token) {
@@ -196,7 +198,7 @@ export default function MainScreen() {
           ),
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="TabNetwork"
         component={TabNetwork}
         options={{
@@ -248,16 +250,18 @@ export default function MainScreen() {
             />
           ),
         }}
-      />
+      /> */}
       <BottomTab.Screen
         name="TabInfo"
-        component={TabNetwork}
+        component={TabInfo}
         options={{
           title: "Thông tin người dùng",
           headerShown: true,
           header: () => (
             <HeaderShow
-              name="Cá nhân"
+              name={
+                accountDetail?.fullName ? accountDetail.fullName : "Cá nhân"
+              }
               logout={() => {
                 dispatch(logOut());
               }}

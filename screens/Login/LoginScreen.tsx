@@ -18,24 +18,23 @@ import { tintColorLight } from "../../constants/Colors";
 import Layout from "../../constants/Layout";
 import { RootStackScreenProps } from "../../navigation/types";
 import {
-  loginAsync,
-  logOut,
+  setStateAuth,
   setStateAuthRemember,
 } from "../../redux/features/auth/authSlices";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { validatePassword, validatePhoneNumber } from "../../utils/validate";
 
 export default function Login({}: RootStackScreenProps<"Login">) {
-  const { loading, errorMessage, checkedAuth, userName, password } =
-    useAppSelector((state) => state.auth);
-  console.log(errorMessage);
+  const { checkedAuth, userName, password } = useAppSelector(
+    (state) => state.auth
+  );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const [textPhone, setTextPhone] = useState<string>();
   const [textPassword, setTextPassword] = useState<string>();
-  const [checklogin, setCheckLogin] = useState<number>(0);
-  console.log(checklogin);
 
   const [checked, setChecked] = React.useState(false);
   useEffect(() => {
@@ -46,16 +45,53 @@ export default function Login({}: RootStackScreenProps<"Login">) {
     }
   }, [checkedAuth, password, userName]);
 
-  if (errorMessage && loading !== "idle") {
-    Alert.alert("lỗi", errorMessage);
-    dispatch(logOut());
-  }
+  const OnPressLogin = () => {
+    if (
+      textPhone &&
+      textPassword &&
+      validatePhoneNumber(textPhone) &&
+      validatePassword(textPassword)
+    ) {
+      setLoading(true);
+      dispatch(
+        setStateAuthRemember({
+          input: {
+            loading: "idle",
+            checkedAuth: checked,
+            userName: textPhone,
+            password: textPassword,
+          },
+        })
+      );
+      ApiRequest.LoginApi({ phone: textPhone, password: textPassword })
+        .then((res) => {
+          if (res.code === ResultStatusCode.success) {
+            setLoading(false);
+
+            dispatch(
+              setStateAuth({
+                input: { loading: "succeeded", token: res.result },
+              })
+            );
+          } else {
+            Alert.alert("Loi", res.errorMessage);
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.log(error);
+          Alert.alert("Loi", error);
+        });
+    } else {
+      Alert.alert("thông tin sai");
+    }
+  };
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <Spinner
-          visible={loading === "pending" && checklogin > 0}
+          visible={loading}
           textContent={"Đăng Nhập ..."}
           textStyle={styles.spinnerTextStyle}
         />
@@ -128,35 +164,7 @@ export default function Login({}: RootStackScreenProps<"Login">) {
             <View style={styles.btnLoginViewBorder}>
               <TouchableOpacity
                 style={styles.btnLoginView}
-                onPress={() => {
-                  console.log("vao day");
-                  setCheckLogin((old) => {
-                    return old++;
-                  });
-                  if (
-                    textPhone &&
-                    textPassword &&
-                    validatePhoneNumber(textPhone) &&
-                    validatePassword(textPassword)
-                  ) {
-                    dispatch(
-                      setStateAuthRemember({
-                        input: {
-                          loading: "idle",
-                          checkedAuth: checked,
-                          userName: textPhone,
-                          password: textPassword,
-                        },
-                      })
-                    );
-
-                    dispatch(
-                      loginAsync({ phone: textPhone, password: textPassword })
-                    );
-                  } else {
-                    Alert.alert("thông tin sai");
-                  }
-                }}
+                onPress={OnPressLogin}
               >
                 <Text style={styles.btnLoginText}>Đăng nhập</Text>
               </TouchableOpacity>

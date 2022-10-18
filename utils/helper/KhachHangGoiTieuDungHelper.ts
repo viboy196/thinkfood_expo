@@ -5,6 +5,7 @@ export type TypeKhachHangGoiTieuDung = {
     idGoiTieuDung?: string,
     active?: boolean,
     status?:string,
+    price?:number,
 
   }
 

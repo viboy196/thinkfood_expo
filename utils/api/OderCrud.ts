@@ -28,6 +28,25 @@ export default class OderCrud {
     return res.data as ExcuteResult;
   };
   
+  static OderListByAuth = async (token :string): Promise<ExcuteResult> => {
+    const tag = `OderListByAuth ${OderTag}`;
+    const url = '/api/Oder/OderListByAuth?v=1.0';
+     console.log(`${tag} url :`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+  
   static GetAllPublish = async (): Promise<ExcuteResult> => {
     const tag = `GetAllPublish ${OderTag}`;
     const url = '/api/Oder/all?v=1.0';

@@ -22,7 +22,7 @@ import {
   RootTabScreenProps,
 } from "./types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import MainScreen from "../screens/Main";
+import MainScreen, { HeaderShow } from "../screens/Main";
 import LoginScreen from "../screens/Login/LoginScreen";
 
 import { useAppSelector } from "../redux/store/hooks";
@@ -32,6 +32,9 @@ import FoodDetail from "../screens/FoodDetail";
 import FoodView from "../screens/FoodView";
 import CartView from "../screens/Cart";
 import SearchFoodView from "../screens/SearchFood";
+import PaymentHistory from "../screens/Main/TabInfo/PaymentHistory";
+import PersoInfo from "../screens/Main/TabInfo/PersoInfo";
+import ServicePack from "../screens/Main/TabInfo/ServicePack";
 
 export default function Navigation({
   colorScheme,
@@ -101,6 +104,57 @@ function RootNavigator() {
           name="SearchDonGia"
           component={SearchFoodView}
           options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="PaymentHistory"
+          component={PaymentHistory}
+          options={{
+            headerShown: true,
+            header: () => (
+              <HeaderShow
+                name={
+                  auth.accountDetail?.fullName
+                    ? auth.accountDetail.fullName
+                    : "Lịch sử  thanh toán"
+                }
+              />
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="PersoInfo"
+          component={PersoInfo}
+          options={{
+            headerShown: true,
+            header: () => (
+              <HeaderShow
+                name={
+                  auth.accountDetail?.fullName
+                    ? auth.accountDetail.fullName
+                    : "Thông tin cá nhân"
+                }
+              />
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="ServicePack"
+          component={ServicePack}
+          options={{
+            headerShown: true,
+            header: () => (
+              <HeaderShow
+                name={
+                  auth.accountDetail?.fullName
+                    ? auth.accountDetail.fullName
+                    : "Gói dịch vụ"
+                }
+              />
+            ),
+          }}
         />
       </Stack.Navigator>
     );

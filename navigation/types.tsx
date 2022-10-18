@@ -30,6 +30,11 @@ export type RootStackParamList = {
   Cart: undefined;
 
   SearchDonGia: undefined;
+
+  //info user
+  PaymentHistory: undefined;
+  PersoInfo: undefined;
+  ServicePack: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
