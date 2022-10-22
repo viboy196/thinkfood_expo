@@ -12,6 +12,7 @@ import DonGiaItem from "./items/DonGiaItem";
 import { RootTabScreenProps } from "../navigation/types";
 import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
 import { useAppSelector } from "../redux/store/hooks";
+import Textblink from "./Textblink";
 
 export default function NhomSanPhamIsLiveItem({
   item,
@@ -62,7 +63,20 @@ export default function NhomSanPhamIsLiveItem({
         </Text>
         <View style={{ flex: 1 }} />
 
-        <Text style={{ color: "tomato", fontWeight: "700" }}> • Đang bán</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Textblink
+            style={{ color: "red", fontWeight: "700", fontSize: 14, left: -40 }}
+            text="• Đang bán"
+          />
+
+          {/* <Text style={{ color: "tomato", fontWeight: "700" }}> Đang bán</Text> */}
+        </View>
       </View>
 
       <FlatList

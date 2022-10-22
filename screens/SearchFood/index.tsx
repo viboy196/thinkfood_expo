@@ -14,13 +14,13 @@ import {
   setSanPhamViewState,
   TypeDonGiaView,
 } from "../../redux/features/SanPhamViewSlices";
-import ItemSearchHome from "./Item";
 import { RootStackScreenProps } from "../../navigation/types";
 import TitleCompenents1 from "../../components/TitleCompenents1";
 import { goBackNav } from "../../utils/helper/navigationHelper";
 import { Ionicons } from "@expo/vector-icons";
 import { setStateTextSearch } from "../../redux/features/TextSearchSlides";
 import Layout from "../../constants/Layout";
+import ItemFood from "../ListFood/ItemFood";
 
 export default function SearchHome(nav: RootStackScreenProps<"SearchDonGia">) {
   const { navigation } = nav;
@@ -96,7 +96,7 @@ export default function SearchHome(nav: RootStackScreenProps<"SearchDonGia">) {
       <FlatList
         data={listSanPham}
         renderItem={({ item, index }) => (
-          <ItemSearchHome
+          <ItemFood
             onPress={() => {
               navigation.navigate("FoodDeTail", item);
             }}

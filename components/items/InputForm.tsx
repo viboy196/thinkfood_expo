@@ -51,7 +51,7 @@ const Input = (props: {
           borderColor: color === undefined ? Colors[colorScheme].text : color,
         }}
       >
-        <Text
+        {/* <Text
           style={{
             padding: 5,
             fontSize: 18,
@@ -59,7 +59,7 @@ const Input = (props: {
           }}
         >
           {title}
-        </Text>
+        </Text> */}
         <View
           style={{
             flexDirection: "row",

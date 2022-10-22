@@ -2,7 +2,7 @@
   "expo": {
     "name": "thinkfood_expo",
     "slug": "thinkfood_expo",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/logo/thinkfoodlogo.png",
     "scheme": "myapp",
@@ -15,18 +15,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.thinkfood.user"
+      "bundleIdentifier": "com.thinkfood.user",
+      "buildNumber": "6"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.thinkfood.user",
+      "versionCode": "2"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

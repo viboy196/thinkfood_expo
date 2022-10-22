@@ -111,6 +111,44 @@ export default class ApiRequest {
     
     return res.data as ExcuteResult;
   };
+  
+  static OnePayBuyGoiTieuDung = async (token :string , idGoiTieuDung): Promise<ExcuteResult> => {
+    const tag = 'OnePayBuyGoiTieuDung';
+    const url = `/api/OnePay/buyGoiTieuDung?id=${idGoiTieuDung}&v=1.0`;
+    console.log('urlLogin ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+  
+  static getBalance = async (token :string): Promise<ExcuteResult> => {
+    const tag = 'getBalance';
+    const url = `/api/Account/getBalance?v=1.0`;
+    console.log('urlLogin ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
   static getPhoneActive = async (token :string): Promise<ExcuteResult> => {
     const tag = 'getPhoneActive';
     const url = '/api/OnCall/getPhoneActive?v=1.0';
@@ -315,9 +353,9 @@ export default class ApiRequest {
       return res.data as ExcuteResult;
     };
 
-    static AddAppRole = async (token :string , input : {name : string  , code : string ,note? : string   }): Promise<ExcuteResult> => {
-      const tag = 'AddAppRole';
-      const url = '/api/AppRole/add?v=1.0';
+    static AddKhachHang = async (token :string , input : {phone : string  , fullName:string  }): Promise<ExcuteResult> => {
+      const tag = 'AddKhachHang';
+      const url = '/api/Account/addKhachHang?v=1.0';
       console.log(`${tag} url :`, url);  
 
   
@@ -333,6 +371,8 @@ export default class ApiRequest {
       
       return res.data as ExcuteResult;
     };
+    
+
     static RemoveAppRole = async ( input : {token:string , id :string}): Promise<ExcuteResult> => {
       const tag = 'RemoveAppRole';
       const url = `/api/AppRole/delete?id=${input.id}&v=1.0`;

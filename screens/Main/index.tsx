@@ -13,7 +13,7 @@ import useColorScheme from "../../hooks/useColorScheme";
 import Colors, { tintColorLight } from "../../constants/Colors";
 import TabHome from "./TabHome";
 import TabNetwork from "./TabNetwork";
-import FontAwesome from "@expo/vector-icons/build/FontAwesome";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import IonsIcon from "@expo/vector-icons/build/Ionicons";
 
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
@@ -37,6 +37,8 @@ import {
   TypeDonGiaView,
 } from "../../redux/features/SanPhamViewSlices";
 import TabInfo from "./TabInfo";
+import Relationship from "./Relationship";
+import TabPay from "./Pay";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -178,7 +180,7 @@ export default function MainScreen() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarStyle: {
-          height: 75,
+          height: 50,
         },
       }}
     >
@@ -188,7 +190,6 @@ export default function MainScreen() {
         options={{
           title: "Trang chủ",
           headerShown: false,
-          tabBarShowLabel: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon
               name="home"
@@ -198,59 +199,28 @@ export default function MainScreen() {
           ),
         }}
       />
-      {/* <BottomTab.Screen
-        name="TabNetwork"
-        component={TabNetwork}
-        options={{
-          title: "Tìm kiếm",
-          headerShown: true,
-          header: () => <HeaderShow name="Bảng tin" />,
-          tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon
-              name="search"
-              color={color}
-              imageSource={require("../../assets/images/thinkfood/menu/play-button-arrowhead.png")}
-            />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name="TabPlus"
-        component={TabNetwork}
-        options={{
-          title: "Tiện ích",
-          headerShown: true,
-          tabBarShowLabel: false,
-          header: () => <HeaderShow name="Đăng bài" />,
 
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon
-              name="elementor"
-              imageSource={require("../../assets/images/thinkfood/menu/plus.png")}
-              color={color}
-              size={54}
-            />
-          ),
+      <BottomTab.Screen
+        name="TabPay"
+        component={TabPay}
+        options={{
+          title: "ví",
+          headerShown: false,
+
+          tabBarIcon: ({ color }) => <TabBarIcon name="wallet" color={color} />,
         }}
       />
       <BottomTab.Screen
         name="TabNotification"
-        component={TabNotification}
+        component={Relationship}
         options={{
-          title: "Tiện ích",
-          header: () => <HeaderShow name="Thông báo" />,
-          tabBarShowLabel: false,
+          title: "Mối Quan Hệ",
+          headerShown: true,
+          header: () => <HeaderShow name={"Mối Quan Hệ"} />,
 
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon
-              name="elementor"
-              imageSource={require("../../assets/images/thinkfood/menu/notification.png")}
-              color={color}
-            />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="people" color={color} />,
         }}
-      /> */}
+      />
       <BottomTab.Screen
         name="TabInfo"
         component={TabInfo}
@@ -267,7 +237,6 @@ export default function MainScreen() {
               }}
             />
           ),
-          tabBarShowLabel: false,
 
           tabBarIcon: ({ color }) => (
             <TabBarIcon
@@ -297,15 +266,15 @@ function TabBarIcon(props: {
         source={props.imageSource}
         resizeMode="cover"
         style={{
-          width: props.size ? props.size : 30,
-          height: props.size ? props.size : 30,
+          width: props.size ? props.size : 24,
+          height: props.size ? props.size : 24,
           tintColor: props.color,
         }}
       />
     );
   }
   // @ts-ignore
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons size={24} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export function HeaderShow(props: { name: string; logout?: () => void }) {

@@ -145,7 +145,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
         <View
           style={{
             width: "100%",
-            height: 60,
+            height: 50,
             flexDirection: "row",
             alignItems: "center",
             margin: 10,
@@ -216,7 +216,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                   text={item.name}
                   colorText={"#424141"}
                   size={48}
-                  sizeText={16}
+                  sizeText={14}
                   width={120}
                   height={150}
                   onPress={() => {

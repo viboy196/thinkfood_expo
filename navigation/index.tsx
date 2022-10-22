@@ -35,6 +35,11 @@ import SearchFoodView from "../screens/SearchFood";
 import PaymentHistory from "../screens/Main/TabInfo/PaymentHistory";
 import PersoInfo from "../screens/Main/TabInfo/PersoInfo";
 import ServicePack from "../screens/Main/TabInfo/ServicePack";
+import TabInfo from "../screens/Main/TabInfo";
+import TabNotification from "../screens/Main/TabNotification";
+import Recharge from "../screens/Main/Pay/Recharge";
+import WebViewScreen from "../screens/WebView";
+import { color1 } from "../utils/helper/Color";
 
 export default function Navigation({
   colorScheme,
@@ -155,6 +160,35 @@ function RootNavigator() {
               />
             ),
           }}
+        />
+
+        <Stack.Screen
+          name="introduce"
+          component={TabNotification}
+          options={{
+            headerShown: true,
+            header: () => <HeaderShow name={"Giới thiệu"} />,
+          }}
+        />
+        <Stack.Screen
+          name="Recharge"
+          component={Recharge}
+          options={{
+            headerShown: true,
+            header: () => <HeaderShow name={"Mua Gói Tiêu dùng"} />,
+          }}
+        />
+        <Stack.Screen
+          name="WebView"
+          component={WebViewScreen}
+          options={({ route }) => ({
+            title: `${route.params.title}`,
+            headerStyle: { backgroundColor: color1 },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          })}
         />
       </Stack.Navigator>
     );

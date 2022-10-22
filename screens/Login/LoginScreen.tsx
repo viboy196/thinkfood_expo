@@ -48,7 +48,7 @@ export default function Login({}: RootStackScreenProps<"Login">) {
 
   const [fullName, setFullName] = useState<string>();
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [action, setAction] = useState<number>(1);
   useEffect(() => {
     if (checkedAuth && userName && password) {
@@ -164,22 +164,22 @@ export default function Login({}: RootStackScreenProps<"Login">) {
               style={styles.logoImage}
             />
             <Text style={styles.logoText}>
-              {" "}
-              Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
+              Gặp lại hương vị cũ - Tìm về kỷ niệm xưa
             </Text>
           </View>
           <View style={styles.body}>
+            <View style={styles.empty} />
             <View
               style={{
-                flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
               <Text
                 style={{
-                  fontWeight: "800",
+                  fontWeight: "500",
                   color: color1,
+                  marginTop: 30,
                   textShadowOffset: { width: 2, height: 2 },
                   textShadowRadius: 5,
                   fontSize: 24,
@@ -282,17 +282,6 @@ export default function Login({}: RootStackScreenProps<"Login">) {
                 />
                 <Text style={styles.textInfoCheckBox}>Nhớ thông tin</Text>
               </View>
-              <View style={styles.empty} />
-              <View style={styles.viewTextInfo}>
-                <Text
-                  style={{
-                    marginEnd: 20,
-                    color: color1,
-                  }}
-                >
-                  Đăng ký
-                </Text>
-              </View>
             </View>
             <View style={styles.btnLoginViewBorder}>
               <TouchableOpacity
@@ -316,6 +305,7 @@ export default function Login({}: RootStackScreenProps<"Login">) {
                 </Text>
               </TouchableOpacity>
             </View>
+            <View style={styles.empty} />
             <View style={{ alignItems: "center" }}>
               <Button
                 iconName="facebook"
@@ -329,7 +319,7 @@ export default function Login({}: RootStackScreenProps<"Login">) {
               style={{
                 width: "100%",
                 alignItems: "center",
-                marginBottom: 5,
+                marginBottom: 15,
               }}
             >
               <Text style={{ color: tintColorLight }}>© Thinkfood 2022 </Text>
@@ -361,7 +351,7 @@ const styles = StyleSheet.create({
   logoText: {
     marginTop: 5,
     fontSize: 18,
-    fontWeight: "800",
+    fontWeight: "600",
     color: "#fff",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
@@ -381,6 +371,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 12,
     marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textInfo: {
     color: tintColorLight,

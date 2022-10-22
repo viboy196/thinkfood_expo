@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 
 import Ionicons from "@expo/vector-icons/build/Ionicons";
@@ -13,8 +13,12 @@ import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { TypeDoAn } from "../../utils/helper/DoAnHelper";
 import { TypeThucPhamTieuChuan } from "../../utils/helper/ThucPhamTieuChuanHelper";
-import { currencyFormat } from "../../utils/helper/HelperFunc";
+import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
 import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
+import CartOderCrud from "../../utils/api/CartOderCrud";
+import { setCartOderState } from "../../redux/features/CartOderSlices";
+import ApiRequest from "../../utils/api/Main/ApiRequest";
 export default function ItemFood({
   item,
   onPress,
@@ -22,64 +26,44 @@ export default function ItemFood({
   item: TypeDonGiaView;
   onPress: () => void;
 }) {
-  // const [state, setState] = useState<{
-  //   name?: string;
-  //   avatar?: string;
-  //   price?: number;
-  //   nameDonViDo?: string;
-  // }>();
-
-  // useEffect(() => {
-  //   if (item.idDoAn) {
-  //     DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
-  //       if (res.code === ResultStatusCode.success) {
-  //         const dt = res.result as TypeDoAn;
-  //         // @ts-ignore
-  //         setState((old) => {
-  //           return {
-  //             ...old,
-  //             name: dt.name,
-  //             avatar: dt.avartarUri,
-  //             price: item.unitPrice,
-  //           };
-  //         });
-  //       }
-  //     });
-  //   }
-  //   if (item.idThucPhamTieuChuan) {
-  //     ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
-  //       (res) => {
-  //         if (res.code === ResultStatusCode.success) {
-  //           const dt = res.result as TypeThucPhamTieuChuan;
-  //           // @ts-ignore
-  //           // @ts-ignore
-  //           setState((old) => {
-  //             return {
-  //               ...old,
-
-  //               avatar: dt.avartarUri,
-  //               name: res.result.name,
-  //             };
-  //           });
-  //         }
-  //       }
-  //     );
-  //   }
-  //   if (item.idDonViDo) {
-  //     DonViDoCrud.getDetailPublish(item.idDonViDo).then((res) => {
-  //       if (res.code === ResultStatusCode.success) {
-  //         // @ts-ignore
-  //         setState((old) => {
-  //           return {
-  //             ...old,
-  //             nameDonViDo: res.result.name,
-  //           };
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
-
+  const distpatch = useAppDispatch();
+  const { token, accountDetail } = useAppSelector((s) => s.auth);
+  const addCart = () => {
+    if (accountDetail?.id && token)
+      CartOderCrud.addItem(accountDetail?.id, token, {
+        chon: true,
+        idDonGia: item.id,
+        soLuong: 1,
+        unitPrice: item.unitPrice,
+      }).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          Alert.alert("thêm vào giỏ hàng thành công");
+          distpatch(
+            setCartOderState({
+              id: res.result.id,
+              listCartItem: res.result.listCart,
+              idKhachHang: res.result.idKhachHang,
+            })
+          );
+        }
+      });
+  };
+  const Call = () => {
+    if (token) {
+      ApiRequest.getPhoneActive(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          const arrPhone = res.result as string[];
+          if (arrPhone.length > 0) {
+            callNumber(arrPhone[0]);
+          } else {
+            Alert.alert("Tổng đài viên đang bận liên hệ sau");
+          }
+        } else {
+          Alert.alert("Tổng đài viên đang bận liên hệ sau");
+        }
+      });
+    }
+  };
   return (
     <TouchableOpacity
       style={{
@@ -146,7 +130,7 @@ export default function ItemFood({
           marginBottom: 5,
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={Call}>
           <View
             style={{
               backgroundColor: "#00b454",
@@ -165,7 +149,7 @@ export default function ItemFood({
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={addCart}>
           <View
             style={{
               backgroundColor: "#00b454",

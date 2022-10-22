@@ -30,11 +30,14 @@ export type RootStackParamList = {
   Cart: undefined;
 
   SearchDonGia: undefined;
-
   //info user
   PaymentHistory: undefined;
   PersoInfo: undefined;
   ServicePack: undefined;
+  introduce: undefined;
+  // Recharge
+  Recharge: undefined;
+  WebView: { title: string; url: string };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -46,6 +49,7 @@ export type RootTabParamList = {
   TabPlus: undefined;
   TabNotification: undefined;
   TabInfo: undefined;
+  TabPay: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

@@ -20,16 +20,6 @@ export default function PersoInfo() {
       />
 
       <PersoInfoItem
-        value={account.email}
-        onChangeText={(text) => {
-          setAccount((old) => {
-            return { ...old, email: text };
-          });
-        }}
-        title="Email"
-      />
-
-      <PersoInfoItem
         value={account.phone}
         onChangeText={(text) => {
           setAccount((old) => {
