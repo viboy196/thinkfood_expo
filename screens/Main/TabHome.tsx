@@ -26,14 +26,17 @@ import CartNhomSanPhamIsLive from "../../components/CartNhomSanPhamIsLive";
 import CartLoaiMonAn from "../../components/CartLoaiMonAn";
 import SearchHome from "../../components/Search/SearchHome";
 import { setStateTextSearch } from "../../redux/features/TextSearchSlides";
+import ApiRequest from "../../utils/api/Main/ApiRequest";
+import { currencyFormat } from "../../utils/helper/HelperFunc";
 
 export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
   const { navigation } = nav;
+  const { token } = useAppSelector((s) => s.auth);
   const [loading, setLoading] = useState<boolean>(true);
   const { searchHome } = useAppSelector((s) => s.textSearch);
   const distpatch = useAppDispatch();
 
-  const [focusTextSearch, setFocusTextSearch] = useState<boolean>(false);
+  const [balance, setBalance] = useState<number>(0);
 
   const { accountDetail } = useAppSelector((s) => s.auth);
 
@@ -61,6 +64,25 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
   //     showSubscription.remove();
   //   };
   // }, []);
+
+  const fetchBalance = () => {
+    if (token) {
+      ApiRequest.getBalance(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          setBalance(res.result);
+        }
+      });
+    }
+  };
+  useEffect(() => {
+    fetchBalance();
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      fetchBalance();
+    });
+
+    return willFocusSubscription;
+  });
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -79,7 +101,10 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               style={styles.avatarImage}
             />
           </View>
-          <View style={{ paddingLeft: 10 }}>
+          <TouchableOpacity
+            style={{ paddingLeft: 10 }}
+            onPress={() => navigation.navigate("TabInfo")}
+          >
             <Text
               style={{
                 fontSize: 16,
@@ -89,14 +114,15 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
             >
               Xin chào , {accountDetail?.fullName}
             </Text>
+
             <Text
               style={{
                 color: tintColorLight,
               }}
             >
-              gold member
+              Số dư : {currencyFormat(balance)}
             </Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 1, alignItems: "flex-end", marginRight: 20 }}
             onPress={() => {
@@ -230,7 +256,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
 
           <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
 
-          <View style={{ width: "100%" }}>
+          {/* <View style={{ width: "100%" }}>
             <View style={{ paddingLeft: 10 }}>
               <Text
                 style={{
@@ -248,7 +274,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                 <CartLoaiMonAn nav={nav} />
               </View>
             </View>
-          </View>
+          </View> */}
         </>
         {/* // ) : (
         //   <SearchHome nav={nav} />

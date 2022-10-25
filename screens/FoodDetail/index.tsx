@@ -25,67 +25,7 @@ export default function FoodDetail({
   const [numCount, setNumCount] = useState<number>(1);
 
   const { token, accountDetail } = useAppSelector((s) => s.auth);
-  const [listOnCall, setListOnCall] = useState<string[]>();
   const distpatch = useDispatch();
-
-  // const [state, setState] = useState<{
-  //   name?: string;
-  //   link?: string;
-  //   avatarUri?: string;
-  //   nameDonViDo?: string;
-  //   listMediaUri?: string[];
-  //   info?: string;
-  // }>();
-  // useEffect(() => {
-  //   if (item.idDoAn) {
-  //     DoAnCrud.getDetailPublish(item.idDoAn).then((res) => {
-  //       if (res.code === ResultStatusCode.success) {
-  //         // @ts-ignore
-  //         setState((old) => {
-  //           return {
-  //             ...old,
-  //             avatarUri: res.result.avartarUri,
-  //             listMediaUri: res.result.listMediaUri,
-  //             name: res.result.name,
-  //             info: res.result.info,
-  //             link: `/action/DoAn/${res.result.id}`,
-  //           };
-  //         });
-  //       }
-  //     });
-  //   }
-  //   if (item.idThucPhamTieuChuan) {
-  //     ThucPhamTieuChuanCrud.getDetailPublish(item.idThucPhamTieuChuan).then(
-  //       (res) => {
-  //         if (res.code === ResultStatusCode.success) {
-  //           // @ts-ignore
-  //           setState((old) => {
-  //             return {
-  //               ...old,
-  //               avatarUri: res.result.avartarUri,
-  //               listMediaUri: res.result.listMediaUri,
-  //               name: res.result.name,
-  //               link: `/action/ThucPhamTieuChuan/${res.result.id}`,
-  //             };
-  //           });
-  //         }
-  //       }
-  //     );
-  //   }
-  //   if (item.idDonViDo) {
-  //     DonViDoCrud.getDetailPublish(item.idDonViDo).then((res) => {
-  //       if (res.code === ResultStatusCode.success) {
-  //         // @ts-ignore
-  //         setState((old) => {
-  //           return {
-  //             ...old,
-  //             nameDonViDo: res.result.name,
-  //           };
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [item.idDoAn, item.idDonViDo, item.idThucPhamTieuChuan]);
 
   const Call = () => {
     if (token) {
@@ -125,20 +65,7 @@ export default function FoodDetail({
   };
   return (
     <View style={{ flex: 1 }}>
-      {/* <Image
-        source={
-          state?.avatarUri
-            ? {
-                uri: UrlHelper.urlFile + state?.avatarUri,
-              }
-            : require("../../assets/images/logo/thinkfoodbg.png")
-        }
-        resizeMode="cover"
-        style={{
-          width: Layout.window.width,
-          height: 180,
-        }}
-      /> */}
+    
       {item?.listMediaUri && (
         <ImageSlider ImageArrayUri={[...item?.listMediaUri]} />
       )}

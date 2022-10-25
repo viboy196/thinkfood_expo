@@ -5,12 +5,16 @@ import {
   ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../constants/Layout";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 
-export default function ImageSlider(props: { ImageArrayUri: string[] }) {
+export default function ImageSlider(props: {
+  ImageArrayUri: string[];
+  dauBep?: any;
+}) {
   const [active, setActive] = useState<number>(0);
   const [refScrollView, setRefScrollView] = useState<ScrollView | null>();
 
@@ -101,6 +105,29 @@ export default function ImageSlider(props: { ImageArrayUri: string[] }) {
           </Text>
         ))}
       </View>
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 0,
+          alignSelf: "flex-end",
+          padding: 10,
+        }}
+      >
+        <Image
+          source={
+            props.dauBep?.avartarUri
+              ? { uri: UrlHelper.urlFile + props.dauBep.avartarUri }
+              : require("../../assets/images/logo/thinkfoodlogo.png")
+          }
+          style={{
+            width: 60,
+            height: 60,
+            resizeMode: "cover",
+            borderRadius: 60,
+          }}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
