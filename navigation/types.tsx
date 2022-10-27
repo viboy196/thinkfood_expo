@@ -38,6 +38,9 @@ export type RootStackParamList = {
   PersoInfo: undefined;
   ServicePack: undefined;
   introduce: undefined;
+
+  Address: undefined;
+
   // Recharge
   Recharge: undefined;
   WebView: { title: string; url: string };

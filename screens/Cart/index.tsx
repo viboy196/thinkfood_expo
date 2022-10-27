@@ -7,7 +7,12 @@ import { RootStackScreenProps } from "../../navigation/types";
 import { goBackNav } from "../../utils/helper/navigationHelper";
 import { TypeCartOderItem } from "../../utils/helper/CartOderHelper";
 import Layout from "../../constants/Layout";
-import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
+import {
+  callNumber,
+  currencyFormat,
+  numActive,
+  sumPriceCart,
+} from "../../utils/helper/HelperFunc";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import CartOderCrud from "../../utils/api/CartOderCrud";
@@ -17,25 +22,6 @@ export default function Cart({ navigation }: RootStackScreenProps<"Cart">) {
 
   const { token } = useAppSelector((s) => s.auth);
 
-  const numActive = (_listCartItem: TypeCartOderItem[]): number => {
-    let No = 0;
-    _listCartItem.forEach((x) => {
-      if (x.chon === true) {
-        No++;
-      }
-    });
-    return No;
-  };
-
-  const sumPriceCart = (_listCartItem: TypeCartOderItem[]) => {
-    let sum = 0;
-    _listCartItem.forEach((x) => {
-      if (x.chon === true) {
-        sum = sum + x.unitPrice * x.soLuong;
-      }
-    });
-    return sum;
-  };
   const Call = () => {
     if (token) {
       ApiRequest.getPhoneActive(token).then((res) => {
@@ -64,18 +50,12 @@ export default function Cart({ navigation }: RootStackScreenProps<"Cart">) {
     });
   };
   const onPayment = () => {
-    navigation.navigate('Payment')
-  }
+    navigation.navigate("Payment");
+  };
 
   return (
-    <View style={{ width: Layout.window.width, height: Layout.window.height }}>
-      <TitleCompenents1
-        onGoBack={() => {
-          goBackNav(navigation);
-        }}
-        title={"Giỏ hàng"}
-      />
-      <ScrollView>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         {listCartItem &&
           listCartItem.map((item, index) => (
             <Item item={item} key={`itemCart_${index}`} />
@@ -83,9 +63,6 @@ export default function Cart({ navigation }: RootStackScreenProps<"Cart">) {
       </ScrollView>
       <View
         style={{
-          position: "absolute",
-          bottom: 20,
-          width: "100%",
           height: 60,
           flexDirection: "row",
         }}
@@ -116,7 +93,7 @@ export default function Cart({ navigation }: RootStackScreenProps<"Cart">) {
 
             backgroundColor: "tomato",
           }}
-          onPress={updateCart}
+          onPress={onPayment}
         >
           <Text
             style={{ color: "#fff", fontWeight: "500", textAlign: "center" }}

@@ -40,6 +40,7 @@ import TabNotification from "../screens/Main/TabNotification";
 import Recharge from "../screens/Main/Pay/Recharge";
 import WebViewScreen from "../screens/WebView";
 import PaymentScreen from "../screens/Payment";
+import AddressScreen from "../screens/Address";
 
 import { color1 } from "../utils/helper/Color";
 
@@ -104,7 +105,19 @@ function RootNavigator() {
         <Stack.Screen
           name="Cart"
           component={CartView}
-          options={{ headerShown: false }}
+          options={{
+            headerShown: true,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Giỏ hàng"}
+              />
+            ),
+          }}
         />
 
         <Stack.Screen
@@ -239,6 +252,24 @@ function RootNavigator() {
                   }
                 }}
                 name={"Thanh Toán"}
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Address"
+          component={AddressScreen}
+          options={({ route }) => ({
+            headerShown: true,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Chọn địa chỉ nhận hàng"}
               />
             ),
           })}

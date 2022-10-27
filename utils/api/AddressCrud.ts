@@ -29,7 +29,7 @@ export default class AddressCrud {
     return res.data as ExcuteResult;
   };
   
-  static GetAllPublish = async (): Promise<ExcuteResult> => {
+  static GetAllPublish = async ( token:string): Promise<ExcuteResult> => {
     const tag = `GetAllPublish ${AddressTag}`;
     const url = '/api/Address/all?v=1.0';
      console.log(`${tag} url :`, url);
@@ -37,6 +37,7 @@ export default class AddressCrud {
     const config: AxiosRequestConfig = {
       headers: {
         accept: 'text/plain',
+        Authorization: `bearer ${token}`,
       },
     };
 
@@ -46,9 +47,30 @@ export default class AddressCrud {
     return res.data as ExcuteResult;
   };
   
-  static getListByIdConnect = async (id:string , token:string): Promise<ExcuteResult> => {
+  static getListByIdConnect = async ( token:string , id:string): Promise<ExcuteResult> => {
     const tag = `getListByIdConnect ${AddressTag}`;
     const url = `/api/Address/getListByIdConnect?id=${id}&v=1.0`;
+     console.log(`${tag} url :`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        accept: 'text/plain',
+        Authorization: `bearer ${token}`,
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
+
+  
+  static getAddressDefault = async (token:string): Promise<ExcuteResult> => {
+    const tag = `getListByIdConnect ${AddressTag}`;
+    const url = `/api/Address/getAddressDefault?v=1.0`;
      console.log(`${tag} url :`, url);
 
     const config: AxiosRequestConfig = {
@@ -63,6 +85,25 @@ export default class AddressCrud {
     
     return res.data as ExcuteResult;
   };
+  
+  static setDefault = async (token:string , id :string): Promise<ExcuteResult> => {
+    const tag = `getListByIdConnect ${AddressTag}`;
+    const url = `/api/Address/setDefault?id=${id}&v=1.0`;
+     console.log(`${tag} url :`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
 
 
   static getDetailPublish = async (id :string): Promise<ExcuteResult> => {
