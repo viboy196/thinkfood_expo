@@ -32,13 +32,15 @@ import FoodDetail from "../screens/FoodDetail";
 import FoodView from "../screens/FoodView";
 import CartView from "../screens/Cart";
 import SearchFoodView from "../screens/SearchFood";
-import PaymentHistory from "../screens/Main/TabInfo/PaymentHistory";
+import PaymentHistory from "../screens/Main/TabInfo/OderHistory";
 import PersoInfo from "../screens/Main/TabInfo/PersoInfo";
 import ServicePack from "../screens/Main/TabInfo/ServicePack";
 import TabInfo from "../screens/Main/TabInfo";
 import TabNotification from "../screens/Main/TabNotification";
 import Recharge from "../screens/Main/Pay/Recharge";
 import WebViewScreen from "../screens/WebView";
+import PaymentScreen from "../screens/Payment";
+
 import { color1 } from "../utils/helper/Color";
 
 export default function Navigation({
@@ -116,8 +118,13 @@ function RootNavigator() {
           component={PaymentHistory}
           options={{
             headerShown: true,
-            header: () => (
+            header: (props) => (
               <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
                 name={
                   auth.accountDetail?.fullName
                     ? auth.accountDetail.fullName
@@ -133,8 +140,13 @@ function RootNavigator() {
           component={PersoInfo}
           options={{
             headerShown: true,
-            header: () => (
+            header: (props) => (
               <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
                 name={
                   auth.accountDetail?.fullName
                     ? auth.accountDetail.fullName
@@ -150,8 +162,13 @@ function RootNavigator() {
           component={ServicePack}
           options={{
             headerShown: true,
-            header: () => (
+            header: (props) => (
               <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
                 name={
                   auth.accountDetail?.fullName
                     ? auth.accountDetail.fullName
@@ -167,7 +184,16 @@ function RootNavigator() {
           component={TabNotification}
           options={{
             headerShown: true,
-            header: () => <HeaderShow name={"Giới thiệu"} />,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Giới thiệu"}
+              />
+            ),
           }}
         />
         <Stack.Screen
@@ -175,7 +201,16 @@ function RootNavigator() {
           component={Recharge}
           options={{
             headerShown: true,
-            header: () => <HeaderShow name={"Mua Gói Tiêu dùng"} />,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Mua Gói Tiêu dùng"}
+              />
+            ),
           }}
         />
         <Stack.Screen
@@ -188,6 +223,24 @@ function RootNavigator() {
             headerTitleStyle: {
               fontWeight: "bold",
             },
+          })}
+        />
+
+        <Stack.Screen
+          name="Payment"
+          component={PaymentScreen}
+          options={({ route }) => ({
+            headerShown: true,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Thanh Toán"}
+              />
+            ),
           })}
         />
       </Stack.Navigator>

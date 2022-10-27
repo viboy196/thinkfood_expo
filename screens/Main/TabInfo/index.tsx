@@ -24,7 +24,7 @@ export default function TabInfo({ navigation }: RootTabScreenProps<"TabInfo">) {
         onPress={() => {
           navigation.navigate("PaymentHistory");
         }}
-        text={"Lịch sử  thanh toán"}
+        text={"Lịch sử  Đặt hàng"}
       />
     </View>
   );

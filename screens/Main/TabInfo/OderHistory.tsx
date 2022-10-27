@@ -4,9 +4,9 @@ import { TypeOder } from "../../../utils/helper/OderHelper";
 import OderCrud from "../../../utils/api/OderCrud";
 import { useAppSelector } from "../../../redux/store/hooks";
 import { ResultStatusCode } from "../../../utils/api/apiTypes";
-import PaymentHistoryItem from "./PaymentHistoryItem";
+import PaymentHistoryItem from "./OderHistoryItem";
 
-export default function PaymentHistory() {
+export default function OderHistory() {
   const [state, setState] = useState<TypeOder[]>();
   const { token } = useAppSelector((s) => s.auth);
   useEffect(() => {

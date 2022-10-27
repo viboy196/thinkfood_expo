@@ -6,8 +6,10 @@ import { RootTabScreenProps } from "../../../navigation/types";
 import ApiRequest from "../../../utils/api/Main/ApiRequest";
 import { ResultStatusCode } from "../../../utils/api/apiTypes";
 import { currencyFormat } from "../../../utils/helper/HelperFunc";
+import PaymentHistory from "./PaymentHistory";
 
-export default function TabPay({ navigation }: RootTabScreenProps<"TabPay">) {
+export default function TabPay(nav: RootTabScreenProps<"TabPay">) {
+  const { navigation } = nav;
   const { fullName } = useAppSelector((s) => s.auth).accountDetail;
   const [balance, setBalance] = useState<number>(0);
   const { token } = useAppSelector((s) => s.auth);
@@ -27,7 +29,7 @@ export default function TabPay({ navigation }: RootTabScreenProps<"TabPay">) {
     });
 
     return willFocusSubscription;
-  });
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -90,7 +92,9 @@ export default function TabPay({ navigation }: RootTabScreenProps<"TabPay">) {
         </View>
       </View>
 
-      <View style={{ flex: 1 }}></View>
+      <View style={{ flex: 1 }}>
+        <PaymentHistory nav={nav} />
+      </View>
     </View>
   );
 }

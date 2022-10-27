@@ -63,6 +63,9 @@ export default function Cart({ navigation }: RootStackScreenProps<"Cart">) {
       }
     });
   };
+  const onPayment = () => {
+    navigation.navigate('Payment')
+  }
 
   return (
     <View style={{ width: Layout.window.width, height: Layout.window.height }}>

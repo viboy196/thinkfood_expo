@@ -5,7 +5,7 @@ import { useAppSelector } from "../../../redux/store/hooks";
 import { UrlHelper } from "../../../utils/helper/UrlHelper";
 import { currencyFormat } from "../../../utils/helper/HelperFunc";
 
-export default function PaymentHistoryItem(props: { item: TypeOder }) {
+export default function OderHistoryItem(props: { item: TypeOder }) {
   const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
   const sanPhamView = listSanPhamView.find(
     (x) => x.id === props.item?.idDonGia

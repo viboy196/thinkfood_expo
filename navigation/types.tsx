@@ -32,6 +32,9 @@ export type RootStackParamList = {
   SearchDonGia: undefined;
   //info user
   PaymentHistory: undefined;
+
+  Payment: undefined;
+
   PersoInfo: undefined;
   ServicePack: undefined;
   introduce: undefined;

@@ -47,7 +47,9 @@ export default function ServicePackItem(props: {
       <View style={{ flex: 6, justifyContent: "center" }}>
         <Text>Gói : {goiTieuDung?.name}</Text>
 
-        <Text>{`số dư :${currencyFormat(Number(props.item.price))}`}</Text>
+        <Text>{`Giá trị :${currencyFormat(
+          Number(goiTieuDung?.price)
+        )} vnđ`}</Text>
       </View>
     </View>
   );

@@ -277,12 +277,24 @@ function TabBarIcon(props: {
   return <Ionicons size={24} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export function HeaderShow(props: { name: string; logout?: () => void }) {
+export function HeaderShow(props: {
+  name: string;
+  logout?: () => void;
+  goBack?: () => void;
+}) {
   return (
     <View style={styles.header}>
+      {props.goBack && (
+        <TouchableOpacity
+          onPress={props.goBack}
+          style={{ paddingHorizontal: 10 }}
+        >
+          <Ionicons name="arrow-back" size={24} color={"#fff"} />
+        </TouchableOpacity>
+      )}
       <Text
         style={{
-          marginLeft: 30,
+          marginLeft: props.goBack !== undefined ? 10 : 30,
           fontSize: 22,
           fontWeight: "700",
           color: "#fff",
