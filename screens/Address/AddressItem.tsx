@@ -6,15 +6,24 @@ import { TypeAddress } from "../../utils/helper/AddressHelper";
 import AddressCrud from "../../utils/api/AddressCrud";
 import { useAppSelector } from "../../redux/store/hooks";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { color1, color2 } from "../../utils/helper/Color";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/types";
+import { getStringAddress } from "../../utils/helper/HelperFunc";
 export default function AddressItem(props: {
   checked?: boolean;
   item: TypeAddress;
   onPress: () => void;
+  navigation: NativeStackNavigationProp<
+    RootStackParamList,
+    "Address",
+    undefined
+  >;
 }) {
   const { token } = useAppSelector((s) => s.auth);
 
   return (
-    <TouchableOpacity
+    <View
       style={{
         flexDirection: "row",
         marginVertical: 5,
@@ -26,6 +35,7 @@ export default function AddressItem(props: {
         <RadioButton
           value="first"
           status={props.checked === true ? "checked" : "unchecked"}
+          color={color1}
           onPress={props.onPress}
         />
       </View>
@@ -33,16 +43,21 @@ export default function AddressItem(props: {
         <Text>Địa chỉ nhận hàng</Text>
 
         {props.item && (
-          <Text>
-            {props.item.receiverName} | {props.item.phone} |{" "}
-            {props.item.address} , {props.item.ward} , {props.item.district} ,{" "}
-            {props.item.province}
-          </Text>
+          <>
+            <Text>{getStringAddress(props.item)}</Text>
+            <Text style={{ color: color1 }}>{props.item.type}</Text>
+          </>
         )}
       </View>
       <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
-        <Button title="Sửa" />
+        <Button
+          title="Sửa"
+          color={color2}
+          onPress={() => {
+            props.navigation.navigate("UpdateAddress", { data: props.item });
+          }}
+        />
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }

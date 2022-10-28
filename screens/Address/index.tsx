@@ -1,4 +1,4 @@
-import { View, Text, Button, Alert } from "react-native";
+import { View, Text, Button, Alert, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import AddressItem from "./AddressItem";
 import { TypeAddress } from "../../utils/helper/AddressHelper";
@@ -6,6 +6,8 @@ import { RootStackScreenProps } from "../../navigation/types";
 import AddressCrud from "../../utils/api/AddressCrud";
 import { useAppSelector } from "../../redux/store/hooks";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { Ionicons } from "@expo/vector-icons";
+import { color1 } from "../../utils/helper/Color";
 
 export default function Address({
   navigation,
@@ -26,14 +28,22 @@ export default function Address({
       }
     });
   };
-  useEffect(() => {
+  const fetchData = () => {
     if (token && accountDetail.id)
       AddressCrud.getListByIdConnect(token, accountDetail.id).then((res) => {
         if (res.code === ResultStatusCode.success) {
           setListAddress(res.result);
         }
       });
-  }, [token, accountDetail.id]);
+  };
+  useEffect(() => {
+    fetchData();
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      fetchData();
+    });
+
+    return willFocusSubscription;
+  }, []);
   return (
     <View>
       <View>
@@ -41,6 +51,7 @@ export default function Address({
           listAddress.map((item) => (
             <AddressItem
               checked={item.isDefault}
+              navigation={navigation}
               onPress={() => {
                 onPressSelectAddress(item.id);
               }}
@@ -49,9 +60,22 @@ export default function Address({
             />
           ))}
       </View>
-      <View>
-        <Button title="+ Thêm" color={"#5cb85c"} />
-      </View>
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          padding: 20,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#fff",
+          marginVertical: 5,
+        }}
+        onPress={() => {
+          navigation.navigate("AddAddress");
+        }}
+      >
+        <Ionicons name="add-circle-outline" color={color1} />
+        <Text style={{ color: color1 }}>Thêm địa chỉ mới</Text>
+      </TouchableOpacity>
     </View>
   );
 }

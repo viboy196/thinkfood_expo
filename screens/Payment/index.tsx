@@ -4,9 +4,10 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
-import React from "react";
-import { useAppSelector } from "../../redux/store/hooks";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import Address from "../../components/Address";
 import {
   currencyFormat,
@@ -17,14 +18,132 @@ import Layout from "../../constants/Layout";
 import { Ionicons } from "@expo/vector-icons";
 import PaymentItem from "./PaymentItem";
 import { RootStackScreenProps } from "../../navigation/types";
+import {
+  TypeDonHang,
+  TypeDonHangCreate,
+  TypeDonHangItem,
+} from "../../utils/helper/DonHangHelper";
+import { ModalSelectPttt } from "./ModalSelectPttt";
+import { TypeAddress } from "../../utils/helper/AddressHelper";
+import AddressCrud from "../../utils/api/AddressCrud";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { logOut } from "../../redux/features/auth/authSlices";
+import DonHangCrud from "../../utils/api/DonHangCrud";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import { setCartOderState } from "../../redux/features/CartOderSlices";
+import CartOderCrud from "../../utils/api/CartOderCrud";
 
 export default function Payment(nav: RootStackScreenProps<"Payment">) {
   const { listCartItem, id, idKhachHang } = useAppSelector((s) => s.cart);
 
+  const { token, accountDetail } = useAppSelector((s) => s.auth);
+  const [input, setInput] = useState<TypeDonHangCreate>({
+    hinhThucGiaoHang: 1,
+  });
+  const [selectPttt, setSelectPttt] = useState<number>(1);
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
+  const [address, setAddress] = useState<TypeAddress>();
+
+  const dispatch = useAppDispatch();
+  const fetchData = () => {
+    if (token) {
+      AddressCrud.getAddressDefault(token)
+        .then((res) => {
+          if (res.code === ResultStatusCode.success) {
+            setAddress(res.result);
+          }
+        })
+        .catch((error) => {
+          dispatch(logOut());
+        });
+    }
+  };
+  useEffect(() => {
+    fetchData();
+    const willFocusSubscription = nav.navigation.addListener("focus", () => {
+      fetchData();
+    });
+
+    return willFocusSubscription;
+  }, []);
+  useEffect(() => {
+    let listDonHangItem: TypeDonHangItem[] = [];
+    listCartItem
+      .filter((x) => x.chon === true)
+      .forEach((x) => {
+        listDonHangItem.push({
+          idDonGia: x.idDonGia,
+          pttt: selectPttt,
+          soLuong: x.soLuong,
+          unitPrice: x.unitPrice,
+        });
+      });
+
+    let typeDonHang: TypeDonHangCreate = {
+      active: true,
+      idAddress: address?.id,
+      hinhThucGiaoHang: 1,
+      status: input.status,
+      idKhachHang: accountDetail.id,
+      listDonHangItem: listDonHangItem,
+    };
+    setInput(typeDonHang);
+  }, [address, accountDetail.id, listCartItem]);
+  const removeItemCart = (idDonGia: string) => {
+    if (token && accountDetail?.id)
+      CartOderCrud.removeItem(accountDetail?.id, idDonGia, token).then(
+        (res) => {
+          if (res.code === ResultStatusCode.success) {
+            dispatch(
+              setCartOderState({
+                id: res.result.id,
+                listCartItem: res.result.listCart,
+                idKhachHang: accountDetail?.id,
+              })
+            );
+          }
+        }
+      );
+  };
+  const addDonHang = () => {
+    if (token) {
+      setLoading(true);
+
+      DonHangCrud.Add(token, input)
+        .then((res) => {
+          setLoading(false);
+          if (res.code === ResultStatusCode.success) {
+            listCartItem.filter((x) => {
+              removeItemCart(x.idDonGia);
+            });
+
+            Alert.alert("Thành công", "Tạo Đơn Hàng Thành công", [
+              {
+                text: "OK",
+                onPress: () => {
+                  nav.navigation.goBack();
+                },
+              },
+            ]);
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+        });
+    }
+  };
+  const [loading, setLoading] = useState<boolean>(false);
+
   return (
     <View style={{ flex: 1 }}>
+      <Spinner visible={loading} textStyle={{ color: "#fff" }} />
       <ScrollView style={{ flex: 1 }}>
-        <Address nav={nav} />
+        <Address address={address} nav={nav} />
+
         {listCartItem &&
           listCartItem
             .filter((x) => x.chon === true)
@@ -53,6 +172,12 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
 
           <View style={{ flex: 5 }}>
             <TextInput
+              value={input.status}
+              onChangeText={(text) => {
+                setInput((old) => {
+                  return { ...old, status: text };
+                });
+              }}
               placeholder="Lưu ý cho người bán ..."
               style={{ textAlign: "right", height: 60 }}
             />
@@ -79,16 +204,19 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
             <Text>Chọn phương thức thanh toán</Text>
           </View>
 
-          <View
+          <TouchableOpacity
             style={{
               flex: 3,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
             }}
+            onPress={showModal}
           >
             <Text style={{ textAlign: "right", flex: 1 }}>
-              Thanh toán khi nhận hàng
+              {selectPttt === 0 && "Thanh Toán khi nhận hàng"}
+
+              {selectPttt === 1 && "Thanh Toán bằng tài khoản"}
             </Text>
             <View
               style={{
@@ -98,8 +226,14 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
             >
               <Ionicons name="chevron-forward" />
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
+        <ModalSelectPttt
+          hideModal={hideModal}
+          selectPttt={selectPttt}
+          setSelectPttt={setSelectPttt}
+          visible={visible}
+        />
       </ScrollView>
 
       <View
@@ -140,7 +274,7 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
 
             backgroundColor: "tomato",
           }}
-          onPress={() => {}}
+          onPress={addDonHang}
         >
           <Text
             style={{ color: "#fff", fontWeight: "500", textAlign: "center" }}

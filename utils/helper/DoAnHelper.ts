@@ -6,6 +6,7 @@ export type TypeDoAn = {
     name:string,
     info?: string,
     idMonAn?: string,
+    idDauBep?:string,
     listIdThucPhamTieuChuan?:Array<string>,
     isPublish?: boolean,
     oderPublish?:number,

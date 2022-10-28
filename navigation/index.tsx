@@ -41,8 +41,11 @@ import Recharge from "../screens/Main/Pay/Recharge";
 import WebViewScreen from "../screens/WebView";
 import PaymentScreen from "../screens/Payment";
 import AddressScreen from "../screens/Address";
+import AddAddressScreen from "../screens/Address/addAddress";
+import CheftScreen from "../screens/Cheft/index";
 
 import { color1 } from "../utils/helper/Color";
+import UpdateAddress from "../screens/Address/UpdateAddress";
 
 export default function Navigation({
   colorScheme,
@@ -272,6 +275,50 @@ function RootNavigator() {
                 name={"Chọn địa chỉ nhận hàng"}
               />
             ),
+          })}
+        />
+
+        <Stack.Screen
+          name="AddAddress"
+          component={AddAddressScreen}
+          options={({ route }) => ({
+            headerShown: true,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Thêm Mới địa chỉ"}
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="UpdateAddress"
+          component={UpdateAddress}
+          options={({ route }) => ({
+            headerShown: true,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Cập nhật địa chỉ"}
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="cheft"
+          component={CheftScreen}
+          options={({ route }) => ({
+            headerShown: false,
           })}
         />
       </Stack.Navigator>

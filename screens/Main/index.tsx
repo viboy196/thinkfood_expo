@@ -145,6 +145,7 @@ export default function MainScreen() {
             sanPhamViewItem.listMediaUri = _doAn.listMediaUri;
             sanPhamViewItem.name = _doAn.name;
             sanPhamViewItem.info = _doAn.info;
+            sanPhamViewItem.idDauBep = _doAn.idDauBep;
           }
         }
         if (sanPhamViewItem.idThucPhamTieuChuan) {

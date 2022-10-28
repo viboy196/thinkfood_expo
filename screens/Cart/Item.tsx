@@ -28,6 +28,7 @@ import {
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import { currencyFormat } from "../../utils/helper/HelperFunc";
 import CartOderCrud from "../../utils/api/CartOderCrud";
+import { color1 } from "../../utils/helper/Color";
 
 export default function Item(props: { item: TypeCartOderItem }) {
   const { chon, idDonGia, soLuong, unitPrice } = props.item;
@@ -147,6 +148,7 @@ export default function Item(props: { item: TypeCartOderItem }) {
       >
         <Checkbox
           status={chon ? "checked" : "unchecked"}
+          color={color1}
           onPress={() => {
             distpatch(
               updateCartOderItem({ input: { ...props.item, chon: !chon } })

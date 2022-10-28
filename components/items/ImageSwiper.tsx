@@ -10,10 +10,12 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../constants/Layout";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
+import { TypeDauBep } from "../../utils/helper/DauBepHelper";
 
 export default function ImageSlider(props: {
   ImageArrayUri: string[];
-  dauBep?: any;
+  dauBep?: TypeDauBep;
+  onClickDauBep?: () => void;
 }) {
   const [active, setActive] = useState<number>(0);
   const [refScrollView, setRefScrollView] = useState<ScrollView | null>();
@@ -112,6 +114,11 @@ export default function ImageSlider(props: {
           bottom: 0,
           alignSelf: "flex-end",
           padding: 10,
+        }}
+        onPress={() => {
+          if (props.onClickDauBep) {
+            props.onClickDauBep();
+          }
         }}
       >
         <Image

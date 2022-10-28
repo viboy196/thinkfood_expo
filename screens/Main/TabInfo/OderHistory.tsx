@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TypeOder } from "../../../utils/helper/OderHelper";
 import OderCrud from "../../../utils/api/OderCrud";
@@ -19,7 +19,7 @@ export default function OderHistory() {
     }
   }, [token]);
   return (
-    <View>
+    <ScrollView>
       {state &&
         state.map((item) => (
           <PaymentHistoryItem
@@ -27,6 +27,6 @@ export default function OderHistory() {
             key={"PaymentHistoryItem" + item?.id}
           />
         ))}
-    </View>
+    </ScrollView>
   );
 }

@@ -9,6 +9,7 @@ export type TypeDonGiaView = TypeDonGia & { name?: string;
   avatarUri?: string;
   nameDonViDo?: string;
   listMediaUri?: string[];
+  idDauBep?:string;
   info?: string;}
 
 const initialState = {

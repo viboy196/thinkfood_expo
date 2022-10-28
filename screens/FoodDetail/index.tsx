@@ -16,13 +16,17 @@ import ApiRequest from "../../utils/api/Main/ApiRequest";
 import CartOderCrud from "../../utils/api/CartOderCrud";
 import { useDispatch } from "react-redux";
 import { setCartOderState } from "../../redux/features/CartOderSlices";
+import { TypeDauBep } from "../../utils/helper/DauBepHelper";
+import DauBepCrud from "../../utils/api/DauBepCrud";
 
 export default function FoodDetail({
   navigation,
   route,
 }: RootStackScreenProps<"FoodDeTail">) {
   const item = route.params;
+
   const [numCount, setNumCount] = useState<number>(1);
+  const [cheft, setCheft] = useState<TypeDauBep>();
 
   const { token, accountDetail } = useAppSelector((s) => s.auth);
   const distpatch = useDispatch();
@@ -63,11 +67,30 @@ export default function FoodDetail({
         }
       });
   };
+  useEffect(() => {
+    // if (item.idDauBep) {
+    //   console.log("idDauBep", item.idDauBep);
+    // }
+    if (item.idDauBep && token) {
+      DauBepCrud.getDetail(item.idDauBep, token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          setCheft(res.result);
+        }
+      });
+    }
+  }, [item.idDauBep]);
   return (
     <View style={{ flex: 1 }}>
-    
       {item?.listMediaUri && (
-        <ImageSlider ImageArrayUri={[...item?.listMediaUri]} />
+        <ImageSlider
+          dauBep={cheft}
+          onClickDauBep={() => {
+            if (cheft) {
+              navigation.navigate("cheft", { data: cheft });
+            }
+          }}
+          ImageArrayUri={[...item?.listMediaUri]}
+        />
       )}
       <TouchableOpacity
         style={{

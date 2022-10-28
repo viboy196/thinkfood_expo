@@ -22,6 +22,7 @@ export default function OderHistoryItem(props: { item: TypeOder }) {
       });
     }
   }, [props.item]);
+  console.log("ship", props.item);
 
   return (
     <View
@@ -39,7 +40,7 @@ export default function OderHistoryItem(props: { item: TypeOder }) {
       <View style={{ flexDirection: "row", paddingVertical: 10 }}>
         <Text>THINKFOOD</Text>
         <View style={{ flex: 1 }} />
-        <Text>Hoàn Thành</Text>
+        <Text>{props.item.complete ? "Hoàn Thành" : "Chưa hoàn Thành"}</Text>
       </View>
       <View
         style={{
@@ -77,7 +78,7 @@ export default function OderHistoryItem(props: { item: TypeOder }) {
           </View>
         </View>
       </View>
-      {props.item?.shipPrice && (
+      {props.item?.shipPrice !== undefined && (
         <View style={{ flexDirection: "row", paddingTop: 10 }}>
           <Text>Phí ship</Text>
           <View style={{ flex: 1 }} />

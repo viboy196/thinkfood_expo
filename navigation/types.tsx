@@ -10,6 +10,8 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
+import { TypeAddressDetail } from "../utils/helper/AddressHelper";
+import { TypeDauBep } from "../utils/helper/DauBepHelper";
 import { TypeDonGia } from "../utils/helper/DonGiaHelper";
 import { TypeLoaiGiaoDich } from "../utils/helper/LoaiGiaoDichHelper";
 import { TypeMonAn } from "../utils/helper/MonAnHelper";
@@ -40,6 +42,10 @@ export type RootStackParamList = {
   introduce: undefined;
 
   Address: undefined;
+
+  AddAddress: undefined;
+  UpdateAddress: { data: TypeAddressDetail };
+  cheft: { data: TypeDauBep };
 
   // Recharge
   Recharge: undefined;

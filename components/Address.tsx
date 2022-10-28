@@ -8,37 +8,12 @@ import AddressCrud from "../utils/api/AddressCrud";
 import { ResultStatusCode } from "../utils/api/apiTypes";
 import { logOut } from "../redux/features/auth/authSlices";
 import { getStringAddress } from "../utils/helper/HelperFunc";
+import { color1 } from "../utils/helper/Color";
 export default function Address(props: {
   nav: RootStackScreenProps<"Payment">;
+  address:TypeAddress
 }) {
-  const [address, setAddress] = useState<TypeAddress>();
-
-  const { token } = useAppSelector((s) => s.auth);
-  const dispatch = useAppDispatch();
-  const fetchData = () => {
-    if (token) {
-      AddressCrud.getAddressDefault(token)
-        .then((res) => {
-          if (res.code === ResultStatusCode.success) {
-            setAddress(res.result);
-          }
-        })
-        .catch((error) => {
-          dispatch(logOut());
-        });
-    }
-  };
-  useEffect(() => {
-    fetchData();
-    const willFocusSubscription = props.nav.navigation.addListener(
-      "focus",
-      () => {
-        fetchData();
-      }
-    );
-
-    return willFocusSubscription;
-  }, []);
+ 
   return (
     <TouchableOpacity
       style={{
@@ -57,7 +32,12 @@ export default function Address(props: {
       <View style={{ flex: 8 }}>
         <Text>Địa chỉ nhận hàng : </Text>
 
-        {address && <Text>{getStringAddress(address)}</Text>}
+        {props.address && (
+          <>
+            <Text>{getStringAddress(props.address)}</Text>
+            <Text style={{ color: color1 }}>{props.address.type}</Text>
+          </>
+        )}
       </View>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Ionicons name="chevron-forward" />

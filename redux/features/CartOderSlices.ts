@@ -41,8 +41,8 @@ const CartOderKhachHangSlices = createSlice({
           state = {
             ...state,
             listCartItem: action.payload.listCartItem,
-            id:action.payload.id,
-            idKhachHang:action.payload.idKhachHang
+            id:action.payload.id ? action.payload.id : state.id ,
+            idKhachHang:action.payload.idKhachHang ? action.payload.idKhachHang : state.idKhachHang
           };
         
       return state;
