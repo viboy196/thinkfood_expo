@@ -26,6 +26,28 @@ export default class DoAnCrud {
         return res.data as ExcuteResult;
     };
 
+    
+
+   static getListPublishDoAnByIdDauBep = async (idDauBep:string ): Promise<ExcuteResult> => {
+        const tag = `getListPublishDoAnByIdDauBep ${DoAnTag}`;
+        const url = `/api/DoAn/getListPublishDoAnByIdDauBep?idDauBep=${idDauBep}&v=1.0`
+        
+        console.log(`${tag} url :`, url);
+
+        const config: AxiosRequestConfig = {
+            headers: {
+            accept: 'text/plain',
+            },
+        };
+
+        const res = await axios.get(url , config);
+        console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+        
+        return res.data as ExcuteResult;
+    };
+
+
+
     static getDetailPublish = async (id:string): Promise<ExcuteResult> => {
       const tag = `getDetailPublish ${DoAnTag}`;
       const url = `/api/DoAn/detailPublish?id=${id}&v=1.0`

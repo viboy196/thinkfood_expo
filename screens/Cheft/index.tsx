@@ -1,10 +1,17 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RootStackScreenProps } from "../../navigation/types";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import Layout from "../../constants/Layout";
 import { color1, color2 } from "../../utils/helper/Color";
 import { Ionicons } from "@expo/vector-icons";
+import { TypeDoAn } from "../../utils/helper/DoAnHelper";
+import { useAppSelector } from "../../redux/store/hooks";
+import DoAnCrud from "../../utils/api/DoAnCrud";
+import { ResultStatusCode } from "../../utils/api/apiTypes";
+import ItemDoAn from "./ItemDoAn";
+import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
+import ItemFood from "../ListFood/ItemFood";
 
 export default function Cheft({
   navigation,
@@ -92,8 +99,35 @@ export default function Cheft({
             </TouchableOpacity>
           ))}
         </View>
-        <ScrollView style={{ flex: 1 }}></ScrollView>
+        <View style={{ flex: 1 }}>
+          {select === 1 && (
+            <DoAnByIdDauBep
+              idDauBep={route.params.data.id}
+              navigation={navigation}
+            />
+          )}
+        </View>
       </View>
     </View>
+  );
+}
+
+function DoAnByIdDauBep(props: { idDauBep: string; navigation: any }) {
+  const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
+  return (
+    <ScrollView style={{ flex: 1 }}>
+      {listSanPhamView &&
+        listSanPhamView
+          .filter((x) => x.idDauBep === props.idDauBep)
+          .map((item) => (
+            <ItemFood
+              item={item}
+              onPress={() => {
+                props.navigation.navigate("FoodDeTail", item);
+              }}
+              key={item.id}
+            />
+          ))}
+    </ScrollView>
   );
 }
