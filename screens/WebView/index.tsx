@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 import { WebView } from "react-native-webview";
 import { RootStackScreenProps } from "../../navigation/types";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { ExcuteResult, ResultStatusCode } from "../../utils/api/apiTypes";
 import { useAppSelector } from "../../redux/store/hooks";
+import axios from "../../utils/api/axios";
+import ApiRequest from "../../utils/api/Main/ApiRequest";
 export default function MyWebView({
   route,
   navigation,
 }: RootStackScreenProps<"WebView">) {
-  const [url, setUrl] = useState<string>("http://thinkfood.vn");
+  const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const [onStartLoad, setOnStartLoad] = useState<boolean>(false);
   const [urlResponse, setUrlResponse] = useState<string>();
   const { token } = useAppSelector((s) => s.auth);
-
-  const [merchantacsstag, setMerchantacsstag] = useState<boolean>(false);
 
   useEffect(() => {
     if (route.params.url) {
@@ -24,36 +24,45 @@ export default function MyWebView({
     }
   }, [route.params.url]);
   useEffect(() => {
-    if (urlResponse && token) {
-      const config: AxiosRequestConfig = {
-        headers: {
-          accept: "text/plain",
-          Authorization: `bearer ${token}`,
+    setTimeout(() => {
+      if (urlResponse && token) {
+        const config: AxiosRequestConfig = {
+          headers: {
+            accept: "text/plain",
+            Authorization: `bearer ${token}`,
 
-          "Content-Type": "application/json",
-        },
-      };
-      axios.get(urlResponse, config).then((_res) => {
-        const data = _res.data as ExcuteResult;
-        if (data.code === ResultStatusCode.success) {
-          setLoading(false);
-          Alert.alert("Thành Công", "Thanh toán Thành Công !!!", [
-            {
-              text: "OK",
-              onPress: () => {
-                navigation.navigate("Main");
+            "Content-Type": "application/json",
+          },
+        };
+        axios.get(urlResponse, config).then((_res) => {
+          const data = _res.data as ExcuteResult;
+          if (data.code === ResultStatusCode.success) {
+            Alert.alert("Thành Công", "Thanh toán Thành Công !!!", [
+              {
+                text: "OK",
+                onPress: () => {
+                  navigation.navigate("Main");
+                },
               },
-            },
-          ]);
-        }
-      });
-    }
+            ]);
+            // ApiRequest.AlePayGetTransactionInfo(data.result).then((res2) => {
+            //   ApiRequest.AlePayReturnBuyGoiTieuDung2(token, res2).then((res3) => {
+            //     if (res3.code === ResultStatusCode.success) {
+            //       setLoading(false);
+
+            //     }
+            //   });
+            // });
+          }
+        });
+      }
+    }, 2000);
   }, [urlResponse]);
 
   return (
     <View style={{ flex: 1 }}>
       <Spinner
-        visible={loading || merchantacsstag}
+        visible={loading}
         textContent={`${route.params.title} ...`}
         textStyle={{ color: "#fff", fontSize: 20 }}
       />
@@ -77,20 +86,11 @@ export default function MyWebView({
             }
           }}
           onNavigationStateChange={(state) => {
-            console.log("current_path", state.url);
             if (
-              state.url.includes("https://thinkfood.vn") &&
+              state.url.includes(axios.defaults.baseURL) &&
               urlResponse === undefined
             ) {
               setUrlResponse(state.url);
-            }
-
-            if (
-              state.url.includes("https://merchantacsstag.cardinalcommerce.com")
-            ) {
-              setMerchantacsstag(true);
-            } else {
-              setMerchantacsstag(false);
             }
           }}
         />

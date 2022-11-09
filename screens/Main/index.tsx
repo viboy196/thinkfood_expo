@@ -18,7 +18,7 @@ import IonsIcon from "@expo/vector-icons/build/Ionicons";
 
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { logOut, setStateAuth } from "../../redux/features/auth/authSlices";
-import TabNotification from "./TabNotification";
+import TabShare from "./TabShare";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import { TypeAccount } from "../../utils/helper/AccountHelper";
@@ -146,6 +146,8 @@ export default function MainScreen() {
             sanPhamViewItem.name = _doAn.name;
             sanPhamViewItem.info = _doAn.info;
             sanPhamViewItem.idDauBep = _doAn.idDauBep;
+            sanPhamViewItem.isBook = _doAn.isBook;
+            sanPhamViewItem.timeBook = _doAn.timeBook;
           }
         }
         if (sanPhamViewItem.idThucPhamTieuChuan) {
@@ -205,19 +207,19 @@ export default function MainScreen() {
         name="TabPay"
         component={TabPay}
         options={{
-          title: "ví",
+          title: "Ví",
           headerShown: false,
 
           tabBarIcon: ({ color }) => <TabBarIcon name="wallet" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabNotification"
-        component={Relationship}
+        name="TabShare"
+        component={TabShare}
         options={{
-          title: "Mối Quan Hệ",
+          title: "Giới Thiệu",
           headerShown: true,
-          header: () => <HeaderShow name={"Mối Quan Hệ"} />,
+          header: () => <HeaderShow name={"Giới Thiệu"} />,
 
           tabBarIcon: ({ color }) => <TabBarIcon name="people" color={color} />,
         }}
@@ -226,7 +228,7 @@ export default function MainScreen() {
         name="TabInfo"
         component={TabInfo}
         options={{
-          title: "Thông tin người dùng",
+          title: "Người dùng",
           headerShown: true,
           header: () => (
             <HeaderShow

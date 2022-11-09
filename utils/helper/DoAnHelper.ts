@@ -1,17 +1,22 @@
 import { MonAnTitle } from './MonAnHelper';
 
+// public bool? isBook { get; set; }
+// public string? timeBook { get; set; }
+
 const tag ='Đồ ăn';
 export type TypeDoAn = {
     id: string,
     name:string,
     info?: string,
     idMonAn?: string,
-    idDauBep?:string,
     listIdThucPhamTieuChuan?:Array<string>,
+    idDauBep?:string,
     isPublish?: boolean,
     oderPublish?:number,
     avartarUri?: string,
     listMediaUri?:Array<string>,
+    isBook?:boolean,
+    timeBook?:string
 }
 
 export type TypeDoAnCreate = {
@@ -19,10 +24,13 @@ export type TypeDoAnCreate = {
     idMonAn?:string,
     listIdThucPhamTieuChuan?:Array<string>,
     isPublish?: boolean,
+    idDauBep?:string,
     oderPublish:number,
     info?: string,
     avartarImageFile?: File,
     listMediaFile?:Array<File>,
+    isBook?:boolean,
+    timeBook?:string
 }
 
 export type TypeDoAnDetail = TypeDoAn & {

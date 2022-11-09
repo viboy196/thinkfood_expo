@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "605155269702",
+    "project_id": "thinkfood-970d1",
+    "storage_bucket": "thinkfood-970d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605155269702:android:c3a4601c5d1465627d7e47",
+        "android_client_info": {
+          "package_name": "com.thinkfood.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605155269702-f2or9kvvmhqsg5rgqf6up61qm3e38ert.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIQEBMAGQgl1kveysSweb-utO4bWIlJ7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605155269702-f2or9kvvmhqsg5rgqf6up61qm3e38ert.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

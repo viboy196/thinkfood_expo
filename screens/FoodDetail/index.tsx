@@ -89,7 +89,9 @@ export default function FoodDetail({
               navigation.navigate("cheft", { data: cheft });
             }
           }}
-          ImageArrayUri={[...item?.listMediaUri]}
+          ImageArrayUri={[...item?.listMediaUri, item.avartarUri]}
+          isBook={item.isBook}
+          timeBook={item.timeBook}
         />
       )}
       <TouchableOpacity
@@ -120,11 +122,6 @@ export default function FoodDetail({
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
             {item?.name ? item?.name : ""}
           </Text>
-          {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Ionicons name="pricetag" size={12} color={tintColorLight} />
-            <Text style={{ paddingLeft: 5 }}>Giảm {30}%</Text>
-          </View>
-           */}
         </View>
         <View style={{ marginRight: 10 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
@@ -132,17 +129,6 @@ export default function FoodDetail({
             {" vnđ/"}
             {item?.nameDonViDo}
           </Text>
-          {/* <Text
-            style={{
-              textDecorationLine: "line-through",
-              color: "#bebebe",
-              textAlign: "right",
-            }}
-          >
-            {item.unitPrice ? currencyFormat(item.unitPrice * 1.425) : "0"}
-            {" vnđ/"}
-            {state?.nameDonViDo}
-          </Text> */}
         </View>
       </View>
       <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>

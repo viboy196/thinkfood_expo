@@ -10,7 +10,10 @@ export type TypeDonGiaView = TypeDonGia & { name?: string;
   nameDonViDo?: string;
   listMediaUri?: string[];
   idDauBep?:string;
-  info?: string;}
+  info?: string;
+  isBook?:boolean,
+  timeBook?:string
+}
 
 const initialState = {
   loading: 'idle',

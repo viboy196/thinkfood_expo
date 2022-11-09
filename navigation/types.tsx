@@ -59,7 +59,7 @@ export type RootTabParamList = {
   TabHome: undefined;
   TabNetwork: undefined;
   TabPlus: undefined;
-  TabNotification: undefined;
+  TabShare: undefined;
   TabInfo: undefined;
   TabPay: undefined;
 };

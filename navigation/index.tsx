@@ -36,7 +36,7 @@ import PaymentHistory from "../screens/Main/TabInfo/OderHistory";
 import PersoInfo from "../screens/Main/TabInfo/PersoInfo";
 import ServicePack from "../screens/Main/TabInfo/ServicePack";
 import TabInfo from "../screens/Main/TabInfo";
-import TabNotification from "../screens/Main/TabNotification";
+import TabShare from "../screens/Main/TabShare";
 import Recharge from "../screens/Main/Pay/Recharge";
 import WebViewScreen from "../screens/WebView";
 import PaymentScreen from "../screens/Payment";
@@ -46,6 +46,7 @@ import CheftScreen from "../screens/Cheft/index";
 
 import { color1 } from "../utils/helper/Color";
 import UpdateAddress from "../screens/Address/UpdateAddress";
+import Notification from "../Notification/Notification";
 
 export default function Navigation({
   colorScheme,
@@ -53,10 +54,8 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer linking={LinkingConfiguration} theme={DefaultTheme}>
+      <Notification />
       <RootNavigator />
     </NavigationContainer>
   );
@@ -197,7 +196,7 @@ function RootNavigator() {
 
         <Stack.Screen
           name="introduce"
-          component={TabNotification}
+          component={TabShare}
           options={{
             headerShown: true,
             header: (props) => (

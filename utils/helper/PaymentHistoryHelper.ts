@@ -3,11 +3,11 @@ export type TypePaymentHistory = {
     id?: string,
     idKhachHang:string,
     info?:string,
-    price:number,
-    type:string,
-    action:string,
-    data:string,
-    CreatedAt:string,
+    price?:number,
+    type?:string,
+    action?:string,
+    data?:string,
+    createdAt?:string,
   }
 export enum actionPayment  {
     pay = "pay",

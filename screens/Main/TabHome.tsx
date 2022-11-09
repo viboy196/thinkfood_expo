@@ -87,11 +87,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
     <ScrollView>
       <View style={styles.container}>
         {loading && (
-          <Spinner
-            visible={true}
-            textContent={"Loading ..."}
-            textStyle={{ color: "#fff", fontSize: 20 }}
-          />
+          <Spinner visible={true} textStyle={{ color: "#fff", fontSize: 20 }} />
         )}
         <View style={styles.header}>
           <View style={styles.avatarView}>
@@ -255,30 +251,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
           </View>
 
           <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
-
-          {/* <View style={{ width: "100%" }}>
-            <View style={{ paddingLeft: 10 }}>
-              <Text
-                style={{
-                  color: tintColorLight,
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-              >
-                Món ăn{" "}
-              </Text>
-              <View style={{ width: "100%" }}>
-                <View style={{ alignItems: "flex-end", paddingRight: 10 }}>
-                  <Text>Xem thêm</Text>
-                </View>
-                <CartLoaiMonAn nav={nav} />
-              </View>
-            </View>
-          </View> */}
         </>
-        {/* // ) : (
-        //   <SearchHome nav={nav} />
-        // )} */}
       </View>
     </ScrollView>
   );

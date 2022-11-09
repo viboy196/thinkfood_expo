@@ -1,10 +1,10 @@
-import axios , {AxiosRequestConfig} from 'axios';
+import   {AxiosRequestConfig} from 'axios';
 import {ExcuteResult} from '../apiTypes';
+import axios from "../axios";
 
 // const host = 'https://27.71.228.66:7683';
 //const host = 'https://localhost:7241';
 
-axios.defaults.baseURL = "https://thinkfood.vn:7683/"   ;
 
 export default class ApiRequest {
 
@@ -41,6 +41,63 @@ export default class ApiRequest {
     console.log(res.data);
     return res.data as ExcuteResult;
   };
+  
+  static AlePayRequestPayment = async (input: any ): Promise<any> => {
+    const url = 'https://alepay-v3-sandbox.nganluong.vn/api/v3/checkout/request-payment';
+    console.log('AlePayRequestPayment ', url);
+    console.log(input);
+    
+
+    const rawResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(input)
+    });
+    const content = await rawResponse.json();
+    return content;
+  };
+  
+  static AlePayGetTransactionInfo = async (input: any ): Promise<any> => {
+    const url = 'https://alepay-v3-sandbox.nganluong.vn/api/v3/checkout/get-transaction-info';
+    console.log('AlePayRequestPayment ', url);
+    console.log(input);
+    
+
+    const rawResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(input)
+    });
+    const content = await rawResponse.json();
+    return content;
+  };
+  
+  static AlePayReturnBuyGoiTieuDung2 = async (token:string ,input: any ): Promise<ExcuteResult> => {
+    const tag = 'AlePayReturnBuyGoiTieuDung2';
+    const url = '/api/AleyPay/returnBuyGoiTieuDung2?v=1.0';
+    console.log('AppTokenAdd url ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.post(url ,input , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
+
 
   static Register = async (input: {
     phone: string;
@@ -94,6 +151,24 @@ export default class ApiRequest {
 
 
 
+  static AppTokenAdd = async (token :string , input : {token:string , idKhachHang :string , deviceOs:string  }): Promise<ExcuteResult> => {
+    const tag = 'AppTokenAdd';
+    const url = '/api/AppToken/add?v=1.0';
+    console.log('AppTokenAdd url ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.post(url ,input , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+  
   static GetAllMonAn = async (token :string): Promise<ExcuteResult> => {
     const tag = 'GetAllMonAn';
     const url = '/api/MonAn/all?v=1.0';
@@ -111,6 +186,7 @@ export default class ApiRequest {
     
     return res.data as ExcuteResult;
   };
+
   
   static OnePayBuyGoiTieuDung = async (token :string , idGoiTieuDung): Promise<ExcuteResult> => {
     const tag = 'OnePayBuyGoiTieuDung';
@@ -129,6 +205,26 @@ export default class ApiRequest {
     
     return res.data as ExcuteResult;
   };
+  
+  static AleyPayBuyGoiTieuDung = async (token :string , idGoiTieuDung :string): Promise<ExcuteResult> => {
+    const tag = 'OnePayBuyGoiTieuDung';
+    const url = `/api/AleyPay/buyGoiTieuDung?idGoiTieuDung=${idGoiTieuDung}&v=1.0`;
+    console.log('urlbase ', axios.defaults.baseURL);
+    console.log('OnePayBuyGoiTieuDung ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
   
   static getBalance = async (token :string): Promise<ExcuteResult> => {
     const tag = 'getBalance';
@@ -353,7 +449,7 @@ export default class ApiRequest {
       return res.data as ExcuteResult;
     };
 
-    static AddKhachHang = async (token :string , input : {phone : string  , fullName:string  }): Promise<ExcuteResult> => {
+    static AddKhachHang = async (token :string , input : {phone : string  , fullName:string , idTheGoiTieuDung?:string }): Promise<ExcuteResult> => {
       const tag = 'AddKhachHang';
       const url = '/api/Account/addKhachHang?v=1.0';
       console.log(`${tag} url :`, url);  

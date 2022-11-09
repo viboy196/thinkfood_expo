@@ -40,7 +40,6 @@ export default function Recharge({
         <Text
           style={{ color: "#fff", paddingVertical: 10, paddingHorizontal: 5 }}
         >
-          {" "}
           chọn gói mua
         </Text>
         <FlatList
@@ -115,12 +114,15 @@ const ModalCredit = (props: {
   const { token } = useAppSelector((s) => s.auth);
   const onPressBuy = () => {
     if (token)
-      ApiRequest.OnePayBuyGoiTieuDung(token, props.data.id).then((res) => {
+      ApiRequest.AleyPayBuyGoiTieuDung(token, props.data.id).then((res) => {
+        console.log("AleyPayBuyGoiTieuDung", res.result);
+
         if (res.code === ResultStatusCode.success) {
           props.navigation.navigate("WebView", {
-            title: "Thanh Toán",
-            url: res.result,
+            title: "Thanh toán",
+            url: res.result.checkoutUrl,
           });
+
           props.hideModal();
         }
       });

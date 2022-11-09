@@ -23,6 +23,7 @@ const Input = (props: {
   errorMessages?: string;
   keyboardType?: KeyboardTypeOptions | undefined;
   secureTextEntry?: boolean | undefined;
+  disable?: boolean;
 }) => {
   const {
     title,
@@ -34,7 +35,7 @@ const Input = (props: {
     keyboardType,
     secureTextEntry,
   } = props;
-  const placeholderTitle = `Nhập ${title}`;
+  const placeholderTitle = `${title}`;
   const [focus, setFocus] = useState(false);
   const [showPass, setShowPass] = useState(
     secureTextEntry !== undefined ? secureTextEntry : false
@@ -92,6 +93,7 @@ const Input = (props: {
             }}
           />
           <TextInput
+            disabled={props.disable}
             style={{
               flex: 1,
               paddingLeft: 10,

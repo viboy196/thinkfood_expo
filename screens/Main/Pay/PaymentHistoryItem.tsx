@@ -12,7 +12,7 @@ export default function PaymentHistoryItem(props: {
   return (
     <>
       <View style={{ padding: 10, flexDirection: "row" }}>
-        <View style={{ flex: 2, justifyContent: "center" }}>
+        <View style={{ flex: 2, justifyContent: "flex-start" }}>
           <Text>{props.item?.info}</Text>
         </View>
 
@@ -26,6 +26,19 @@ export default function PaymentHistoryItem(props: {
             {props.item.action === actionPayment.pay ? "-" : "+"}
             {currencyFormat(props.item?.price)} vnđ
           </Text>
+          {props.item?.createdAt &&
+            props.item.createdAt !== "0001-01-01T00:00:00Z" && (
+              <Text
+                style={{
+                  textAlign: "right",
+                }}
+              >
+                {new Date(props.item?.createdAt).toLocaleDateString()} {"-"}
+                <Text>
+                  {new Date(props.item?.createdAt).toLocaleTimeString()}{" "}
+                </Text>
+              </Text>
+            )}
         </View>
       </View>
     </>

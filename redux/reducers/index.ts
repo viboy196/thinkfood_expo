@@ -1,5 +1,7 @@
 import {combineReducers} from 'redux';
 import authReducer from '../features/auth/authSlices';
+import NotificationSlice from '../features/notification/NotificationSlice';
+
 import CartOderSlices from '../features/CartOderSlices';
 import DonGiaOderSlices from '../features/DonGiaOderSlices';
 import DoAnSlices from '../features/DoAnSlices';
@@ -10,6 +12,7 @@ import TextSearchSlides from '../features/TextSearchSlides';
 
 export default combineReducers({
   auth: authReducer,
+  noti:NotificationSlice,
   cart:CartOderSlices,
   donGia:DonGiaOderSlices,
   doAn:DoAnSlices,

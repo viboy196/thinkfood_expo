@@ -90,7 +90,7 @@ export default function NhomSanPhamIsLiveItem({
             sizeText={16}
             size={80}
             width={100}
-            height={150}
+            height={200}
           />
         )}
         keyExtractor={(item, index) => `${item.id}${index}`}

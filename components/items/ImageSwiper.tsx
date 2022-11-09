@@ -15,6 +15,8 @@ import { TypeDauBep } from "../../utils/helper/DauBepHelper";
 export default function ImageSlider(props: {
   ImageArrayUri: string[];
   dauBep?: TypeDauBep;
+  isBook?: boolean;
+  timeBook?: string;
   onClickDauBep?: () => void;
 }) {
   const [active, setActive] = useState<number>(0);
@@ -135,6 +137,26 @@ export default function ImageSlider(props: {
           }}
         />
       </TouchableOpacity>
+      <View
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          backgroundColor: "#fff",
+          borderRadius: 8,
+          padding: 8,
+        }}
+      >
+        <Text
+          style={{
+            color: "red",
+          }}
+        >
+          {props?.isBook === true && props?.timeBook
+            ? `Đặt trước ${props?.timeBook}`
+            : "có sẵn"}
+        </Text>
+      </View>
     </View>
   );
 }

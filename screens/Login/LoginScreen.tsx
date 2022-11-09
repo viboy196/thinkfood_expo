@@ -304,8 +304,13 @@ export default function Login({}: RootStackScreenProps<"Login">) {
                   {action === 4 && "Tạo mật Khẩu"}
                 </Text>
               </TouchableOpacity>
+              <Text
+                style={{ color: "red", marginTop: 15, textAlign: "center" }}
+              >
+                Bản thử nghiệm {"\n"} (chạy thử 01/11/2022 - 30/11/2022)
+              </Text>
             </View>
-            <View style={styles.empty} />
+            <View style={styles.empty}></View>
             <View style={{ alignItems: "center" }}>
               <Button
                 iconName="facebook"
