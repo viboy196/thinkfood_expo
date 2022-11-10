@@ -87,10 +87,10 @@ export default function NhomSanPhamIsLiveItem({
             nav={nav}
             item={item}
             colorText={"#424141"}
-            sizeText={16}
+            sizeText={14}
             size={80}
             width={100}
-            height={200}
+            height={220}
           />
         )}
         keyExtractor={(item, index) => `${item.id}${index}`}

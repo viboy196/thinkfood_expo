@@ -99,7 +99,7 @@ export default function DonGiaItem({
             style={{
               textAlign: "center",
               color: colorText ? colorText : undefined,
-              fontSize: sizeText ? sizeText : undefined,
+              fontSize: sizeText ? sizeText : 12,
             }}
           >
             {item?.name ? item.name : "Chưa nhập"}

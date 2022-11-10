@@ -1,4 +1,11 @@
-import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import Layout from "../../constants/Layout";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
@@ -24,6 +31,7 @@ export default function FoodDetail({
   route,
 }: RootStackScreenProps<"FoodDeTail">) {
   const item = route.params;
+  console.log("itemdetail", item);
 
   const [numCount, setNumCount] = useState<number>(1);
   const [cheft, setCheft] = useState<TypeDauBep>();
@@ -113,12 +121,12 @@ export default function FoodDetail({
       {/* thông tin tên giá , giá khuyến mãi */}
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: "column",
           paddingVertical: 10,
           paddingHorizontal: 10,
         }}
       >
-        <View style={{ flex: 1, paddingRight: 10 }}>
+        <View style={{ paddingRight: 10 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
             {item?.name ? item?.name : ""}
           </Text>
@@ -131,11 +139,12 @@ export default function FoodDetail({
           </Text>
         </View>
       </View>
-      <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>Giới thiệu</Text>
-        <Text>{item?.info}</Text>
-      </View>
-
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>Giới thiệu</Text>
+          <Text>{item?.info}</Text>
+        </View>
+      </ScrollView>
       <View
         style={{
           flexDirection: "row",
@@ -161,14 +170,22 @@ export default function FoodDetail({
             }}
           >
             <Text
-              style={{ textAlign: "center", fontSize: 28, fontWeight: "bold" }}
+              style={{
+                textAlign: "center",
+                fontSize: 28,
+                fontWeight: "bold",
+              }}
             >
               -
             </Text>
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
             <Text
-              style={{ textAlign: "center", fontSize: 28, fontWeight: "bold" }}
+              style={{
+                textAlign: "center",
+                fontSize: 28,
+                fontWeight: "bold",
+              }}
             >
               {numCount}
             </Text>
@@ -180,7 +197,11 @@ export default function FoodDetail({
             }}
           >
             <Text
-              style={{ textAlign: "center", fontSize: 28, fontWeight: "bold" }}
+              style={{
+                textAlign: "center",
+                fontSize: 28,
+                fontWeight: "bold",
+              }}
             >
               +
             </Text>

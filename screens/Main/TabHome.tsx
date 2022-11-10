@@ -228,7 +228,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               Gặp lại hương vị cũ - Tìm về kỷ niệm xưa.{" "}
             </Text>
           </ImageBackground>
-          <View style={{ width: "100%" }}>
+          {/* <View style={{ width: "100%" }}>
             <FlatList
               data={listLoaiGiaoDich}
               numColumns={3}
@@ -248,7 +248,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               )}
               keyExtractor={(item) => item.id}
             />
-          </View>
+          </View> */}
 
           <CartNhomSanPhamIsLive nav={nav} key="CartNhomSanPhamIsLive" />
         </>
