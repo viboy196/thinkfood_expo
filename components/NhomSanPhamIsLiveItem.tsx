@@ -45,7 +45,7 @@ export default function NhomSanPhamIsLiveItem({
     <View
       style={{
         width: Layout.window.width - 20,
-        marginHorizontal: 10,
+        marginBottom: 10,
         backgroundColor: "#fff",
         marginVertical: 5,
       }}
@@ -90,7 +90,6 @@ export default function NhomSanPhamIsLiveItem({
             sizeText={14}
             size={80}
             width={100}
-            height={220}
           />
         )}
         keyExtractor={(item, index) => `${item.id}${index}`}

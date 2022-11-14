@@ -1,3 +1,5 @@
+import { TypeAccountType } from "./AccountTypeHelper";
+
 const tag ='Tàii Khoản';
 
 
@@ -7,6 +9,7 @@ export type TypeAccount = {
     code?:string,
     fullName?: string,
     name?: string,
+    accountType?:TypeAccountType,
     birthOfDate?: string,
     email?: string,
     linkImageAvatar?: string,

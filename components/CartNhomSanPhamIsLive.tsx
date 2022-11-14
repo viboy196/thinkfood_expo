@@ -5,6 +5,7 @@ import NhomSanPhamCrud from "../utils/api/NhomSanPhamCrud";
 import { ResultStatusCode } from "../utils/api/apiTypes";
 import NhomSanPhamIsLiveItem from "./NhomSanPhamIsLiveItem";
 import { RootTabScreenProps } from "../navigation/types";
+import NhomSanPhamSetDoAnIsLiveItem from "./NhomSanPhamSetDoAnIsLiveItem";
 
 export default function CartNhomSanPhamIsLive(props: {
   nav: RootTabScreenProps<"TabHome">;
@@ -13,9 +14,7 @@ export default function CartNhomSanPhamIsLive(props: {
   useEffect(() => {
     NhomSanPhamCrud.getAllPublishIsLive()
       .then((res) => {
-        const arr = res.result as Array<TypeNhomSanPham>;
-
-        if (res.code === ResultStatusCode.success) setListData(arr);
+        if (res.code === ResultStatusCode.success) setListData(res.result);
       })
       .catch((error) => {
         console.log("error GetLoaiMonAnPublish", error);
@@ -26,11 +25,20 @@ export default function CartNhomSanPhamIsLive(props: {
     <>
       {listData &&
         listData.map((item) => (
-          <NhomSanPhamIsLiveItem
-            nav={props.nav}
-            item={item}
-            key={`ItemFoodType_${item.id}`}
-          />
+          <>
+            <NhomSanPhamIsLiveItem
+              nav={props.nav}
+              item={item}
+              key={`NhomSanPhamIsLiveItem${item.id}`}
+            />
+            {item.listIdSetDoAn && (
+              <NhomSanPhamSetDoAnIsLiveItem
+                nav={props.nav}
+                listIdSetDoAn={item.listIdSetDoAn}
+                key={`NhomSanPhamSetDoAnIsLiveItemr${item.id}`}
+              />
+            )}
+          </>
         ))}
     </>
   );

@@ -47,6 +47,7 @@ import CheftScreen from "../screens/Cheft/index";
 import { color1 } from "../utils/helper/Color";
 import UpdateAddress from "../screens/Address/UpdateAddress";
 import Notification from "../Notification/Notification";
+import SetDoAnDetail from "../screens/SetDoAn";
 
 export default function Navigation({
   colorScheme,
@@ -99,6 +100,12 @@ function RootNavigator() {
         />
 
         <Stack.Screen
+          name="SetDoAnDetail"
+          component={SetDoAnDetail}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
           name="FoodView"
           component={FoodView}
           options={{ headerShown: false }}
@@ -140,11 +147,7 @@ function RootNavigator() {
                     props.navigation.goBack();
                   }
                 }}
-                name={
-                  auth.accountDetail?.fullName
-                    ? auth.accountDetail.fullName
-                    : "Lịch sử  thanh toán"
-                }
+                name={"Lịch sử  thanh toán"}
               />
             ),
           }}
@@ -162,11 +165,7 @@ function RootNavigator() {
                     props.navigation.goBack();
                   }
                 }}
-                name={
-                  auth.accountDetail?.fullName
-                    ? auth.accountDetail.fullName
-                    : "Thông tin cá nhân"
-                }
+                name={"Thông tin cá nhân"}
               />
             ),
           }}
@@ -184,11 +183,7 @@ function RootNavigator() {
                     props.navigation.goBack();
                   }
                 }}
-                name={
-                  auth.accountDetail?.fullName
-                    ? auth.accountDetail.fullName
-                    : "Gói dịch vụ"
-                }
+                name={"Gói dịch vụ"}
               />
             ),
           }}

@@ -18,7 +18,6 @@ export default function DonGiaItem({
   size,
   sizeText,
   width,
-  height,
   colorText,
   nav,
 }: {
@@ -31,7 +30,6 @@ export default function DonGiaItem({
   size?: string | number;
   sizeText?: number;
   width?: number;
-  height?: string | number | undefined;
 }) {
   return (
     <TouchableOpacity
@@ -43,14 +41,12 @@ export default function DonGiaItem({
       <View
         style={{
           width: width ? width : 75,
-          height: height ? height : 100,
           alignItems: "center",
           justifyContent: "center",
         }}
       >
         <View
           style={{
-            height: "60%",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -89,7 +85,7 @@ export default function DonGiaItem({
             </View>
           </View>
         </View>
-        <View style={{ height: "40%" }}>
+        <View>
           <Text style={{ fontSize: 10, color: "tomato", textAlign: "center" }}>
             {item.unitPrice ? currencyFormat(item.unitPrice) : ""}
             {" vnđ/"}

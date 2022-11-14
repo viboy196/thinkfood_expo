@@ -15,6 +15,7 @@ import { TypeDauBep } from "../utils/helper/DauBepHelper";
 import { TypeDonGia } from "../utils/helper/DonGiaHelper";
 import { TypeLoaiGiaoDich } from "../utils/helper/LoaiGiaoDichHelper";
 import { TypeMonAn } from "../utils/helper/MonAnHelper";
+import { TypeSetDoAn } from "../utils/helper/SetDoAnHelper";
 
 declare global {
   namespace ReactNavigation {
@@ -50,6 +51,7 @@ export type RootStackParamList = {
   // Recharge
   Recharge: undefined;
   WebView: { title: string; url: string };
+  SetDoAnDetail: TypeSetDoAn;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

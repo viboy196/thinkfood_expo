@@ -21,36 +21,42 @@ export default function ServicePackItem(props: {
     }
   }, [props.item.idGoiTieuDung]);
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        padding: 10,
-        backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.4,
-        shadowRadius: 3,
-        elevation: 5,
-      }}
-    >
-      <View style={{ flex: 4 }}>
-        <Image
-          source={
-            goiTieuDung?.avartarUri
-              ? { uri: UrlHelper.urlFile + goiTieuDung.avartarUri }
-              : require("../../../assets/images/logo/thinkfoodlogo.png")
-          }
-          style={{ width: 80, height: 60 }}
-        />
-      </View>
+    <>
+      {goiTieuDung ? (
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 10,
+            backgroundColor: "#fff",
+            shadowColor: "#000",
+            shadowOffset: { width: 1, height: 1 },
+            shadowOpacity: 0.4,
+            shadowRadius: 3,
+            elevation: 5,
+          }}
+        >
+          <View style={{ flex: 4 }}>
+            <Image
+              source={
+                goiTieuDung?.avartarUri
+                  ? { uri: UrlHelper.urlFile + goiTieuDung.avartarUri }
+                  : require("../../../assets/images/logo/thinkfoodlogo.png")
+              }
+              style={{ width: 80, height: 60 }}
+            />
+          </View>
 
-      <View style={{ flex: 6, justifyContent: "center" }}>
-        <Text>Gói : {goiTieuDung?.name}</Text>
+          <View style={{ flex: 6, justifyContent: "center" }}>
+            <Text>Gói : {goiTieuDung?.name}</Text>
 
-        <Text>{`Giá trị :${currencyFormat(
-          Number(goiTieuDung?.price)
-        )} vnđ`}</Text>
-      </View>
-    </View>
+            <Text>{`Giá trị :${currencyFormat(
+              Number(goiTieuDung?.price)
+            )} vnđ`}</Text>
+          </View>
+        </View>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }

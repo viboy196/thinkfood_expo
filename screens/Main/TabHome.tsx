@@ -1,6 +1,7 @@
 import { View, Text } from "../../components/Themed";
 import React, { useState, useEffect } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   ImageBackground,
@@ -28,6 +29,7 @@ import SearchHome from "../../components/Search/SearchHome";
 import { setStateTextSearch } from "../../redux/features/TextSearchSlides";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { currencyFormat } from "../../utils/helper/HelperFunc";
+import { color2 } from "../../utils/helper/Color";
 
 export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
   const { navigation } = nav;
@@ -90,13 +92,49 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
           <Spinner visible={true} textStyle={{ color: "#fff", fontSize: 20 }} />
         )}
         <View style={styles.header}>
-          <View style={styles.avatarView}>
-            <Image
-              source={require("../../assets/images/thinkfood/vip-card.png")}
-              resizeMode="cover"
-              style={styles.avatarImage}
-            />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert("Loại tài khoản", accountDetail?.accountType?.name);
+            }}
+            style={styles.avatarView}
+          >
+            {accountDetail?.accountType?.code === "StaffCustomer" && (
+              <Image
+                source={require("../../assets/images/thinkfood/press-pass.png")}
+                resizeMode="cover"
+                style={styles.avatarImage}
+              />
+            )}
+            {accountDetail?.accountType?.code === "NonmalUser" && (
+              <Image
+                source={require("../../assets/images/logo/thinkfoodlogo.png")}
+                resizeMode="cover"
+                style={styles.avatarImage}
+              />
+            )}
+            {accountDetail?.accountType?.code === "LoyalCustomer" && (
+              <Image
+                source={require("../../assets/images/thinkfood/customer-loyalty.png")}
+                resizeMode="cover"
+                style={styles.avatarImage}
+              />
+            )}
+            {accountDetail?.accountType?.code === "VIPCustomerss" && (
+              <Image
+                source={require("../../assets/images/thinkfood/vip-card.png")}
+                resizeMode="cover"
+                style={styles.avatarImage}
+              />
+            )}
+
+            {accountDetail?.accountType?.code === "FamilyCustomer" && (
+              <Image
+                source={require("../../assets/images/thinkfood/family.png")}
+                resizeMode="cover"
+                style={styles.avatarImage}
+              />
+            )}
+          </TouchableOpacity>
           <TouchableOpacity
             style={{ paddingLeft: 10 }}
             onPress={() => navigation.navigate("TabInfo")}
@@ -110,6 +148,16 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
             >
               Xin chào , {accountDetail?.fullName}
             </Text>
+            {accountDetail?.accountType && (
+              <Text
+                style={{
+                  color: "#6a6968",
+                }}
+              >
+                {"Thành viên : "}
+                {accountDetail?.accountType?.name}
+              </Text>
+            )}
 
             <Text
               style={{

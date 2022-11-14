@@ -55,8 +55,8 @@ export default function OderHistoryItem(props: { item: TypeOder }) {
         >
           <Image
             source={
-              sanPhamView.avartarUri
-                ? { uri: UrlHelper.urlFile + sanPhamView.avartarUri }
+              sanPhamView?.avartarUri
+                ? { uri: UrlHelper.urlFile + sanPhamView?.avartarUri }
                 : require("../../../assets/images/logo/thinkfoodlogo.png")
             }
             style={{ width: 40, height: 40 }}
@@ -64,10 +64,10 @@ export default function OderHistoryItem(props: { item: TypeOder }) {
         </View>
 
         <View style={{ flex: 4, justifyContent: "center" }}>
-          <Text style={{ paddingTop: 10 }}>{sanPhamView.name}</Text>
+          <Text style={{ paddingTop: 10 }}>{sanPhamView?.name}</Text>
           <View style={{ flexDirection: "row" }}>
             <View>
-              <Text>{sanPhamView.info}</Text>
+              <Text>{sanPhamView?.info}</Text>
             </View>
 
             <View style={{ flex: 1 }} />

@@ -17,6 +17,7 @@ export default function ImageSlider(props: {
   dauBep?: TypeDauBep;
   isBook?: boolean;
   timeBook?: string;
+  datCo?: boolean;
   onClickDauBep?: () => void;
 }) {
   const [active, setActive] = useState<number>(0);
@@ -152,9 +153,13 @@ export default function ImageSlider(props: {
             color: "red",
           }}
         >
-          {props?.isBook === true && props?.timeBook
-            ? `Đặt trước ${props?.timeBook}`
-            : "có sẵn"}
+          {props?.isBook === true &&
+            props?.timeBook &&
+            `Đặt trước ${props?.timeBook}`}
+          {props.datCo === true && "Đặt tiệc"}
+          {!(props?.isBook === true && props?.timeBook) &&
+            !(props.datCo === true) &&
+            "Có sẵn"}
         </Text>
       </View>
     </View>

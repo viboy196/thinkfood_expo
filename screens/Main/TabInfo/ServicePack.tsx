@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import KhachHangGoiTieuDungCrud from "../../../utils/api/KhachHangGoiTieuDungCrud";
 import { useAppSelector } from "../../../redux/store/hooks";
@@ -22,11 +22,11 @@ export default function ServicePack() {
       });
   }, []);
   return (
-    <View>
+    <ScrollView>
       {listKhachHangGoiTieuDung &&
         listKhachHangGoiTieuDung.map((item) => (
           <ServicePackItem item={item} key={"ServicePackItem" + item.id} />
         ))}
-    </View>
+    </ScrollView>
   );
 }

@@ -34,13 +34,32 @@ export default function Recharge({
       }
     });
   }, []);
+  const onPressBuy = () => {
+    if (token && selectItem)
+      ApiRequest.AleyPayBuyGoiTieuDung(token, selectItem.id).then((res) => {
+        console.log("AleyPayBuyGoiTieuDung", res.result);
+
+        if (res.code === ResultStatusCode.success) {
+          navigation.navigate("WebView", {
+            title: "Thanh toán",
+            url: res.result.checkoutUrl,
+          });
+        }
+      });
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: color1, padding: 10 }}>
         <Text
-          style={{ color: "#fff", paddingVertical: 10, paddingHorizontal: 5 }}
+          style={{
+            color: "#fff",
+            paddingVertical: 10,
+            paddingHorizontal: 5,
+            fontSize: 16,
+            textAlign: "center",
+          }}
         >
-          chọn gói mua
+          GÓI TIÊU DÙNG
         </Text>
         <FlatList
           data={listGoiTieuDung}
@@ -50,24 +69,69 @@ export default function Recharge({
               item={item}
               showModal={showModal}
               key={index}
+              idSelect={selectItem?.id}
               setselectItem={setselectItem}
             />
           )}
         />
       </View>
+      <View style={{ flex: 1, backgroundColor: "#fff", padding: 10 }}>
+        {selectItem && (
+          <>
+            <Text
+              style={{
+                textAlign: "center",
+                color: color1,
+                fontSize: 18,
+                fontWeight: "500",
+              }}
+            >
+              {"GÓI"} {selectItem?.name.toUpperCase()}
+            </Text>
 
-      <ModalCredit
-        visible={visible}
-        hideModal={hideModal}
-        data={selectItem}
-        navigation={navigation}
-      />
+            <Text style={{ marginBottom: 5, textAlign: "center" }}>
+              {selectItem?.info}
+            </Text>
+            <Text
+              style={{
+                marginTop: 20,
+                marginBottom: 10,
+                fontSize: 32,
+                color: color1,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              {currencyFormat(selectItem?.price)} đ
+            </Text>
+
+            <View style={{ flex: 1 }} />
+            <TouchableOpacity
+              onPress={onPressBuy}
+              style={{ padding: 10, backgroundColor: color2, borderRadius: 8 }}
+            >
+              <Text style={{ textAlign: "center", color: "#fff" }}>
+                Mua Gói
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+      {selectItem && visible === true && (
+        <ModalCredit
+          visible={visible}
+          hideModal={hideModal}
+          data={selectItem}
+          navigation={navigation}
+        />
+      )}
     </View>
   );
 }
 
 const ItemGoiTieuDung = (props: {
   item: TypeGoiTieuDung;
+  idSelect?: string;
   showModal: () => void;
   setselectItem: React.Dispatch<React.SetStateAction<TypeGoiTieuDung>>;
 }) => {
@@ -75,6 +139,7 @@ const ItemGoiTieuDung = (props: {
     <View
       style={{
         width: (Layout.window.width - 20) / 3,
+        height: 100,
       }}
     >
       <TouchableOpacity
@@ -87,14 +152,22 @@ const ItemGoiTieuDung = (props: {
           borderRadius: 8,
           borderWidth: 2,
           borderColor: "#fff",
+          backgroundColor: props.idSelect === props.item.id ? "#fff" : color1,
         }}
         onPress={() => {
           console.log("click");
-          props.showModal();
+          // props.showModal();
           props.setselectItem(props.item);
         }}
       >
-        <Text style={{ color: "#fff" }}>{props.item.name}</Text>
+        <Text
+          style={{
+            color: props.idSelect === props.item.id ? color1 : "#fff",
+            textAlign: "center",
+          }}
+        >
+          {props.item.name}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -144,12 +217,10 @@ const ModalCredit = (props: {
                 color: color2,
               }}
             >
-              Thanh Toán
+              {props.data?.name}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", padding: 10 }}>
-            <Text>Gói : {props.data?.name}</Text>
-          </View>
+
           <View style={{ flexDirection: "row", padding: 10 }}>
             <Text>Giá : {currencyFormat(props.data?.price)} đ</Text>
           </View>

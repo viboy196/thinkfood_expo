@@ -69,6 +69,11 @@ export default function TabShare({
 
     return willFocusSubscription;
   }, []);
+  useEffect(() => {
+    if (listGoiTang) {
+      setGoiTang(listGoiTang[0]);
+    }
+  }, [listGoiTang]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -168,6 +173,7 @@ export const ModalSelectGoiTang = (props: {
           </View>
           {props.listGoiTang.map((item, index) => (
             <View
+              key={`listGoiTang${item.id}`}
               style={{
                 flexDirection: "row",
                 marginVertical: 5,
@@ -184,7 +190,6 @@ export const ModalSelectGoiTang = (props: {
               >
                 <RadioButton
                   value="first"
-                  status={props.selectPttt === 0 ? "checked" : "unchecked"}
                   color={color1}
                   onPress={() => {
                     props.setGoiTang(item);
@@ -199,7 +204,9 @@ export const ModalSelectGoiTang = (props: {
                   justifyContent: "center",
                 }}
               >
-                <Text>{item.nameGoiTieuDung}</Text>
+                <Text>
+                  {item.nameGoiTieuDung} {`: ${item.soLuong}`}
+                </Text>
               </View>
             </View>
           ))}
