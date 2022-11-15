@@ -37,14 +37,13 @@ export default function MyWebView({
         axios.get(urlResponse, config).then((_res) => {
           const data = _res.data as ExcuteResult;
           if (data.code === ResultStatusCode.success) {
-            Alert.alert("Thành Công", "Thanh toán Thành Công !!!", [
-              {
-                text: "OK",
-                onPress: () => {
-                  navigation.navigate("Main");
-                },
-              },
-            ]);
+            if (urlResponse.includes("returnBuyGoiTieuDung"))
+              Alert.alert("Thành Công", "Thanh toán Thành Công !!!");
+            else {
+              Alert.alert("Thông báo", "Thanh toán  bị hủy !!!");
+            }
+            navigation.navigate("Main");
+
             // ApiRequest.AlePayGetTransactionInfo(data.result).then((res2) => {
             //   ApiRequest.AlePayReturnBuyGoiTieuDung2(token, res2).then((res3) => {
             //     if (res3.code === ResultStatusCode.success) {

@@ -18,7 +18,8 @@ export default function PaymentHistory(props: {
     if (token) {
       PaymentHistoryCrud.getAllByUser(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
-          setListDataPaymentHistory(res.result);
+          const _listDataPaymentHistory = res.result as TypePaymentHistory[];
+          setListDataPaymentHistory(_listDataPaymentHistory.reverse());
         }
       });
     }
@@ -45,7 +46,6 @@ export default function PaymentHistory(props: {
           <PaymentHistoryItem item={item} key={item.id} />
         )}
       />
-      
     </>
   );
 }

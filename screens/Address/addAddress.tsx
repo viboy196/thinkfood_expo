@@ -35,7 +35,7 @@ export default function AddAddress({
         .then((res) => {
           setLoading(false);
           if (res.code === ResultStatusCode.success) {
-            Alert.alert("Thành Công", "Thêm mới địa chỉ thành công", [
+            Alert.alert("Thông  báo", "Thêm mới địa chỉ thành công", [
               {
                 text: "OK",
                 onPress: () => {

@@ -5,12 +5,7 @@ import { UrlHelper } from "../../utils/helper/UrlHelper";
 import Layout from "../../constants/Layout";
 import { color1, color2 } from "../../utils/helper/Color";
 import { Ionicons } from "@expo/vector-icons";
-import { TypeDoAn } from "../../utils/helper/DoAnHelper";
 import { useAppSelector } from "../../redux/store/hooks";
-import DoAnCrud from "../../utils/api/DoAnCrud";
-import { ResultStatusCode } from "../../utils/api/apiTypes";
-import ItemDoAn from "./ItemDoAn";
-import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
 import ItemFood from "../ListFood/ItemFood";
 
 export default function Cheft({
@@ -125,7 +120,7 @@ function DoAnByIdDauBep(props: { idDauBep: string; navigation: any }) {
               onPress={() => {
                 props.navigation.navigate("FoodDeTail", item);
               }}
-              key={item.id}
+              key={"ItemFoodChef" + item.id}
             />
           ))}
     </ScrollView>

@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { color1 } from "../../utils/helper/Color";
+import { callNumber } from "../../utils/helper/HelperFunc";
 import {
   validateOTP,
   validatePassword,
@@ -282,6 +283,29 @@ export default function Login({}: RootStackScreenProps<"Login">) {
                 />
                 <Text style={styles.textInfoCheckBox}>Nhớ thông tin</Text>
               </View>
+              <View style={{ flex: 1 }} />
+              <TouchableOpacity
+                style={{ marginRight: 28 }}
+                onPress={() => {
+                  Alert.alert(
+                    "Quên mật khẩu",
+                    "Liên hệ sđt 0982571428 để được cấp lại mật khẩu",
+                    [
+                      {
+                        text: "Gọi ngay",
+                        onPress: () => {
+                          callNumber("0982571428");
+                        },
+                      },
+                      {
+                        text: "Ok",
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Text style={styles.textInfoCheckBox}>Quên Mật khẩu</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.btnLoginViewBorder}>
               <TouchableOpacity

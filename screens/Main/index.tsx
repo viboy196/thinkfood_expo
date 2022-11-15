@@ -219,7 +219,7 @@ export default function MainScreen() {
         options={{
           title: "Giới Thiệu",
           headerShown: true,
-          header: () => <HeaderShow name={"Giới Thiệu"} />,
+          header: () => <HeaderShow name={"Giới thiêu ThinkFood với bạn bè"} />,
 
           tabBarIcon: ({ color }) => <TabBarIcon name="people" color={color} />,
         }}

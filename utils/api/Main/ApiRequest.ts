@@ -323,6 +323,49 @@ export default class ApiRequest {
     
     return res.data as ExcuteResult;
   };
+  
+  static ChangePassword = async (token :string , input : {id : string  , oldPassword? : string ,newPassword? : string}): Promise<ExcuteResult> => {
+    const tag = 'ChangePassword';
+    const url = '/api/Account/change-password?v=1.0';
+    console.log('url ', url);
+
+    
+    
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+
+        "Content-Type" : "application/json"
+      },
+    };
+    const res = await axios.post(url , input , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+  
+  static ChangeFullName = async (token :string , input : {id : string  , fullName : string }): Promise<ExcuteResult> => {
+    const tag = 'ChangeFullName';
+    const url = '/api/Account/change-fullName?v=1.0';
+    console.log('url ', url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+
+        "Content-Type" : "application/json"
+      },
+    };
+    const res = await axios.post(url , input , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
 
 
 

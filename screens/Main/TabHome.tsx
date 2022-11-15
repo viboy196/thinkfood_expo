@@ -84,6 +84,10 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
 
     return willFocusSubscription;
   });
+  console.log(
+    "accountDetail?.accountTypeaccountDetail?.accountType",
+    accountDetail?.accountType
+  );
 
   return (
     <ScrollView>
@@ -105,11 +109,12 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                 style={styles.avatarImage}
               />
             )}
-            {accountDetail?.accountType?.code === "NonmalUser" && (
+            {(accountDetail?.accountType?.code === "NonmalUser" ||
+              accountDetail?.accountType == null) && (
               <Image
                 source={require("../../assets/images/logo/thinkfoodlogo.png")}
                 resizeMode="cover"
-                style={styles.avatarImage}
+                style={{ ...styles.avatarImage, width: 50, height: 50    }}
               />
             )}
             {accountDetail?.accountType?.code === "LoyalCustomer" && (

@@ -42,12 +42,18 @@ export default function TabShare({
       }).then((res) => {
         setLoading(false);
         if (res.code === ResultStatusCode.success) {
-          Alert.alert("Thành công", `Thêm tài Khoản thành công`);
+          Alert.alert(
+            "Thông  báo",
+            `Thêm tài Khoản thành công \nCảm ơn đã giới thiệu bạn bè đến với ThinkFood`
+          );
           fetchDataGoiTang();
           setGoiTang(undefined);
         } else {
           if (res.errorMessage === "Object was exist")
-            Alert.alert("Thất bại", "Tài khoản đã tôn tại");
+            Alert.alert(
+              "Thông báo",
+              "Tài khoản đã tồn tại  \nCảm ơn đã giới thiệu bạn bè đến với ThinkFood"
+            );
         }
       });
     }
@@ -76,11 +82,11 @@ export default function TabShare({
   }, [listGoiTang]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop: 10 }}>
       <Spinner visible={loading} textStyle={{ color: "#fff" }} />
-      <Text style={{ padding: 10, fontSize: 24, color: color1 }}>
-        Thêm tài khoản
-      </Text>
+      {/* <Text style={{ padding: 10, fontSize: 20, color: color1 }}>
+        Giới thiêu ThinkFood với bạn bè
+      </Text> */}
 
       <Input
         title={"Họ và tên"}

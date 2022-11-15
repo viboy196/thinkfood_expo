@@ -17,7 +17,7 @@ export default function Address({
   const onPressSelectAddress = (id: string) => {
     AddressCrud.setDefault(token, id).then((res) => {
       if (res.code === ResultStatusCode.success) {
-        Alert.alert("Thành công", "Chọn địa chỉ thành công", [
+        Alert.alert("Thông báo", "Chọn địa chỉ thành công", [
           {
             text: "Ok",
             onPress: () => {
