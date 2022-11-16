@@ -1,3 +1,4 @@
+import { color2 } from './Color';
 import { ItemDonGiaLive } from './NhomSanPhamHelper';
 
 import { Linking, Alert, Platform } from 'react-native';
@@ -87,4 +88,51 @@ export const getStringAddress = (address:TypeAddress):string =>{
     s = s + address.province + ' . ';
   }
   return  s;
+}
+
+export const getStatusDoAn = (statusCode :string ,  activeTime?:string):{text:string , color:string ,backgroundColor:string} =>{
+
+  if(statusCode  === '01'){
+    if(activeTime){
+      let arr :number[]= [];
+      let num = 0;
+      for (var i = 0; i < activeTime.length; i++) {
+        var _num = Number(activeTime[i]);
+        if(!isNaN(_num)){
+          num = 10*num + _num;
+          
+        }else{
+          arr.push(num);
+          num = 0;
+        }
+      }
+      
+      arr.push(num);
+      
+      var timeStart = arr[0]*60 + arr[1];
+      
+      var timeEnd = arr[2]*60 + arr[3];
+      var timeNow = (new Date().getHours())*60 + (new Date().getMinutes());
+
+      if(timeNow >= timeStart && timeNow <= timeEnd){
+
+        return {text: 'Có sẵn' , color:'#fff' , backgroundColor:color2}
+      }
+      else{
+      return {text: 'Bán từ ' + activeTime ,color:'red' , backgroundColor:'#fff'}
+      }
+    }
+    return {text: 'Có sẵn' , color:'#fff' , backgroundColor:color2}
+  }
+  if(statusCode  === '02'){
+    return {text: 'Sắp ra mắt' , color:'red' , backgroundColor:'#fff'}
+  }
+  if(statusCode  === '03'){
+    return {text: 'Đã hết hàng' , color:'red' , backgroundColor:'#fff'}
+  }
+  if(statusCode  === '04'){
+    return {text: 'Đặt trước' , color:'#fff' , backgroundColor:color2  }
+  }
+  return {text:  'Sắp  ra mắt' , color:'red' , backgroundColor:'#fff'}
+  
 }

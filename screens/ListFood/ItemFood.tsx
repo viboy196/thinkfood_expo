@@ -13,12 +13,17 @@ import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { TypeDoAn } from "../../utils/helper/DoAnHelper";
 import { TypeThucPhamTieuChuan } from "../../utils/helper/ThucPhamTieuChuanHelper";
-import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
+import {
+  callNumber,
+  currencyFormat,
+  getStatusDoAn,
+} from "../../utils/helper/HelperFunc";
 import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import CartOderCrud from "../../utils/api/CartOderCrud";
 import { setCartOderState } from "../../redux/features/CartOderSlices";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
+import { color2 } from "../../utils/helper/Color";
 export default function ItemFood({
   item,
   onPress,
@@ -119,57 +124,60 @@ export default function ItemFood({
           </Text>
         </View>
       </View>
-      <View
-        style={{
-          width: 100,
-          height: 60,
-          position: "absolute",
-          right: 0,
-          bottom: 0,
-          justifyContent: "flex-end",
-          marginRight: 5,
-          marginBottom: 5,
-        }}
-      >
-        <TouchableOpacity onPress={Call}>
-          <View
-            style={{
-              backgroundColor: "#00b454",
-              padding: 4,
-              marginTop: 5,
-              flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 5,
-            }}
-          >
-            <View>
-              <Ionicons name="call" color={"#fff"} size={12} />
+      {getStatusDoAn(item.status, item.activeTime).backgroundColor ===
+        color2 && (
+        <View
+          style={{
+            width: 100,
+            height: 60,
+            position: "absolute",
+            right: 0,
+            bottom: 0,
+            justifyContent: "flex-end",
+            marginRight: 5,
+            marginBottom: 5,
+          }}
+        >
+          <TouchableOpacity onPress={Call}>
+            <View
+              style={{
+                backgroundColor: "#00b454",
+                padding: 4,
+                marginTop: 5,
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: 5,
+              }}
+            >
+              <View>
+                <Ionicons name="call" color={"#fff"} size={12} />
+              </View>
+              <Text style={{ fontSize: 10, padding: 4, color: "#fff" }}>
+                Mua Ngay
+              </Text>
             </View>
-            <Text style={{ fontSize: 10, padding: 4, color: "#fff" }}>
-              Mua Ngay
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={addCart}>
-          <View
-            style={{
-              backgroundColor: "#00b454",
-              padding: 4,
-              marginTop: 5,
-              flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 5,
-            }}
-          >
-            <View>
-              <Ionicons name="add-circle" color={"#fff"} size={12} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={addCart}>
+            <View
+              style={{
+                backgroundColor: "#00b454",
+                padding: 4,
+                marginTop: 5,
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: 5,
+              }}
+            >
+              <View>
+                <Ionicons name="add-circle" color={"#fff"} size={12} />
+              </View>
+              <Text style={{ fontSize: 10, padding: 4, color: "#fff" }}>
+                Thêm giỏ hàng
+              </Text>
             </View>
-            <Text style={{ fontSize: 10, padding: 4, color: "#fff" }}>
-              Thêm giỏ hàng
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }

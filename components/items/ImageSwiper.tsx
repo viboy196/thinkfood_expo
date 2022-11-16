@@ -11,6 +11,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../constants/Layout";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import { TypeDauBep } from "../../utils/helper/DauBepHelper";
+import { getStatusDoAn } from "../../utils/helper/HelperFunc";
+import { useAppSelector } from "../../redux/store/hooks";
 
 export default function ImageSlider(props: {
   ImageArrayUri: string[];
@@ -19,11 +21,17 @@ export default function ImageSlider(props: {
   timeBook?: string;
   datCo?: boolean;
   onClickDauBep?: () => void;
+
+  onClickCart?: () => void;
+
+  status?: string;
+  activeTime?: string;
 }) {
   const [active, setActive] = useState<number>(0);
   const [refScrollView, setRefScrollView] = useState<ScrollView | null>();
 
   const arr = props.ImageArrayUri;
+  const { listCartItem } = useAppSelector((s) => s.cart);
 
   const onChange = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { nativeEvent } = event;
@@ -143,24 +151,76 @@ export default function ImageSlider(props: {
           position: "absolute",
           top: 10,
           right: 10,
-          backgroundColor: "#fff",
-          borderRadius: 8,
-          padding: 8,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Text
+        <View
           style={{
-            color: "red",
+            backgroundColor: getStatusDoAn(props.status, props.activeTime)
+              .backgroundColor,
+            borderRadius: 8,
+            padding: 8,
+            marginRight: 10,
           }}
         >
-          {props?.isBook === true &&
-            props?.timeBook &&
-            `Đặt trước ${props?.timeBook}`}
-          {props.datCo === true && "Đặt tiệc"}
-          {!(props?.isBook === true && props?.timeBook) &&
-            !(props.datCo === true) &&
-            "Có sẵn"}
-        </Text>
+          <Text
+            style={{
+              color: getStatusDoAn(props.status, props.activeTime).color,
+            }}
+          >
+            {props?.isBook === true &&
+              props?.timeBook &&
+              `Đặt trước ${props?.timeBook}`}
+            {props.datCo === true && "Đặt tiệc"}
+            {!(props?.isBook === true && props?.timeBook) &&
+              !(props.datCo === true) &&
+              getStatusDoAn(props.status, props.activeTime).text}
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={{ marginRight: 20 }}
+          onPress={props.onClickCart}
+        >
+          <Image
+            source={require("../../assets/images/logo/shopping-cart-icon.png")}
+            resizeMode="cover"
+            style={{
+              width: 35,
+              tintColor: "#fff",
+              height: 28,
+            }}
+          />
+          {listCartItem && listCartItem.length > 0 && (
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 20,
+                borderWidth: 2,
+                borderColor: "rgba(0,0,0,0.1)",
+                backgroundColor: "red",
+                position: "absolute",
+                top: -5,
+                right: -5,
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  fontSize: 10,
+                  textAlign: "center",
+                }}
+              >
+                {listCartItem.length}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );

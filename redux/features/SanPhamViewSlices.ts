@@ -12,7 +12,9 @@ export type TypeDonGiaView = TypeDonGia & { name?: string;
   idDauBep?:string;
   info?: string;
   isBook?:boolean,
-  timeBook?:string
+  timeBook?:string,
+  status?:string,
+  activeTime?:string
 }
 
 const initialState = {

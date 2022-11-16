@@ -15,6 +15,7 @@ import { useAppSelector } from "../redux/store/hooks";
 import Textblink from "./Textblink";
 import { TypeSetDoAn } from "../utils/helper/SetDoAnHelper";
 import SetDoAnItem from "./items/SetDoAnItem";
+import GirlViewItem from "./items/GirlViewItem";
 
 export default function NhomSanPhamSetDoAnIsLiveItem({
   listIdSetDoAn,
@@ -23,6 +24,24 @@ export default function NhomSanPhamSetDoAnIsLiveItem({
   listIdSetDoAn: string[];
   nav: RootTabScreenProps<"TabHome">;
 }) {
+  const [listIdSetDoAnHz, setListIdSetDoAnHz] = useState<string[][]>();
+
+  useEffect(() => {
+    if (listIdSetDoAn) {
+      let listItem: string[][] = [];
+      let itemArr: string[] = [];
+      listIdSetDoAn.forEach((x) => {
+        itemArr.push(x);
+        if (itemArr.length == 3) {
+          listItem.push(itemArr);
+          itemArr = [];
+        }
+      });
+      listItem.push(itemArr);
+      setListIdSetDoAnHz(listItem);
+    }
+  }, [listIdSetDoAn]);
+
   return (
     <View
       style={{
@@ -36,9 +55,26 @@ export default function NhomSanPhamSetDoAnIsLiveItem({
         <View style={{ flex: 1 }} />
       </View>
 
-      <FlatList
+      {listIdSetDoAnHz &&
+        listIdSetDoAnHz.map((item, index) => (
+          <GirlViewItem
+            data={item}
+            renderItem={(_item) => (
+              <SetDoAnItem
+                nav={nav}
+                idSetDoAn={_item}
+                colorText={"#424141"}
+                sizeText={14}
+                size={80}
+                width={100}
+                key={"DonGiaItem" + _item}
+              />
+            )}
+            key={"GirlViewItem" + index}
+          />
+        ))}
+      {/* <FlatList
         data={listIdSetDoAn}
-        numColumns={3}
         renderItem={({ item, index }) => (
           <SetDoAnItem
             nav={nav}
@@ -50,7 +86,7 @@ export default function NhomSanPhamSetDoAnIsLiveItem({
           />
         )}
         keyExtractor={(item, index) => `listIdSetDoAn${index}`}
-      />
+      /> */}
     </View>
   );
 }

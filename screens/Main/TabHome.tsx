@@ -98,7 +98,8 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
-              Alert.alert("Loại tài khoản", accountDetail?.accountType?.name);
+              if (accountDetail?.accountType?.name)
+                Alert.alert("Loại tài khoản", accountDetail?.accountType?.name);
             }}
             style={styles.avatarView}
           >
@@ -114,7 +115,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               <Image
                 source={require("../../assets/images/logo/thinkfoodlogo.png")}
                 resizeMode="cover"
-                style={{ ...styles.avatarImage, width: 50, height: 50    }}
+                style={{ ...styles.avatarImage, width: 50, height: 50 }}
               />
             )}
             {accountDetail?.accountType?.code === "LoyalCustomer" && (

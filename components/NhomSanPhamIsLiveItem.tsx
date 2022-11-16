@@ -13,6 +13,8 @@ import { RootTabScreenProps } from "../navigation/types";
 import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
 import { useAppSelector } from "../redux/store/hooks";
 import Textblink from "./Textblink";
+import { color1, color2 } from "../utils/helper/Color";
+import GirlViewItem from "./items/GirlViewItem";
 
 export default function NhomSanPhamIsLiveItem({
   item,
@@ -26,8 +28,10 @@ export default function NhomSanPhamIsLiveItem({
     : undefined;
 
   const [listDonGia, setListDonGia] = useState<Array<TypeDonGiaView>>();
+
   const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
 
+  const [listDonGiaHz, setListDonGiaHz] = useState<TypeDonGiaView[][]>();
   useEffect(() => {
     if (_listIdDonGia && listSanPhamView) {
       let _listDonGia: TypeDonGiaView[] = [];
@@ -40,6 +44,21 @@ export default function NhomSanPhamIsLiveItem({
       setListDonGia(_listDonGia);
     }
   }, [item.listItemDonGia, listSanPhamView]);
+  useEffect(() => {
+    if (listDonGia) {
+      let listItem: TypeDonGiaView[][] = [];
+      let itemArr: TypeDonGiaView[] = [];
+      listDonGia.forEach((x) => {
+        itemArr.push(x);
+        if (itemArr.length == 3) {
+          listItem.push(itemArr);
+          itemArr = [];
+        }
+      });
+      listItem.push(itemArr);
+      setListDonGiaHz(listItem);
+    }
+  }, [listDonGia]);
 
   return (
     <View
@@ -71,17 +90,38 @@ export default function NhomSanPhamIsLiveItem({
           }}
         >
           <Textblink
-            style={{ color: "red", fontWeight: "700", fontSize: 14, left: -40 }}
+            style={{
+              color: color2,
+              fontWeight: "700",
+              fontSize: 14,
+              left: -40,
+            }}
             text="• Đang bán"
           />
 
           {/* <Text style={{ color: "tomato", fontWeight: "700" }}> Đang bán</Text> */}
         </View>
       </View>
-
-      <FlatList
+      {listDonGiaHz &&
+        listDonGiaHz.map((item, index) => (
+          <GirlViewItem
+            data={item}
+            renderItem={(_item) => (
+              <DonGiaItem
+                nav={nav}
+                item={_item}
+                colorText={"#424141"}
+                sizeText={14}
+                size={80}
+                width={100}
+                key={"DonGiaItem" + _item.id}
+              />
+            )}
+            key={"GirlViewItem" + index}
+          />
+        ))}
+      {/* <FlatList
         data={listDonGia}
-        numColumns={3}
         renderItem={({ item, index }) => (
           <DonGiaItem
             nav={nav}
@@ -93,7 +133,7 @@ export default function NhomSanPhamIsLiveItem({
           />
         )}
         keyExtractor={(item, index) => `${item.id}${index}`}
-      />
+      /> */}
     </View>
   );
 }

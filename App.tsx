@@ -14,7 +14,7 @@ import LoaiThucPham from "./screens/FoodType";
 import ListFood from "./screens/ListFood";
 import FoodDetail from "./screens/FoodDetail";
 import ImageSlider from "./components/items/ImageSwiper";
-import AddAddress from "./screens/Address/addAddress";
+import AddAddress from "./screens/Address/AddAddress";
 
 export default function App() {
   const colorScheme = useColorScheme();

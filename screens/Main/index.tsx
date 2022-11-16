@@ -90,29 +90,28 @@ export default function MainScreen() {
       });
     }
   }, [token, accountDetail?.id]);
-
   useEffect(() => {
-    if (listDonGia === undefined && token) {
+    if (token) {
       DonGiaCrud.GetAll(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
           dispatch(setDonGiaState({ listDonGia: res.result }));
         }
       });
     }
-  }, [listDonGia, token]);
+  }, [token]);
 
   useEffect(() => {
-    if (listDoAn === undefined && token) {
+    if (token) {
       DoAnCrud.GetAll(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
           dispatch(setDoAnState({ listDoAn: res.result }));
         }
       });
     }
-  }, [listDoAn, token]);
+  }, [token]);
 
   useEffect(() => {
-    if (listThucPhamTieuChuan === undefined && token) {
+    if (token) {
       ThucPhamTieuChuanCrud.GetAll(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
           dispatch(
@@ -121,17 +120,17 @@ export default function MainScreen() {
         }
       });
     }
-  }, [listThucPhamTieuChuan, token]);
+  }, [token]);
 
   useEffect(() => {
-    if (listDonViDo === undefined && token) {
+    if (token) {
       DonViDoCrud.GetAll(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
           dispatch(setDonViDoState({ listDonViDo: res.result }));
         }
       });
     }
-  }, [listDonViDo, token]);
+  }, [token]);
 
   useEffect(() => {
     if (listDonGia && listDoAn && listThucPhamTieuChuan && listDonViDo) {
@@ -148,6 +147,8 @@ export default function MainScreen() {
             sanPhamViewItem.idDauBep = _doAn.idDauBep;
             sanPhamViewItem.isBook = _doAn.isBook;
             sanPhamViewItem.timeBook = _doAn.timeBook;
+            sanPhamViewItem.status = _doAn.status;
+            sanPhamViewItem.activeTime = _doAn.activeTime;
           }
         }
         if (sanPhamViewItem.idThucPhamTieuChuan) {
@@ -182,9 +183,6 @@ export default function MainScreen() {
       initialRouteName="TabHome"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-        tabBarStyle: {
-          height: 50,
-        },
       }}
     >
       <BottomTab.Screen

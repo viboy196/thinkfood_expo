@@ -16,7 +16,11 @@ import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
-import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
+import {
+  callNumber,
+  currencyFormat,
+  getStatusDoAn,
+} from "../../utils/helper/HelperFunc";
 import ImageSlider from "../../components/items/ImageSwiper";
 import { useAppSelector } from "../../redux/store/hooks";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
@@ -25,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { setCartOderState } from "../../redux/features/CartOderSlices";
 import { TypeDauBep } from "../../utils/helper/DauBepHelper";
 import DauBepCrud from "../../utils/api/DauBepCrud";
+import { color2 } from "../../utils/helper/Color";
 
 export default function FoodDetail({
   navigation,
@@ -97,9 +102,14 @@ export default function FoodDetail({
               navigation.navigate("cheft", { data: cheft });
             }
           }}
+          onClickCart={() => {
+            navigation.navigate("Cart");
+          }}
           ImageArrayUri={[...item?.listMediaUri, item.avartarUri]}
           isBook={item.isBook}
           timeBook={item.timeBook}
+          status={item.status}
+          activeTime={item.activeTime}
         />
       )}
       <TouchableOpacity
@@ -145,131 +155,134 @@ export default function FoodDetail({
           <Text>{item?.info}</Text>
         </View>
       </ScrollView>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      {getStatusDoAn(item.status, item.activeTime).backgroundColor ===
+        color2 && (
         <View
           style={{
-            flex: 1,
             flexDirection: "row",
-            borderWidth: 2,
-            borderColor: "#bebebe",
-            padding: 10,
-            borderRadius: 100,
-            margin: 10,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => {
-              if (numCount > 1) setNumCount((old) => old - 1);
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              borderWidth: 2,
+              borderColor: "#bebebe",
+              padding: 10,
+              borderRadius: 100,
+              margin: 10,
             }}
           >
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 28,
-                fontWeight: "bold",
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => {
+                if (numCount > 1) setNumCount((old) => old - 1);
               }}
             >
-              -
-            </Text>
-          </TouchableOpacity>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 28,
-                fontWeight: "bold",
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 28,
+                  fontWeight: "bold",
+                }}
+              >
+                -
+              </Text>
+            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 28,
+                  fontWeight: "bold",
+                }}
+              >
+                {numCount}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => {
+                setNumCount((old) => old + 1);
               }}
             >
-              {numCount}
-            </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 28,
+                  fontWeight: "bold",
+                }}
+              >
+                +
+              </Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => {
-              setNumCount((old) => old + 1);
+          <View
+            style={{
+              flex: 1,
+              height: 110,
+              justifyContent: "flex-end",
+              marginRight: 5,
+              marginBottom: 10,
             }}
           >
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 28,
-                fontWeight: "bold",
-              }}
-            >
-              +
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            height: 110,
-            justifyContent: "flex-end",
-            marginRight: 5,
-            marginBottom: 10,
-          }}
-        >
-          <TouchableOpacity onPress={Call}>
-            <View
-              style={{
-                backgroundColor: "#00b454",
-                padding: 10,
-                marginTop: 5,
-                flexDirection: "row",
-                alignItems: "center",
-                borderRadius: 5,
-                height: 50,
-              }}
-            >
-              <View>
-                <Ionicons name="call" color={"#fff"} size={24} />
-              </View>
-              <Text
+            <TouchableOpacity onPress={Call}>
+              <View
                 style={{
-                  padding: 4,
-                  color: "#fff",
-                  textAlign: "center",
+                  backgroundColor: "#00b454",
+                  padding: 10,
+                  marginTop: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  borderRadius: 5,
+                  height: 50,
                 }}
               >
-                Mua Ngay
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={addCart}>
-            <View
-              style={{
-                backgroundColor: "#00b454",
-                padding: 10,
-                marginTop: 5,
-                flexDirection: "row",
-                alignItems: "center",
-                borderRadius: 5,
-                height: 50,
-              }}
-            >
-              <View>
-                <Ionicons name="add-circle" color={"#fff"} size={24} />
+                <View>
+                  <Ionicons name="call" color={"#fff"} size={24} />
+                </View>
+                <Text
+                  style={{
+                    padding: 4,
+                    color: "#fff",
+                    textAlign: "center",
+                  }}
+                >
+                  Mua Ngay
+                </Text>
               </View>
-              <Text
+            </TouchableOpacity>
+            <TouchableOpacity onPress={addCart}>
+              <View
                 style={{
-                  padding: 4,
-                  color: "#fff",
-                  textAlign: "center",
+                  backgroundColor: "#00b454",
+                  padding: 10,
+                  marginTop: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  borderRadius: 5,
+                  height: 50,
                 }}
               >
-                Thêm giỏ hàng
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <View>
+                  <Ionicons name="add-circle" color={"#fff"} size={24} />
+                </View>
+                <Text
+                  style={{
+                    padding: 4,
+                    color: "#fff",
+                    textAlign: "center",
+                  }}
+                >
+                  Thêm giỏ hàng
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 }

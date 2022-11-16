@@ -66,10 +66,6 @@ export default function OderHistoryItem(props: { item: TypeOder }) {
         <View style={{ flex: 4, justifyContent: "center" }}>
           <Text style={{ paddingTop: 10 }}>{sanPhamView?.name}</Text>
           <View style={{ flexDirection: "row" }}>
-            <View>
-              <Text>{sanPhamView?.info}</Text>
-            </View>
-
             <View style={{ flex: 1 }} />
             <View>
               <Text>vnđ {currencyFormat(props.item?.unitPrice)}</Text>

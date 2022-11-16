@@ -10,6 +10,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
+import { LocationMaps } from "../screens/AreaMap";
 import { TypeAddressDetail } from "../utils/helper/AddressHelper";
 import { TypeDauBep } from "../utils/helper/DauBepHelper";
 import { TypeDonGia } from "../utils/helper/DonGiaHelper";
@@ -52,6 +53,8 @@ export type RootStackParamList = {
   Recharge: undefined;
   WebView: { title: string; url: string };
   SetDoAnDetail: TypeSetDoAn;
+
+  AreaMap: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

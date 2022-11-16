@@ -289,7 +289,7 @@ export default function Login({}: RootStackScreenProps<"Login">) {
                 onPress={() => {
                   Alert.alert(
                     "Quên mật khẩu",
-                    "Liên hệ sđt 0982571428 để được cấp lại mật khẩu",
+                    "Liên hệ sđt 0982571428 để được trợ giúp",
                     [
                       {
                         text: "Gọi ngay",

@@ -14,6 +14,7 @@ import { currencyFormat } from "../../utils/helper/HelperFunc";
 import { TypeSetDoAn } from "../../utils/helper/SetDoAnHelper";
 import SetDoAnCrud from "../../utils/api/SetDoAnCrud";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
+import { color2 } from "../../utils/helper/Color";
 
 export default function SetDoAnItem({
   idSetDoAn,
@@ -80,14 +81,14 @@ export default function SetDoAnItem({
                     position: "absolute",
                     top: 4,
                     right: 4,
-                    backgroundColor: "#fff",
+                    backgroundColor: color2,
                     borderRadius: 8,
                     padding: 4,
                   }}
                 >
                   <Text
                     style={{
-                      color: "red",
+                      color: "#fff",
                       fontSize: 8,
                     }}
                   >

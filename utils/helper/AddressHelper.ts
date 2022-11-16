@@ -1,9 +1,8 @@
+import { Region } from "react-native-maps";
+
 const tag ='Địa chỉ';
 
-export type TypeLocation = {
-    latitude?:number;
-    longitude?:number;
-}
+
 
 export type TypeAddress = {
     id: string,
@@ -16,7 +15,7 @@ export type TypeAddress = {
     type?: string,
     idConnect?: string,
     phone?: string,
-    location?:TypeLocation
+    region?:Region
   }
 
 export type TypeAddressCreate = {
@@ -29,7 +28,7 @@ export type TypeAddressCreate = {
     type?: string,
     idConnect?: string,
     phone?: string,
-    location?:TypeLocation
+    region?:Region
 }
 
 export type TypeAddressDetail = TypeAddress & {

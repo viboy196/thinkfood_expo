@@ -128,6 +128,8 @@ export default class AddressCrud {
     input : TypeAddressCreate): Promise<ExcuteResult> => {
     const tag = `Add ${AddressTag}`;
     const url = '/api/Address/add?v=1.0';
+    console.log(input);
+    
     console.log(`url ${tag}`, url);
 
     

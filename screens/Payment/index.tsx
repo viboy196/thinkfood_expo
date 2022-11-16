@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import Address from "../../components/Address";
 import {
+  callNumber,
   currencyFormat,
   numActive,
   sumPriceCart,
@@ -32,6 +33,7 @@ import DonHangCrud from "../../utils/api/DonHangCrud";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import { setCartOderState } from "../../redux/features/CartOderSlices";
 import CartOderCrud from "../../utils/api/CartOderCrud";
+import ApiRequest from "../../utils/api/Main/ApiRequest";
 
 export default function Payment(nav: RootStackScreenProps<"Payment">) {
   const { listCartItem, id, idKhachHang } = useAppSelector((s) => s.cart);
@@ -105,9 +107,27 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
                 idKhachHang: accountDetail?.id,
               })
             );
+          } else {
+            console.log(res);
           }
         }
       );
+  };
+  const Call = () => {
+    if (token) {
+      ApiRequest.getPhoneActive(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          const arrPhone = res.result as string[];
+          if (arrPhone.length > 0) {
+            callNumber(arrPhone[0]);
+          } else {
+            Alert.alert("Tổng đài viên đang bận liên hệ sau");
+          }
+        } else {
+          Alert.alert("Tổng đài viên đang bận liên hệ sau");
+        }
+      });
+    }
   };
   const addDonHang = () => {
     if (token) {
@@ -117,18 +137,12 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
         .then((res) => {
           setLoading(false);
           if (res.code === ResultStatusCode.success) {
-            listCartItem.filter((x) => {
+            listCartItem.forEach((x) => {
               removeItemCart(x.idDonGia);
             });
-
-            Alert.alert("Thành công", "Tạo Đơn Hàng Thành công", [
-              {
-                text: "OK",
-                onPress: () => {
-                  nav.navigation.goBack();
-                },
-              },
-            ]);
+            Alert.alert("Thông báo", "Tạo đơn hàng thành công");
+            nav.navigation.goBack();
+            // Call();
           }
         })
         .catch((error) => {

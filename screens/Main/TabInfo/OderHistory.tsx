@@ -21,12 +21,14 @@ export default function OderHistory() {
   return (
     <ScrollView>
       {state &&
-        state.map((item) => (
-          <PaymentHistoryItem
-            item={item}
-            key={"PaymentHistoryItem" + item?.id}
-          />
-        ))}
+        state
+          .reverse()
+          .map((item) => (
+            <PaymentHistoryItem
+              item={item}
+              key={"PaymentHistoryItem" + item?.id}
+            />
+          ))}
     </ScrollView>
   );
 }

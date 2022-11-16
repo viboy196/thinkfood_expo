@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { ResultStatusCode } from '../../utils/api/apiTypes';
 import DoAnCrud from '../../utils/api/DoAnCrud';
-import { DoAnTitle, TypeDoAn } from '../../utils/helper/DoAnHelper';
+import {  TypeDoAn } from '../../utils/helper/DoAnHelper';
 
 const initialState = {
   loading: 'idle',
@@ -10,7 +10,7 @@ const initialState = {
 } as  {loading?: 'idle' | 'pending' | 'succeeded' | 'failed'; listDoAn? : Array<TypeDoAn>};
 
 export const getAllDoAnAsync = createAsyncThunk(
-  `${DoAnTitle.tag}/getAll`,
+  `DoAn/getAll`,
   async (input :{token:string}) => {
     return await DoAnCrud.GetAll(input.token);
   },

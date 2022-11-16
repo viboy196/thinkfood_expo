@@ -24,7 +24,14 @@ export default function TabInfo({ navigation }: RootTabScreenProps<"TabInfo">) {
         onPress={() => {
           navigation.navigate("PaymentHistory");
         }}
-        text={"Lịch sử  Đặt hàng"}
+        text={"Lịch sử  đặt hàng"}
+      />
+
+      <ItemInfo
+        onPress={() => {
+          navigation.navigate("Address");
+        }}
+        text={"Địa chỉ đặt hàng"}
       />
     </View>
   );

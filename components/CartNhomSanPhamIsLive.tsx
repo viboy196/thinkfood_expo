@@ -14,7 +14,9 @@ export default function CartNhomSanPhamIsLive(props: {
   useEffect(() => {
     NhomSanPhamCrud.getAllPublishIsLive()
       .then((res) => {
-        if (res.code === ResultStatusCode.success) setListData(res.result);
+        if (res.code === ResultStatusCode.success) {
+          setListData(res.result);
+        }
       })
       .catch((error) => {
         console.log("error GetLoaiMonAnPublish", error);
@@ -25,20 +27,15 @@ export default function CartNhomSanPhamIsLive(props: {
     <>
       {listData &&
         listData.map((item) => (
-          <>
-            <NhomSanPhamIsLiveItem
-              nav={props.nav}
-              item={item}
-              key={`NhomSanPhamIsLiveItem${item.id}`}
-            />
+          <View key={`NhomSanPhamIsLiveItem${item.id}`}>
+            <NhomSanPhamIsLiveItem nav={props.nav} item={item} />
             {item.listIdSetDoAn && (
               <NhomSanPhamSetDoAnIsLiveItem
                 nav={props.nav}
                 listIdSetDoAn={item.listIdSetDoAn}
-                key={`NhomSanPhamSetDoAnIsLiveItemr${item.id}`}
               />
             )}
-          </>
+          </View>
         ))}
     </>
   );

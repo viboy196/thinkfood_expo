@@ -10,7 +10,7 @@ import { UrlHelper } from "../../utils/helper/UrlHelper";
 import Layout from "../../constants/Layout";
 import { RootTabScreenProps } from "../../navigation/types";
 import { TypeDonGiaView } from "../../redux/features/SanPhamViewSlices";
-import { currencyFormat } from "../../utils/helper/HelperFunc";
+import { currencyFormat, getStatusDoAn } from "../../utils/helper/HelperFunc";
 
 export default function DonGiaItem({
   item,
@@ -67,20 +67,21 @@ export default function DonGiaItem({
                 position: "absolute",
                 top: 4,
                 right: 4,
-                backgroundColor: "#fff",
+                backgroundColor: getStatusDoAn(item.status, item.activeTime)
+                  .backgroundColor,
                 borderRadius: 8,
                 padding: 4,
               }}
             >
               <Text
                 style={{
-                  color: "red",
+                  color: getStatusDoAn(item.status, item.activeTime).color,
                   fontSize: 8,
                 }}
               >
                 {item.isBook === true && item.timeBook
                   ? `Đặt trước ${item.timeBook}`
-                  : "có sẵn"}
+                  : getStatusDoAn(item.status, item.activeTime).text}
               </Text>
             </View>
           </View>

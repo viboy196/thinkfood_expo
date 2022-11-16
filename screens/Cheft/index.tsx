@@ -13,11 +13,7 @@ export default function Cheft({
   route,
 }: RootStackScreenProps<"cheft">) {
   const [select, setSelect] = useState<number>(1);
-  const listButton = [
-    { value: 1, title: "Món Ăn" },
-    { value: 2, title: "Thông tin" },
-    { value: 3, title: "Câu chuyện" },
-  ];
+  const listButton = [{ value: 1, title: "Món Ăn" }];
   return (
     <View style={{ flex: 1 }}>
       <View>
@@ -66,41 +62,12 @@ export default function Cheft({
           backgroundColor: "#fff",
         }}
       >
-        <View style={{ flexDirection: "row", marginTop: 5 }}>
-          {listButton.map((item) => (
-            <TouchableOpacity
-              style={{ flex: 1, padding: 2, height: 60 }}
-              onPress={() => {
-                setSelect(item.value);
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: select === item.value ? color1 : "#fff",
-                  flex: 1,
-                  borderRadius: 8,
-                  borderWidth: 1,
-                  borderColor: color1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{ color: select === item.value ? "#fff" : color1 }}
-                >
-                  {item.title}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <View style={{ flexDirection: "row", marginTop: 5 }}></View>
         <View style={{ flex: 1 }}>
-          {select === 1 && (
-            <DoAnByIdDauBep
-              idDauBep={route.params.data.id}
-              navigation={navigation}
-            />
-          )}
+          <DoAnByIdDauBep
+            idDauBep={route.params.data.id}
+            navigation={navigation}
+          />
         </View>
       </View>
     </View>

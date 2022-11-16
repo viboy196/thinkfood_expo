@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { color1 } from "../../utils/helper/Color";
 import { TypeAddressDetail } from "../../utils/helper/AddressHelper";
 
@@ -16,6 +17,9 @@ import AddressCrud from "../../utils/api/AddressCrud";
 import { useAppSelector } from "../../redux/store/hooks";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import SelectGPS from "../../components/SelectGPS";
+import MapView, { Marker, Region } from "react-native-maps";
+import Layout from "../../constants/Layout";
 
 export default function UpdateAddress({
   navigation,
@@ -26,6 +30,9 @@ export default function UpdateAddress({
 
   const [loading, setLoading] = useState<boolean>(false);
   const { token } = useAppSelector((s) => s.auth);
+
+  const [region, setRegion] = useState<Region>(input.region);
+
   const onUpdateAddress = () => {
     if (token) {
       setLoading(true);
@@ -50,6 +57,43 @@ export default function UpdateAddress({
         });
     }
   };
+  useEffect(() => {
+    if (region) {
+      setInput((old) => {
+        return { ...old, region };
+      });
+    }
+  }, [region]);
+
+  const [openScreenGPS, setOpenScreenGPS] = useState<Boolean>(false);
+  if (openScreenGPS) {
+    return (
+      <SelectGPS
+        name={"anh dan"}
+        region={region}
+        setRegion={setRegion}
+        onPressDone={() => {
+          Alert.alert("Xác Nhận", "Xác nhận vị trí được chọn", [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            {
+              text: "OK",
+              onPress: () => {
+                setOpenScreenGPS(false);
+              },
+            },
+          ]);
+        }}
+        onPressClose={() => {
+          setOpenScreenGPS(false);
+        }}
+        gps={undefined}
+      />
+    );
+  }
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
       <Spinner visible={loading} textStyle={{ color: "#fff" }} />
@@ -121,6 +165,38 @@ export default function UpdateAddress({
             });
           }}
         />
+        <View style={{ flexDirection: "row", marginVertical: 10 }}>
+          {region && (
+            <MapView
+              style={{ width: Layout.window.width, height: 150 }}
+              initialRegion={{
+                ...region,
+                latitudeDelta: region.latitudeDelta / 4,
+                longitudeDelta: region.longitudeDelta / 4,
+              }}
+              showsScale={true}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              scrollEnabled={false}
+            >
+              <Marker
+                coordinate={{
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                }}
+                pinColor="black"
+              ></Marker>
+            </MapView>
+          )}
+          <View style={{ position: "absolute", top: 10, right: 10 }}>
+            <Button
+              title="Chọn vị trí"
+              onPress={() => {
+                setOpenScreenGPS(true);
+              }}
+            />
+          </View>
+        </View>
       </View>
       <View>
         <Text style={{ padding: 10 }}>Cài đặt</Text>

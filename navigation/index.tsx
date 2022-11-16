@@ -41,13 +41,14 @@ import Recharge from "../screens/Main/Pay/Recharge";
 import WebViewScreen from "../screens/WebView";
 import PaymentScreen from "../screens/Payment";
 import AddressScreen from "../screens/Address";
-import AddAddressScreen from "../screens/Address/addAddress";
+import AddAddressScreen from "../screens/Address/AddAddress";
 import CheftScreen from "../screens/Cheft/index";
 
 import { color1 } from "../utils/helper/Color";
 import UpdateAddress from "../screens/Address/UpdateAddress";
 import Notification from "../Notification/Notification";
 import SetDoAnDetail from "../screens/SetDoAn";
+import AreaMap from "../screens/AreaMap";
 
 export default function Navigation({
   colorScheme,
@@ -311,6 +312,14 @@ function RootNavigator() {
         <Stack.Screen
           name="cheft"
           component={CheftScreen}
+          options={({ route }) => ({
+            headerShown: false,
+          })}
+        />
+
+        <Stack.Screen
+          name="AreaMap"
+          component={AreaMap}
           options={({ route }) => ({
             headerShown: false,
           })}
