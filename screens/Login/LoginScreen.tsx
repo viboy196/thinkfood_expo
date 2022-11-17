@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
 import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 import { color1 } from "../../utils/helper/Color";
-import { callNumber } from "../../utils/helper/HelperFunc";
+import { callNumber, getMaginTopByDevice } from "../../utils/helper/HelperFunc";
 import {
   validateOTP,
   validatePassword,
@@ -81,16 +81,14 @@ export default function Login({}: RootStackScreenProps<"Login">) {
         .then((res) => {
           setLoading(false);
           if (res.code === ResultStatusCode.success) {
-            
-
             dispatch(
               setStateAuth({
                 input: { loading: "succeeded", token: res.result },
               })
             );
           } else {
-            if(res.code === '01')
-            Alert.alert("Thông báo", 'Mật khẩu không chính xác');
+            if (res.code === "01")
+              Alert.alert("Thông báo", "Mật khẩu không chính xác");
           }
         })
         .catch((error) => {
@@ -372,6 +370,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginVertical: 10,
     alignItems: "center",
+    paddingTop: getMaginTopByDevice(),
   },
   logoImage: { width: 150, height: 150 },
   logoText: {
