@@ -16,7 +16,7 @@ import { ResultStatusCode } from "../../utils/api/apiTypes";
 import ThucPhamTieuChuanCrud from "../../utils/api/ThucPhamTieuChuanCrud";
 import DonViDoCrud from "../../utils/api/DonViDoCrud";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
-import { callNumber, currencyFormat } from "../../utils/helper/HelperFunc";
+import { callNumber, currencyFormat, getMaginTopByDevice } from "../../utils/helper/HelperFunc";
 import ImageSlider from "../../components/items/ImageSwiper";
 import { useAppSelector } from "../../redux/store/hooks";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
@@ -101,7 +101,7 @@ export default function SetDoAnDetail({
             width: 64,
             height: 64,
             position: "absolute",
-            top: 10,
+            top: 10 + getMaginTopByDevice(),
             left: 5,
           }}
           onPress={() => {
@@ -150,66 +150,14 @@ export default function SetDoAnDetail({
             alignItems: "center",
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              borderWidth: 2,
-              borderColor: "#bebebe",
-              padding: 10,
-              borderRadius: 100,
-              margin: 10,
-            }}
-          >
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => {
-                if (numCount > 1) setNumCount((old) => old - 1);
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 28,
-                  fontWeight: "bold",
-                }}
-              >
-                -
-              </Text>
-            </TouchableOpacity>
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 28,
-                  fontWeight: "bold",
-                }}
-              >
-                {numCount}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => {
-                setNumCount((old) => old + 1);
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 28,
-                  fontWeight: "bold",
-                }}
-              >
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
+
           <View
             style={{
               flex: 1,
               height: 110,
-              justifyContent: "flex-end",
+              width:80,
+              justifyContent: "center",
+              alignItems:'center',
               marginRight: 5,
               marginBottom: 10,
             }}
@@ -240,32 +188,7 @@ export default function SetDoAnDetail({
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={addCart}>
-              <View
-                style={{
-                  backgroundColor: "#00b454",
-                  padding: 10,
-                  marginTop: 5,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  borderRadius: 5,
-                  height: 50,
-                }}
-              >
-                <View>
-                  <Ionicons name="add-circle" color={"#fff"} size={24} />
-                </View>
-                <Text
-                  style={{
-                    padding: 4,
-                    color: "#fff",
-                    textAlign: "center",
-                  }}
-                >
-                  Thêm giỏ hàng
-                </Text>
-              </View>
-            </TouchableOpacity>
+
           </View>
         </View>
       </View>

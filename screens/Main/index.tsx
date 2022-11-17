@@ -39,6 +39,7 @@ import {
 import TabInfo from "./TabInfo";
 import Relationship from "./Relationship";
 import TabPay from "./Pay";
+import { getMaginTopByDevice } from "../../utils/helper/HelperFunc";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -325,7 +326,6 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: tintColorLight,
     width: "100%",
-    height: 90,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
@@ -333,6 +333,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: 10 + getMaginTopByDevice(),
+    paddingBottom:20,
   },
   icon: { marginBottom: -3 },
   notificationNumView: {

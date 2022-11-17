@@ -5,7 +5,7 @@ import { useAppSelector } from "../../../redux/store/hooks";
 import { RootTabScreenProps } from "../../../navigation/types";
 import ApiRequest from "../../../utils/api/Main/ApiRequest";
 import { ResultStatusCode } from "../../../utils/api/apiTypes";
-import { currencyFormat } from "../../../utils/helper/HelperFunc";
+import { currencyFormat, getMaginTopByDevice } from "../../../utils/helper/HelperFunc";
 import PaymentHistory from "./PaymentHistory";
 
 export default function TabPay(nav: RootTabScreenProps<"TabPay">) {
@@ -31,20 +31,21 @@ export default function TabPay(nav: RootTabScreenProps<"TabPay">) {
     return willFocusSubscription;
   }, []);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 ,  }}>
       <View
         style={{
           flex: 1,
           backgroundColor: color1,
           alignItems: "center",
           justifyContent: "center",
+
         }}
       >
         <Text
           style={{
             position: "absolute",
             left: 10,
-            top: 10,
+            top: 10 + getMaginTopByDevice(),
             color: "#fff",
             paddingVertical: 10,
           }}
@@ -56,7 +57,7 @@ export default function TabPay(nav: RootTabScreenProps<"TabPay">) {
           style={{
             position: "absolute",
             right: 10,
-            top: 10,
+            top: 10 + getMaginTopByDevice(),
             padding: 10,
             backgroundColor: color2,
             borderRadius: 6,

@@ -143,18 +143,23 @@ export default function Item(props: { item: TypeCartOderItem }) {
         style={{
           flex: 1,
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "center",paddingLeft:10
+       
         }}
       >
+        <View style={{borderColor:color1 , borderRadius:8 , borderWidth:1}}>
         <Checkbox
-          status={chon ? "checked" : "unchecked"}
-          color={color1}
-          onPress={() => {
-            distpatch(
-              updateCartOderItem({ input: { ...props.item, chon: !chon } })
-            );
-          }}
-        />
+        
+        status={chon ? "checked" : "unchecked"}
+        color={color1}
+        onPress={() => {
+          distpatch(
+            updateCartOderItem({ input: { ...props.item, chon: !chon } })
+          );
+        }}
+      />
+        </View>
+      
       </View>
       <View
         style={{

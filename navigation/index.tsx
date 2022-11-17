@@ -133,7 +133,19 @@ function RootNavigator() {
         <Stack.Screen
           name="SearchDonGia"
           component={SearchFoodView}
-          options={{ headerShown: false }}
+          options={{
+            headerShown: true,
+            header: (props) => (
+              <HeaderShow
+                goBack={() => {
+                  if (props.navigation.canGoBack()) {
+                    props.navigation.goBack();
+                  }
+                }}
+                name={"Tìm kiếm đồ ăn"}
+              />
+            ),
+          }}
         />
 
         <Stack.Screen

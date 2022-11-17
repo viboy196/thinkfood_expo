@@ -21,6 +21,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { setStateTextSearch } from "../../redux/features/TextSearchSlides";
 import Layout from "../../constants/Layout";
 import ItemFood from "../ListFood/ItemFood";
+import { getMaginTopByDevice } from "../../utils/helper/HelperFunc";
 
 export default function SearchHome(nav: RootStackScreenProps<"SearchDonGia">) {
   const { navigation } = nav;
@@ -45,13 +46,13 @@ export default function SearchHome(nav: RootStackScreenProps<"SearchDonGia">) {
   }, [listSanPhamView, searchHome]);
 
   return (
-    <View style={{ backgroundColor: "transparent" }}>
-      <TitleCompenents1
+    <View style={{ backgroundColor: "transparent" ,}}>
+      {/* <TitleCompenents1
         onGoBack={() => {
           goBackNav(navigation);
         }}
         title={"Tìm Kiếm Món ăn"}
-      />
+      /> */}
       {/* Search MonAn */}
       <View
         style={{

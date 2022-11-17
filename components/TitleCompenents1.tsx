@@ -3,6 +3,7 @@ import React from "react";
 
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { tintColorLight } from "../constants/Colors";
+import { getMaginTopByDevice } from "../utils/helper/HelperFunc";
 export default function TitleCompenents1({
   onGoBack,
   title,
@@ -15,7 +16,6 @@ export default function TitleCompenents1({
       style={{
         flexDirection: "row",
         alignItems: "center",
-        height: 70,
         backgroundColor: "#fff",
         shadowColor: "#000",
         shadowOffset: { width: 1, height: 1 },

@@ -19,6 +19,7 @@ import { UrlHelper } from "../../utils/helper/UrlHelper";
 import {
   callNumber,
   currencyFormat,
+  getMaginTopByDevice,
   getStatusDoAn,
 } from "../../utils/helper/HelperFunc";
 import ImageSlider from "../../components/items/ImageSwiper";
@@ -117,7 +118,7 @@ export default function FoodDetail({
           width: 64,
           height: 64,
           position: "absolute",
-          top: 10,
+          top: 10 + getMaginTopByDevice(),
           left: 5,
         }}
         onPress={() => {

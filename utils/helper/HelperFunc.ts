@@ -4,6 +4,7 @@ import { ItemDonGiaLive } from './NhomSanPhamHelper';
 import { Linking, Alert, Platform } from 'react-native';
 import { TypeCartOderItem } from './CartOderHelper';
 import { TypeAddress } from './AddressHelper';
+import * as Device from 'expo-device';
 
 export  const genListIdDonGia = (listItem: ItemDonGiaLive[]): string[] => {
     let arr: string[] = [];
@@ -135,4 +136,17 @@ export const getStatusDoAn = (statusCode :string ,  activeTime?:string):{text:st
   }
   return {text:  'Sắp  ra mắt' , color:'red' , backgroundColor:'#fff'}
   
+}
+
+export const getMaginTopByDevice = ():number =>{
+  console.log(Device.osName);
+  
+  var modelName = Device.osName;
+
+  if(modelName === 'iOS'){
+    return 30;
+  }
+
+  return 0;
+
 }

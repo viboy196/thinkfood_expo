@@ -12,6 +12,7 @@ import { TypeTheGoiTieuDung } from "../../utils/helper/TheGoiTieuDungHelper";
 import TheGoiTieuDungCrud from "../../utils/api/TheGoiTieuDungCrud";
 import { RootTabScreenProps } from "../../navigation/types";
 import { Modal, Portal, Provider, RadioButton } from "react-native-paper";
+import { getMaginTopByDevice } from "../../utils/helper/HelperFunc";
 
 export default function TabShare({
   navigation,
@@ -56,6 +57,8 @@ export default function TabShare({
             );
         }
       });
+    }else{
+      Alert.alert('Thông báo' , 'Trường nhập sai|thiếu')
     }
   };
   const fetchDataGoiTang = () => {
@@ -82,7 +85,7 @@ export default function TabShare({
   }, [listGoiTang]);
 
   return (
-    <View style={{ flex: 1, marginTop: 10 }}>
+    <View style={{ flex: 1, marginTop: 10 , }}>
       <Spinner visible={loading} textStyle={{ color: "#fff" }} />
       {/* <Text style={{ padding: 10, fontSize: 20, color: color1 }}>
         Giới thiêu ThinkFood với bạn bè
@@ -132,7 +135,9 @@ export default function TabShare({
         />
       </TouchableOpacity>
       <View style={{ margin: 10 }}>
-        <Button title="Giới thiệu " color={color1} onPress={addKhachHang} />
+        <TouchableOpacity style={{backgroundColor:color1 , padding:10 , borderRadius:8}} onPress={addKhachHang} >
+          <Text style={{textAlign:'center' , color:'#fff'}}>Giới thiệu</Text>
+        </TouchableOpacity>
       </View>
       {visible && (
         <ModalSelectGoiTang

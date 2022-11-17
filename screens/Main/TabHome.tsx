@@ -28,7 +28,7 @@ import CartLoaiMonAn from "../../components/CartLoaiMonAn";
 import SearchHome from "../../components/Search/SearchHome";
 import { setStateTextSearch } from "../../redux/features/TextSearchSlides";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
-import { currencyFormat } from "../../utils/helper/HelperFunc";
+import { currencyFormat, getMaginTopByDevice } from "../../utils/helper/HelperFunc";
 import { color2 } from "../../utils/helper/Color";
 
 export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
@@ -52,6 +52,8 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
       if (res.code === ResultStatusCode.success) {
         setListLoaiGiaoDich(res.result);
       }
+    }).catch(error => {
+      setLoading(false);
     });
   }, []);
 
@@ -95,7 +97,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
         {loading && (
           <Spinner visible={true} textStyle={{ color: "#fff", fontSize: 20 }} />
         )}
-        <View style={styles.header}>
+        <View style={styles.header }>
           <TouchableOpacity
             onPress={() => {
               if (accountDetail?.accountType?.name)
@@ -185,6 +187,7 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
               style={{
                 width: 35,
                 height: 28,
+                tintColor:'#6a6968'
               }}
             />
             {listCartItem && listCartItem.length > 0 && (
@@ -312,11 +315,11 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", backgroundColor: "#fff" },
+  container: { flex: 1, alignItems: "center", backgroundColor: "#fff",
+   },
   header: {
     backgroundColor: "#fff",
     width: "100%",
-    height: 90,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
@@ -324,6 +327,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: "row",
     alignItems: "center",
+    paddingTop:getMaginTopByDevice()
   },
   logoImage: { width: 75, height: 75 },
   logoText: {

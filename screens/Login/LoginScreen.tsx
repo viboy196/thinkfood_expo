@@ -79,8 +79,9 @@ export default function Login({}: RootStackScreenProps<"Login">) {
       );
       ApiRequest.LoginApi({ phone: textPhone, password: textPassword })
         .then((res) => {
+          setLoading(false);
           if (res.code === ResultStatusCode.success) {
-            setLoading(false);
+            
 
             dispatch(
               setStateAuth({
@@ -88,7 +89,8 @@ export default function Login({}: RootStackScreenProps<"Login">) {
               })
             );
           } else {
-            Alert.alert("Loi", res.errorMessage);
+            if(res.code === '01')
+            Alert.alert("Thông báo", 'Mật khẩu không chính xác');
           }
         })
         .catch((error) => {
@@ -328,11 +330,6 @@ export default function Login({}: RootStackScreenProps<"Login">) {
                   {action === 4 && "Tạo mật Khẩu"}
                 </Text>
               </TouchableOpacity>
-              <Text
-                style={{ color: "red", marginTop: 15, textAlign: "center" }}
-              >
-                Bản thử nghiệm {"\n"} (chạy thử 01/11/2022 - 30/11/2022)
-              </Text>
             </View>
             <View style={styles.empty}></View>
             <View style={{ alignItems: "center" }}>

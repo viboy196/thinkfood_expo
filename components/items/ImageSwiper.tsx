@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../constants/Layout";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import { TypeDauBep } from "../../utils/helper/DauBepHelper";
-import { getStatusDoAn } from "../../utils/helper/HelperFunc";
+import { getMaginTopByDevice, getStatusDoAn } from "../../utils/helper/HelperFunc";
 import { useAppSelector } from "../../redux/store/hooks";
 
 export default function ImageSlider(props: {
@@ -151,9 +151,11 @@ export default function ImageSlider(props: {
           position: "absolute",
           top: 10,
           right: 10,
+          paddingTop:getMaginTopByDevice(),
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
+          zIndex:10,
         }}
       >
         <View
