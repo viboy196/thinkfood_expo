@@ -34,7 +34,8 @@ export default function DonGiaItem({
   return (
     <TouchableOpacity
       onPress={() => {
-        nav.navigation.navigate("FoodDeTail", item);
+        if (item.status === "01" || item.status === "04")
+          nav.navigation.navigate("FoodDeTail", item);
       }}
       style={{ width: (Layout.window.width - 20) / 3 }}
     >
