@@ -147,6 +147,14 @@ export default function TabOneScreen(nav: RootTabScreenProps<"TabHome">) {
                 style={styles.avatarImage}
               />
             )}
+
+            {accountDetail?.accountType?.code === "KOL" && (
+              <Image
+                source={require("../../assets/images/thinkfood/kol.png")}
+                resizeMode="cover"
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={{ paddingLeft: 10 }}
