@@ -1,6 +1,6 @@
 import { TypeAccountType } from "./AccountTypeHelper";
 
-const tag ='Tàii Khoản';
+const tag ='Tài Khoản';
 
 
 export type TypeAccount = {

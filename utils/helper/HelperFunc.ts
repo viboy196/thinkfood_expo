@@ -5,6 +5,7 @@ import { Linking, Alert, Platform } from 'react-native';
 import { TypeCartOderItem } from './CartOderHelper';
 import { TypeAddress } from './AddressHelper';
 import * as Device from 'expo-device';
+import { TypeDonHang } from './DonHangHelper';
 
 export  const genListIdDonGia = (listItem: ItemDonGiaLive[]): string[] => {
     let arr: string[] = [];
@@ -21,6 +22,38 @@ export  const genListIdDonGia = (listItem: ItemDonGiaLive[]): string[] => {
       return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
     return '';
  }
+
+export const getSumDonHang = (donHang : TypeDonHang) => {
+  let sum = 0;
+  let shipPrice = donHang.shipPrice ? donHang.shipPrice : 0;
+  
+  let khuyenMai = donHang.khuyenMai ? donHang.khuyenMai : 0;
+
+  if(donHang.listDonHangItem){
+      donHang.listDonHangItem.forEach(x => {
+          let unitPrice = x.unitPrice ? x.unitPrice : 0;
+          
+          let soLuong = x.soLuong ? x.soLuong : 0;
+
+          sum = sum  + unitPrice*soLuong;
+      })
+  
+  }
+  sum = sum +  Math.abs(shipPrice) - Math.abs(khuyenMai);
+  return sum
+}
+
+export const getDiscountDonHang = (donHang : TypeDonHang , percent?:number) => {
+  const _percent = percent ? percent : 0; 
+  var sum = getSumDonHang(donHang);
+  return sum*_percent/100;
+} 
+export const getValueDonHang = (donHang : TypeDonHang , percent?:number) => {
+  const _percent = percent ? percent : 0; 
+  var sum = getSumDonHang(donHang);
+  var discount = sum - sum*_percent/100;
+  return discount;
+} 
 
 
 export const callNumber = (phone:string) => {
@@ -149,4 +182,25 @@ export const getMaginTopByDevice = ():number =>{
 
   return 0;
 
+}
+
+export const getStatusByStatusCode = (statusCode? :string) => {
+  let status = '';
+  switch(statusCode){
+      case "00":
+          status = "Tạo đơn Hàng";
+          break;
+      case "01" : 
+          status = "Đang  chế biến";
+          break;
+      case "02" : 
+          status =  "Đang  vận chuyển";
+          break;
+      case "10":
+          status = "Hoàn thành đơn hàng";
+          break; 
+      default:
+          status = "";
+  }
+  return  status;
 }

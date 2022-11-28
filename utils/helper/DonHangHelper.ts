@@ -2,31 +2,42 @@ const tag ='Đơn Hàng';
 
 export type TypeDonHangItem = {
     idDonGia?:string;
-    shipPrice?:number;
     unitPrice?:number;
     soLuong?:number;
     note?:string;
-    pttt?:number;
-    idKhachHangGoiTieuDung?:string;
 }
+export type StatusOnTime = {
+    status?:string;
+    time?:string;
+}
+
 export type TypeDonHang = {
     id: string,
-    hinhThucGiaoHang?:number;
-    idAddress?:number;
     idKhachHang:string,
+    idAddress?:string;
+    hinhThucGiaoHang?:number;
+    idDiemAmThuc?:string,
+    shipPrice?:number,
+    khuyenMai?:number,
+    textKhuyenMai?:string
     listDonHangItem?: Array<TypeDonHangItem>,
-    active?: boolean,
-    status?:string,
-
+    complete?:boolean,
+    listStatus?:StatusOnTime[],
+    createdAt?:string,
+    updatedAt?:string,
+    createdBy?:string,
+    updatedBy?:string
   }
 
 export type TypeDonHangCreate = {
-    hinhThucGiaoHang?:number;
-    idAddress?:string;
     idKhachHang?:string,
+    idAddress?:string,
+    hinhThucGiaoHang?:number,
+    idDiemAmThuc?:string,
+    shipPrice?:number,
+    khuyenMai?:number,
+    textKhuyenMai?:string
     listDonHangItem?: Array<TypeDonHangItem>,
-    active?: boolean,
-    status?:string,
 }
 
 export type TypeDonHangDetail = TypeDonHang & {

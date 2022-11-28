@@ -1,17 +1,17 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { TypeOder } from "../../../utils/helper/OderHelper";
-import OderCrud from "../../../utils/api/OderCrud";
 import { useAppSelector } from "../../../redux/store/hooks";
 import { ResultStatusCode } from "../../../utils/api/apiTypes";
-import PaymentHistoryItem from "./OderHistoryItem";
+import DonhangHistoryItem from "./DonhangHistoryItem";
+import DonHangCrud from "../../../utils/api/DonHangCrud";
+import { TypeDonHang } from "../../../utils/helper/DonHangHelper";
 
-export default function OderHistory() {
-  const [state, setState] = useState<TypeOder[]>();
-  const { token } = useAppSelector((s) => s.auth);
+export default function DonHangHistory() {
+  const [state, setState] = useState<TypeDonHang[]>();
+  const { token, accountDetail } = useAppSelector((s) => s.auth);
   useEffect(() => {
     if (token) {
-      OderCrud.OderListByAuth(token).then((res) => {
+      DonHangCrud.getAllByIdKhachHang(accountDetail.id, token).then((res) => {
         if (res.code === ResultStatusCode.success) {
           setState(res.result);
         }
@@ -24,7 +24,7 @@ export default function OderHistory() {
         state
           .reverse()
           .map((item) => (
-            <PaymentHistoryItem
+            <DonhangHistoryItem
               item={item}
               key={"PaymentHistoryItem" + item?.id}
             />

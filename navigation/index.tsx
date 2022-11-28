@@ -32,7 +32,7 @@ import FoodDetail from "../screens/FoodDetail";
 import FoodView from "../screens/FoodView";
 import CartView from "../screens/Cart";
 import SearchFoodView from "../screens/SearchFood";
-import PaymentHistory from "../screens/Main/TabInfo/OderHistory";
+import PaymentHistory from "../screens/Main/TabInfo/DonHangHistory";
 import PersoInfo from "../screens/Main/TabInfo/PersoInfo";
 import ServicePack from "../screens/Main/TabInfo/ServicePack";
 import TabInfo from "../screens/Main/TabInfo";

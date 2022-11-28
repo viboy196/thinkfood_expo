@@ -11,9 +11,10 @@ export default class DonHangCrud {
 
 
   static GetAll = async (token :string): Promise<ExcuteResult> => {
+    
     const tag = `GetAll ${DonHangTag}`;
     const url = '/api/DonHang/all?v=1.0';
-     console.log(`${tag} url :`, url);
+    console.log(`${tag} url :`, url);
 
     const config: AxiosRequestConfig = {
       headers: {
@@ -89,6 +90,45 @@ export default class DonHangCrud {
     
     return res.data as ExcuteResult;
   };
+
+  static complete = async (id :string , token :string): Promise<ExcuteResult> => {
+    const tag = `complete ${DonHangTag}`;
+    const url = `/api/DonHang/complete?id=${id}&v=1.0`;
+     console.log(`${tag} url :`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+      },
+    };
+
+    const res = await axios.get(url , config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+  
+  static addStatusDonHang = async (id :string , status:string , token :string): Promise<ExcuteResult> => {
+    const tag = `addStatusDonHang ${DonHangTag}`;
+    const url = `/api/DonHang/addStatusDonHang?id=${id}&v=1.0`;
+     console.log(`${tag} url :`, url);
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `bearer ${token}`,
+        accept: 'text/plain',
+        "Content-Type" : "application/json"
+      },
+    };
+
+    const res = await axios.post(url , {status:status}, config);
+    console.log(`${tag} data key.length :`, Object.keys(res.data).length);
+    
+    return res.data as ExcuteResult;
+  };
+
+
   static Update = async (token :string , input : TypeDonHangDetail): Promise<ExcuteResult> => {
     const tag = `Update ${DonHangTag}`;
     const url = '/api/DonHang/update?v=1.0';

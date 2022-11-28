@@ -40,6 +40,8 @@ import TabInfo from "./TabInfo";
 import Relationship from "./Relationship";
 import TabPay from "./Pay";
 import { getMaginTopByDevice } from "../../utils/helper/HelperFunc";
+import DiemAmThucCrud from "../../utils/api/DiemAmThucCrud";
+import { setDiemAmThucState } from "../../redux/features/DiemAmThucSlices";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -106,6 +108,16 @@ export default function MainScreen() {
       DoAnCrud.GetAll(token).then((res) => {
         if (res.code === ResultStatusCode.success) {
           dispatch(setDoAnState({ listDoAn: res.result }));
+        }
+      });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      DiemAmThucCrud.GetAll(token).then((res) => {
+        if (res.code === ResultStatusCode.success) {
+          dispatch(setDiemAmThucState({ listDiemAmThuc: res.result }));
         }
       });
     }
@@ -334,7 +346,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 10 + getMaginTopByDevice(),
-    paddingBottom:20,
+    paddingBottom: 20,
   },
   icon: { marginBottom: -3 },
   notificationNumView: {
