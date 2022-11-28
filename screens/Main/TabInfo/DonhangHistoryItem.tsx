@@ -44,6 +44,9 @@ export default function DonhangHistoryItem(props: { item: TypeDonHang }) {
         elevation: 5,
       }}
     >
+      <View>
+        <Text>Ng</Text>
+      </View>
       <View style={{ flexDirection: "row", paddingVertical: 10 }}>
         <Text>{diemAmThuc && diemAmThuc?.name}</Text>
         <View style={{ flex: 1 }} />
