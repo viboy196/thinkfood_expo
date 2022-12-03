@@ -4,6 +4,8 @@ export type TypeDonGia = {
     idBangGia:string,
     type?:number,
     idThucPhamTieuChuan?:string,
+    idDiemAmThuc?:string,
+    isLive?:boolean,
     idDoAn?:string,
     unitPrice? :number,
     idDonViDo?:string,
@@ -14,24 +16,6 @@ export type TypeDonGia = {
     listMediaUri?:Array<string>,
   }
 
-export type TypeDonGiaCreate = {
-    idBangGia?:string,
-    type?:number,
-    idThucPhamTieuChuan?:string,
-    idDoAn?:string,
-    unitPrice? :number,
-    idDonViDo?:string,
-    isPublish?: boolean,
-    oderPublish?:number,
-    info?: string,
-    avartarImageFile?: File,
-    listMediaFile?:Array<File>,
-}
-
-export type TypeDonGiaDetail = TypeDonGia & {
-    avartarImageFile?: File,
-    listMediaFile?:Array<File>,
-}
 
 export enum DonGiaEnum {
     ThucPhamTieuChuan = 1,

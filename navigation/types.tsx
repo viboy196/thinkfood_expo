@@ -12,6 +12,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { TypeDonGiaView } from "../redux/features/SanPhamViewSlices";
 import { LocationMaps } from "../screens/AreaMap";
 import { TypeAddressDetail } from "../utils/helper/AddressHelper";
+import { TypeCartOderItem } from "../utils/helper/CartOderHelper";
 import { TypeDauBep } from "../utils/helper/DauBepHelper";
 import { TypeDonGia } from "../utils/helper/DonGiaHelper";
 import { TypeLoaiGiaoDich } from "../utils/helper/LoaiGiaoDichHelper";

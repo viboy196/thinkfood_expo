@@ -25,9 +25,6 @@ export  const genListIdDonGia = (listItem: ItemDonGiaLive[]): string[] => {
 
 export const getSumDonHang = (donHang : TypeDonHang) => {
   let sum = 0;
-  let shipPrice = donHang.shipPrice ? donHang.shipPrice : 0;
-  
-  let khuyenMai = donHang.khuyenMai ? donHang.khuyenMai : 0;
 
   if(donHang.listDonHangItem){
       donHang.listDonHangItem.forEach(x => {
@@ -39,19 +36,23 @@ export const getSumDonHang = (donHang : TypeDonHang) => {
       })
   
   }
-  sum = sum +  Math.abs(shipPrice) - Math.abs(khuyenMai);
   return sum
 }
 
 export const getDiscountDonHang = (donHang : TypeDonHang , percent?:number) => {
   const _percent = percent ? percent : 0; 
+  
   var sum = getSumDonHang(donHang);
   return sum*_percent/100;
 } 
 export const getValueDonHang = (donHang : TypeDonHang , percent?:number) => {
   const _percent = percent ? percent : 0; 
+
+  let shipPrice = donHang.shipPrice ? donHang.shipPrice : 0;
+  
+  let khuyenMai = donHang.khuyenMai ? donHang.khuyenMai : 0;
   var sum = getSumDonHang(donHang);
-  var discount = sum - sum*_percent/100;
+  var discount = sum - sum*_percent/100 -Math.abs(khuyenMai) + Math.abs(shipPrice);
   return discount;
 } 
 
@@ -204,3 +205,16 @@ export const getStatusByStatusCode = (statusCode? :string) => {
   }
   return  status;
 }
+
+export function getTimeByString(str? :string){
+  if(str === undefined) return '';
+  
+
+  if(str === '0001-01-01T00:00:00Z') return '';
+  try {
+      const date = new Date(str);
+      return ` ${date.getHours()}:${date.getMinutes()} -` + ` ${date.getDate()}/${date.getMonth() +1}`;
+  } catch (e) {
+      return ''
+  }
+} 

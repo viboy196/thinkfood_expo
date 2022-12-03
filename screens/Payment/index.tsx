@@ -5,6 +5,7 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store/hooks";
@@ -35,13 +36,14 @@ import { setCartOderState } from "../../redux/features/CartOderSlices";
 import CartOderCrud from "../../utils/api/CartOderCrud";
 import ApiRequest from "../../utils/api/Main/ApiRequest";
 
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { color1 } from "../../utils/helper/Color";
 export default function Payment(nav: RootStackScreenProps<"Payment">) {
   const { listCartItem, id, idKhachHang } = useAppSelector((s) => s.cart);
-
+  const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
+  const [textNote, setTextNote] = useState<string>();
   const { token, accountDetail } = useAppSelector((s) => s.auth);
-  const [input, setInput] = useState<TypeDonHangCreate>({
-    hinhThucGiaoHang: 1,
-  });
+  const [input, setInput] = useState<TypeDonHangCreate[]>();
   const [selectPttt, setSelectPttt] = useState<number>(1);
   const [visible, setVisible] = React.useState(false);
 
@@ -49,6 +51,18 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
   const hideModal = () => setVisible(false);
 
   const [address, setAddress] = useState<TypeAddress>();
+
+  const [isReceivingTime, setIsReceivingTime] = useState<boolean>(false);
+  const [receivingTime, setReceivingTime] = useState<Date>(new Date());
+
+  const [mode, setMode] = useState<"date" | "time">("date");
+
+  const [showTime, setShowTime] = useState<boolean>(false);
+
+  const showMode = (_mode: "date" | "time") => {
+    setMode(_mode);
+    setShowTime(true);
+  };
 
   const dispatch = useAppDispatch();
   const fetchData = () => {
@@ -73,26 +87,47 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
     return willFocusSubscription;
   }, []);
   useEffect(() => {
-    let listDonHangItem: TypeDonHangItem[] = [];
+    let _listDonHangItem: {
+      idDiemAmThuc?: string;
+      listDonHangItem?: TypeDonHangItem[];
+    }[] = [];
     listCartItem
       .filter((x) => x.chon === true)
       .forEach((x) => {
-        listDonHangItem.push({
-          idDonGia: x.idDonGia,
-          pttt: selectPttt,
-          soLuong: x.soLuong,
-          unitPrice: x.unitPrice,
-        });
+        var sanPhamView = listSanPhamView.find((spv) => spv.id === x.idDonGia);
+        var index = _listDonHangItem.findIndex(
+          (it) => it.idDiemAmThuc === sanPhamView.idDiemAmThuc
+        );
+        if (index > -1) {
+          _listDonHangItem[index].listDonHangItem.push({
+            idDonGia: x.idDonGia,
+            soLuong: x.soLuong,
+            unitPrice: x.unitPrice,
+          });
+        } else {
+          _listDonHangItem.push({
+            idDiemAmThuc: sanPhamView.idDiemAmThuc,
+            listDonHangItem: [
+              {
+                idDonGia: x.idDonGia,
+                soLuong: x.soLuong,
+                unitPrice: x.unitPrice,
+              },
+            ],
+          });
+        }
       });
 
-    let typeDonHang: TypeDonHangCreate = {
-      active: true,
-      idAddress: address?.id,
-      hinhThucGiaoHang: 1,
-      status: input.status,
-      idKhachHang: accountDetail.id,
-      listDonHangItem: listDonHangItem,
-    };
+    let typeDonHang: TypeDonHangCreate[] = [];
+    _listDonHangItem.forEach((x) => {
+      typeDonHang.push({
+        idAddress: address?.id,
+        hinhThucGiaoHang: 1,
+        idKhachHang: accountDetail.id,
+        listDonHangItem: x.listDonHangItem,
+        idDiemAmThuc: x.idDiemAmThuc,
+      });
+    });
     setInput(typeDonHang);
   }, [address, accountDetail.id, listCartItem]);
   const removeItemCart = (idDonGia: string) => {
@@ -113,41 +148,46 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
         }
       );
   };
-  const Call = () => {
-    if (token) {
-      ApiRequest.getPhoneActive(token).then((res) => {
-        if (res.code === ResultStatusCode.success) {
-          const arrPhone = res.result as string[];
-          if (arrPhone.length > 0) {
-            callNumber(arrPhone[0]);
-          } else {
-            Alert.alert("Tổng đài viên đang bận liên hệ sau");
-          }
-        } else {
-          Alert.alert("Tổng đài viên đang bận liên hệ sau");
-        }
-      });
-    }
-  };
+  // const Call = () => {
+  //   if (token) {
+  //     ApiRequest.getPhoneActive(token).then((res) => {
+  //       if (res.code === ResultStatusCode.success) {
+  //         const arrPhone = res.result as string[];
+  //         if (arrPhone.length > 0) {
+  //           callNumber(arrPhone[0]);
+  //         } else {
+  //           Alert.alert("Tổng đài viên đang bận liên hệ sau");
+  //         }
+  //       } else {
+  //         Alert.alert("Tổng đài viên đang bận liên hệ sau");
+  //       }
+  //     });
+  //   }
+  // };
   const addDonHang = () => {
-    if (token) {
+    if (token && input.length > 0) {
       setLoading(true);
-
-      DonHangCrud.Add(token, input)
-        .then((res) => {
-          setLoading(false);
-          if (res.code === ResultStatusCode.success) {
-            listCartItem.forEach((x) => {
-              removeItemCart(x.idDonGia);
-            });
-            Alert.alert("Thông báo", "Tạo đơn hàng thành công");
-            nav.navigation.goBack();
-            // Call();
-          }
+      input.forEach((x) => {
+        DonHangCrud.Add(token, {
+          ...x,
+          note: textNote,
+          receivingTime: isReceivingTime ? receivingTime : undefined,
         })
-        .catch((error) => {
-          setLoading(false);
-        });
+          .then((res) => {
+            setLoading(false);
+            if (res.code === ResultStatusCode.success) {
+              listCartItem.forEach((x) => {
+                removeItemCart(x.idDonGia);
+              });
+              Alert.alert("Thông báo", "Tạo đơn hàng thành công");
+              nav.navigation.goBack();
+              // Call();
+            }
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+      });
     }
   };
   const [loading, setLoading] = useState<boolean>(false);
@@ -181,10 +221,14 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
               alignItems: "flex-start",
             }}
           >
-            <Text>nhắn tin</Text>
+            <TextInput
+              placeholder="Nhắn ghi chú cho nhà bếp"
+              value={textNote}
+              onChangeText={setTextNote}
+            />
           </View>
 
-          <View style={{ flex: 5 }}>
+          {/* <View style={{ flex: 5 }}>
             <TextInput
               value={input.status}
               onChangeText={(text) => {
@@ -195,7 +239,7 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
               placeholder="Lưu ý cho người bán ..."
               style={{ textAlign: "right", height: 60 }}
             />
-          </View>
+          </View> */}
         </View>
 
         <View
@@ -248,6 +292,98 @@ export default function Payment(nav: RootStackScreenProps<"Payment">) {
           setSelectPttt={setSelectPttt}
           visible={visible}
         />
+        {isReceivingTime && (
+          <>
+            <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
+              Thời gian nhận hàng
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  marginLeft: 10,
+                  padding: 10,
+                  borderRadius: 8,
+                  backgroundColor: color1,
+                }}
+                onPress={() => {
+                  showMode("date");
+                }}
+              >
+                <Text style={{ color: "#fff" }}>Chọn ngày</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  showMode("time");
+                }}
+                style={{
+                  marginLeft: 10,
+                  padding: 10,
+                  borderRadius: 8,
+                  backgroundColor: color1,
+                }}
+              >
+                <Text style={{ color: "#fff" }}>chọn giờ</Text>
+              </TouchableOpacity>
+              <View style={{ flex: 1, padding: 10 }}>
+                <Text style={{ textAlign: "right" }}>
+                  {receivingTime?.toLocaleDateString() +
+                    " | " +
+                    receivingTime?.getHours() +
+                    ":" +
+                    receivingTime?.getMinutes()}
+                </Text>
+              </View>
+
+              {showTime && receivingTime && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={receivingTime}
+                  mode={mode}
+                  is24Hour={true}
+                  display={"default"}
+                  onChange={(e, date) => {
+                    if (date) setReceivingTime(date);
+                    setShowTime(Platform.OS === "ios");
+                  }}
+                />
+              )}
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                style={{
+                  margin: 10,
+                  padding: 10,
+                  backgroundColor: color1,
+                  borderRadius: 8,
+                }}
+                onPress={() => setIsReceivingTime(!isReceivingTime)}
+              >
+                <Text style={{ color: "#fff" }}>
+                  Bỏ chọn thời gian muốn nhận hàng
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+        {!isReceivingTime && (
+          <View style={{ flexDirection: "row", padding: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsReceivingTime(!isReceivingTime);
+              }}
+              style={{ padding: 10, backgroundColor: color1, borderRadius: 8 }}
+            >
+              <Text style={{ color: "#fff" }}>Chọn thời điểm nhận hàng</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
 
       <View

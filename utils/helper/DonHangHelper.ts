@@ -2,13 +2,20 @@ const tag ='Đơn Hàng';
 
 export type TypeDonHangItem = {
     idDonGia?:string;
+    isRefund?:boolean;
     unitPrice?:number;
     soLuong?:number;
     note?:string;
+    timeRefund?:string;
 }
 export type StatusOnTime = {
     status?:string;
     time?:string;
+}
+export type RefundDonHang = {
+    id:string;
+    listIdDonGia:string[];
+    reason?:string;
 }
 
 export type TypeDonHang = {
@@ -26,7 +33,9 @@ export type TypeDonHang = {
     createdAt?:string,
     updatedAt?:string,
     createdBy?:string,
-    updatedBy?:string
+    updatedBy?:string,
+    note?:string,
+    receivingTime?:string
   }
 
 export type TypeDonHangCreate = {
@@ -38,6 +47,8 @@ export type TypeDonHangCreate = {
     khuyenMai?:number,
     textKhuyenMai?:string
     listDonHangItem?: Array<TypeDonHangItem>,
+    note?:string,
+    receivingTime?:Date
 }
 
 export type TypeDonHangDetail = TypeDonHang & {

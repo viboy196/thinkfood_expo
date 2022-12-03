@@ -56,6 +56,9 @@ export default function MainScreen() {
   const { listThucPhamTieuChuan } = useAppSelector((s) => s.thucPhamTieuChuan);
 
   const { listDonViDo } = useAppSelector((s) => s.donViDo);
+
+  const { listDiemAmThuc } = useAppSelector((s) => s.DiemAmThuc);
+
   useEffect(() => {
     if (token) {
       ApiRequest.GetDetailUser(token)
@@ -146,7 +149,13 @@ export default function MainScreen() {
   }, [token]);
 
   useEffect(() => {
-    if (listDonGia && listDoAn && listThucPhamTieuChuan && listDonViDo) {
+    if (
+      listDonGia &&
+      listDoAn &&
+      listThucPhamTieuChuan &&
+      listDonViDo &&
+      listDiemAmThuc
+    ) {
       let listSanPhamViewItem: TypeDonGiaView[] = [];
       listDonGia.forEach((dongiaItem) => {
         let sanPhamViewItem: TypeDonGiaView = { ...dongiaItem };
@@ -184,6 +193,16 @@ export default function MainScreen() {
             sanPhamViewItem.nameDonViDo = _donViDo.name;
           }
         }
+
+        if (sanPhamViewItem.idDiemAmThuc) {
+          let _diemAmThuc = listDiemAmThuc.find(
+            (x) => x.id === sanPhamViewItem.idDiemAmThuc
+          );
+          if (_diemAmThuc) {
+            sanPhamViewItem.nameDiemAmThuc = _diemAmThuc.name;
+          }
+        }
+
         listSanPhamViewItem.push(sanPhamViewItem);
       });
       if (listSanPhamViewItem.length > 0) {

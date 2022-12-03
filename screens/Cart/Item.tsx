@@ -32,80 +32,12 @@ import { color1 } from "../../utils/helper/Color";
 
 export default function Item(props: { item: TypeCartOderItem }) {
   const { chon, idDonGia, soLuong, unitPrice } = props.item;
-  const [donGia, setDonGia] = useState<TypeDonGia>();
   const { token, accountDetail } = useAppSelector((s) => s.auth);
-
+  const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
   const distpatch = useAppDispatch();
 
-  const [state, setState] = useState<{
-    name?: string;
-    link?: string;
-    avatarUri?: string;
-    nameDonViDo?: string;
-    listMediaUri?: string[];
-    info?: string;
-  }>();
-
-  useEffect(() => {
-    DonGiaCrud.getDetail(idDonGia).then((res) => {
-      if (res.code === ResultStatusCode.success) {
-        console.log(res.result);
-
-        setDonGia(res.result);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (donGia?.idDoAn) {
-      DoAnCrud.getDetailPublish(donGia.idDoAn).then((res) => {
-        if (res.code === ResultStatusCode.success) {
-          // @ts-ignore
-          setState((old) => {
-            return {
-              ...old,
-              avatarUri: res.result.avartarUri,
-              listMediaUri: res.result.listMediaUri,
-              name: res.result.name,
-              info: res.result.info,
-              link: `/action/DoAn/${res.result.id}`,
-            };
-          });
-        }
-      });
-    }
-    if (donGia?.idThucPhamTieuChuan) {
-      ThucPhamTieuChuanCrud.getDetailPublish(donGia.idThucPhamTieuChuan).then(
-        (res) => {
-          if (res.code === ResultStatusCode.success) {
-            // @ts-ignore
-            setState((old) => {
-              return {
-                ...old,
-                avatarUri: res.result.avartarUri,
-                listMediaUri: res.result.listMediaUri,
-                name: res.result.name,
-                link: `/action/ThucPhamTieuChuan/${res.result.id}`,
-              };
-            });
-          }
-        }
-      );
-    }
-    if (donGia?.idDonViDo) {
-      DonViDoCrud.getDetailPublish(donGia.idDonViDo).then((res) => {
-        if (res.code === ResultStatusCode.success) {
-          // @ts-ignore
-          setState((old) => {
-            return {
-              ...old,
-              nameDonViDo: res.result.name,
-            };
-          });
-        }
-      });
-    }
-  }, [donGia?.idDoAn, donGia?.idDonViDo, donGia?.idThucPhamTieuChuan]);
+  const sanphamView = listSanPhamView.find((x) => x.id === idDonGia);
+  console.log("sanphamView", sanphamView);
 
   const removeItemCart = () => {
     if (token && accountDetail?.id)
@@ -132,141 +64,172 @@ export default function Item(props: { item: TypeCartOderItem }) {
   return (
     <View
       style={{
-        width: Layout.window.width,
-        flexDirection: "row",
         marginTop: 5,
+
         backgroundColor: "#fff",
-        paddingVertical: 10,
       }}
     >
       <View
         style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",paddingLeft:10
-       
+          flexDirection: "row",
+          padding: 10,
         }}
       >
-        <View style={{borderColor:color1 , borderRadius:8 , borderWidth:1}}>
-        <Checkbox
-        
-        status={chon ? "checked" : "unchecked"}
-        color={color1}
-        onPress={() => {
-          distpatch(
-            updateCartOderItem({ input: { ...props.item, chon: !chon } })
-          );
-        }}
-      />
-        </View>
-      
+        <Text style={{ color: color1, fontSize: 16, fontWeight: "600" }}>
+          Điểm ẩm thực :
+        </Text>
+        <Text style={{ flex: 1, textAlign: "right" }}>
+          {sanphamView.nameDiemAmThuc}
+        </Text>
       </View>
       <View
         style={{
-          flex: 4,
-          justifyContent: "center",
-          alignItems: "center",
+          flexDirection: "row",
         }}
       >
-        {state?.avatarUri && (
-          <Image
-            source={{ uri: UrlHelper.urlFile + state?.avatarUri }}
-            style={{
-              width: 120,
-              height: 80,
-              resizeMode: "cover",
-            }}
-          />
-        )}
-      </View>
-      <View style={{ flex: 4, padding: 10 }}>
-        <Text>{state?.name}</Text>
-
-        <Text>
-          {unitPrice ? currencyFormat(unitPrice) : ""}
-          {" vnđ/"}
-          {state?.nameDonViDo}
-        </Text>
-
         <View
           style={{
-            width: "75%",
-            height: 40,
-            flexDirection: "row",
-            borderWidth: 2,
-            borderColor: "#bebebe",
-            padding: 10,
-            borderRadius: 100,
-            margin: 10,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingLeft: 10,
           }}
         >
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => {
-              if (soLuong > 1)
+          <View
+            style={{ borderColor: color1, borderRadius: 8, borderWidth: 1 }}
+          >
+            <Checkbox
+              status={chon ? "checked" : "unchecked"}
+              color={color1}
+              onPress={() => {
+                distpatch(
+                  updateCartOderItem({ input: { ...props.item, chon: !chon } })
+                );
+              }}
+            />
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 4,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {sanphamView?.avartarUri && (
+            <Image
+              source={{ uri: UrlHelper.urlFile + sanphamView?.avartarUri }}
+              style={{
+                width: 120,
+                height: 80,
+                resizeMode: "cover",
+              }}
+            />
+          )}
+        </View>
+        <View style={{ flex: 4, padding: 10 }}>
+          <Text>{sanphamView?.name}</Text>
+
+          <Text>
+            {unitPrice ? currencyFormat(unitPrice) : ""}
+            {" vnđ/"}
+            {sanphamView?.nameDonViDo}
+          </Text>
+
+          <View
+            style={{
+              width: "75%",
+              height: 40,
+              flexDirection: "row",
+              borderWidth: 2,
+              borderColor: "#bebebe",
+              padding: 10,
+              borderRadius: 100,
+              margin: 10,
+            }}
+          >
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => {
+                if (soLuong > 1)
+                  distpatch(
+                    updateCartOderItem({
+                      input: { ...props.item, soLuong: soLuong - 1 },
+                    })
+                  );
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 14,
+                  fontWeight: "bold",
+                }}
+              >
+                -
+              </Text>
+            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 14,
+                  fontWeight: "bold",
+                }}
+              >
+                {soLuong}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => {
                 distpatch(
                   updateCartOderItem({
-                    input: { ...props.item, soLuong: soLuong - 1 },
+                    input: { ...props.item, soLuong: soLuong + 1 },
                   })
                 );
-            }}
-          >
-            <Text
-              style={{ textAlign: "center", fontSize: 14, fontWeight: "bold" }}
+              }}
             >
-              -
-            </Text>
-          </TouchableOpacity>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{ textAlign: "center", fontSize: 14, fontWeight: "bold" }}
-            >
-              {soLuong}
-            </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 14,
+                  fontWeight: "bold",
+                }}
+              >
+                +
+              </Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{ flex: 1 }}
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            title="x"
+            color={"red"}
             onPress={() => {
-              distpatch(
-                updateCartOderItem({
-                  input: { ...props.item, soLuong: soLuong + 1 },
-                })
+              Alert.alert(
+                "Xóa sản phẩm" + sanphamView.name,
+                "Bạn muốn xóa sản phẩm " +
+                  sanphamView.name +
+                  " ra khỏi giỏ hàng",
+                [
+                  {
+                    text: "thôi",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  { text: "OK", onPress: removeItemCart },
+                ]
               );
             }}
-          >
-            <Text
-              style={{ textAlign: "center", fontSize: 14, fontWeight: "bold" }}
-            >
-              +
-            </Text>
-          </TouchableOpacity>
+          />
         </View>
-      </View>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          title="x"
-          color={"red"}
-          onPress={() => {
-            Alert.alert(
-              "Xóa sản phẩm" + state.name,
-              "Bạn muốn xóa sản phẩm " + state.name + " ra khỏi giỏ hàng",
-              [
-                {
-                  text: "thôi",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel",
-                },
-                { text: "OK", onPress: removeItemCart },
-              ]
-            );
-          }}
-        />
       </View>
     </View>
   );

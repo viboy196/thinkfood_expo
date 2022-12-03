@@ -6,6 +6,7 @@ import { ResultStatusCode } from '../../utils/api/apiTypes';
 import { TypeDonGia } from '../../utils/helper/DonGiaHelper';
 
 export type TypeDonGiaView = TypeDonGia & { name?: string;
+  nameDiemAmThuc?:string;
   avatarUri?: string;
   nameDonViDo?: string;
   listMediaUri?: string[];
