@@ -16,13 +16,14 @@ import {
 } from "../../redux/features/SanPhamViewSlices";
 import ItemSearchHome from "./ItemSearchHome";
 import { RootTabScreenProps } from "../../navigation/types";
+import useDebounce from "../../hooks/useDebounce";
 
 export default function SearchHome(props: {
   searchStr?: string;
   nav: RootTabScreenProps<"TabHome">;
 }) {
   const { searchHome } = useAppSelector((s) => s.textSearch);
-
+  const debouncedValue = useDebounce(searchHome, 1000);
   const { listSanPhamView } = useAppSelector((s) => s.sanPhamView);
 
   const { token } = useAppSelector((s) => s.auth);
@@ -32,16 +33,16 @@ export default function SearchHome(props: {
 
   useEffect(() => {
     if (listSanPhamView) {
-      if (searchHome) {
+      if (debouncedValue) {
         const list = listSanPhamView.filter((x) =>
-          x.name?.toLowerCase().includes(searchHome.toLowerCase())
+          x.name?.toLowerCase().includes(debouncedValue.toLowerCase())
         );
         setListSamPham(list);
       } else {
         setListSamPham(listSanPhamView);
       }
     }
-  }, [listSanPhamView, searchHome]);
+  }, [listSanPhamView, debouncedValue]);
 
   return (
     <>

@@ -11,8 +11,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Layout from "../../constants/Layout";
 import { UrlHelper } from "../../utils/helper/UrlHelper";
 import { TypeDauBep } from "../../utils/helper/DauBepHelper";
-import { getMaginTopByDevice, getStatusDoAn } from "../../utils/helper/HelperFunc";
+import {
+  getMaginTopByDevice,
+  getStatusDoAn,
+} from "../../utils/helper/HelperFunc";
 import { useAppSelector } from "../../redux/store/hooks";
+import WebView from "react-native-webview";
 
 export default function ImageSlider(props: {
   ImageArrayUri: string[];
@@ -85,6 +89,16 @@ export default function ImageSlider(props: {
           height: (Layout.window.width * 3) / 4,
         }}
       >
+        <WebView
+          style={{
+            width: Layout.window.width,
+            height: (Layout.window.width * 3) / 4,
+          }}
+          javaScriptEnabled={true}
+          source={{
+            uri: "https://www.youtube.com/embed/8LQ3I58BcD8?rel=0&autoplay=0&showinfo=0&controls=0",
+          }}
+        />
         {arr.map((item, index) => (
           <Image
             source={{ uri: UrlHelper.urlFile + item }}
@@ -151,11 +165,11 @@ export default function ImageSlider(props: {
           position: "absolute",
           top: 10,
           right: 10,
-          paddingTop:getMaginTopByDevice(),
+          paddingTop: getMaginTopByDevice(),
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          zIndex:10,
+          zIndex: 10,
         }}
       >
         <View

@@ -13,12 +13,12 @@ export default function TabInfo({ navigation }: RootTabScreenProps<"TabInfo">) {
         text={"Thông tin cá nhân"}
       />
 
-      <ItemInfo
+      {/* <ItemInfo
         onPress={() => {
           navigation.navigate("ServicePack");
         }}
         text={"Gói dịch vụ"}
-      />
+      /> */}
 
       <ItemInfo
         onPress={() => {
